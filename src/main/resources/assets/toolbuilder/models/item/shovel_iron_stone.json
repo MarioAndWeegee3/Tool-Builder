@@ -1,0 +1,7 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "toolbuilder:item/shovel/iron",
+    "layer1": "toolbuilder:item/handle/stone/shovel"
+  }
+}
