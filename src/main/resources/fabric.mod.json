@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "toolbuilder",
+  "version": "${version}",
+
+  "name": "Tool Builder",
+  "description": "",
+  "authors": [
+    "MarioAndWeegee3"
+  ],
+  "contact": {
+    "homepage": "https://minecraft.curseforge.com/members/MarioAndWeegee3",
+    "sources": ""
+  },
+
+  "license": "Unlicense",
+  "icon": "assets/toolbuilder/textures/logo.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "marioandweegee3.toolbuilder.ToolBuilder"
+    ]
+  },
+
+  "requires": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
