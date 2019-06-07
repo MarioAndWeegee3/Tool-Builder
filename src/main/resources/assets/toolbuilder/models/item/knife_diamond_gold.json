@@ -1,0 +1,7 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "toolbuilder:item/knife/diamond",
+    "layer1": "toolbuilder:item/handle/gold/knife"
+  }
+}
