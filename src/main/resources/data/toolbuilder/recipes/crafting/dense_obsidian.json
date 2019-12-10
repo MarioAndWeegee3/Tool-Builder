@@ -1,0 +1,14 @@
+{
+    "type":"crafting_shaped",
+    "pattern":[
+        "ppp",
+        "ppp",
+        "ppp"
+    ],
+    "key":{
+        "p":{"item":"toolbuilder:obsidian_plate"}
+    },
+    "result":{
+        "item":"toolbuilder:dense_obsidian"
+    }
+}

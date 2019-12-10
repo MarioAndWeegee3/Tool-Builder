@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "layer0": "toolbuilder:item/handle/diamond/full"
+  }, 
+  "parent": "item/handheld"
+}

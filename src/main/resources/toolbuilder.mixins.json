@@ -1,0 +1,19 @@
+{
+    "required": true,
+    "package": "marioandweegee3.toolbuilder.mixins",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": [
+        "EntityDamageMixin",
+        "InventoryTickMixin",
+        "BlockBreakMixin",
+        "FireTimeMixin",
+        "BypassArmorMixin",
+        "EnchantmentMixin",
+        "RecipeRemoveMixin"
+    ],
+    "client": [
+    ],
+    "injectors": {
+      "defaultRequire": 1
+    }
+}

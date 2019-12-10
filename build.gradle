@@ -20,22 +20,54 @@ repositories{
             url = 'https://maven.fabricmc.net/'
         }
 		maven { 
-			name = 'Cotton'
+			name = 'Cotton_Snapshot'
 			url 'http://server.bbkr.space:8081/artifactory/libs-snapshot' 
 		}
+		maven { 
+			name = 'Cotton_Release'
+			url 'http://server.bbkr.space:8081/artifactory/libs-release' 
+		}
+		maven { 
+			name = "Curseforge"
+			url "https://minecraft.curseforge.com/api/maven"
+		}
+		// maven { url = 'http://maven.sargunv.s3-website-us-west-2.amazonaws.com/' }
+		maven { url "https://jitpack.io" }
+		mavenLocal()
+		jcenter()
 }
 
 dependencies {
 	//to change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	minecraft "com.mojang:minecraft:1.14.4"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}"
 	modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	
-	modCompile "io.github.cottonmc:cotton-resources:${project.cr_version}"
-	modCompile "io.github.cottonmc:cotton:${project.cotton_version}"
+	modCompile ("io.github.cottonmc:cotton-resources:${project.cr_version}"){
+		exclude (group: "cloth-config", module: "ClothConfig2")
+	}
+	modImplementation "com.github.swordglowsblue:artifice:${project.artifice_version}"
+	//modCompile "cloth-config:ClothConfig:${project.cloth_config_version}"
+	//modCompile "me.sargunvohra.mcmods:auto-config:${project.auto_config_version}"
+	modCompile ("me.shedaniel.cloth:config-2:${project.cloth_version}"){
+		exclude (group: "io.github.prospector", module: "modmenu")
+	}
+	modCompile "marioandweegee3:ml3api:${project.ml3api_version}"
+
+	include "com.github.swordglowsblue:artifice:${project.artifice_version}"
+	include ("io.github.cottonmc:cotton-resources:${project.cr_version}"){
+		exclude (group: "cloth-config", module: "ClothConfig2")
+	}
+	//include "me.sargunvohra.mcmods:auto-config:${project.auto_config_version}"
+	//include "cloth-config:ClothConfig:${project.cloth_config_version}"
+	include ("me.shedaniel.cloth:config-2:${project.cloth_version}"){
+		exclude (group: "io.github.prospector", module: "modmenu")
+	}
+	include "marioandweegee3:ml3api:${project.ml3api_version}"
+
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.

@@ -1,0 +1,5 @@
+{
+    "variants":{
+        "":{"model":"toolbuilder:block/mod_station"}
+    }
+}

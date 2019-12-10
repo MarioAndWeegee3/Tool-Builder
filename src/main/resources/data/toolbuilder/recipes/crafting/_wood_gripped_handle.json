@@ -1,0 +1,13 @@
+{
+    "type":"crafting_shapeless",
+    "ingredients":[
+        [
+            {"item":"stick"},
+            {"item":"toolbuilder:wood_handle"}
+        ],
+        {"item":"leather"}
+    ],
+    "result":{
+        "item":"toolbuilder:wood_gripped_handle"
+    }
+}

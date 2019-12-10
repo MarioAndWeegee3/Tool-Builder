@@ -1,26 +1,86 @@
 package marioandweegee3.toolbuilder.common.tools.tooltypes;
 
-import marioandweegee3.toolbuilder.ToolBuilder;
-import marioandweegee3.toolbuilder.common.itemgroups.Groups;
-import net.minecraft.item.Item;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.util.registry.Registry;
+import java.util.List;
 
-public class Knife extends SwordItem{
+import marioandweegee3.toolbuilder.ToolBuilder;
+import marioandweegee3.toolbuilder.api.BuiltTool;
+import marioandweegee3.toolbuilder.api.material.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+public class Knife extends SwordItem implements BuiltTool{
     private static float speed = ToolValues.KNIFE.getSpeed();
     private static float damage = ToolValues.KNIFE.getDamage();
-    private Knife(ToolMaterial material, Item.Settings settings){
-        super(material, (int) damage, speed, settings);
+
+    private BuiltToolMaterial material;
+
+    private Knife(KnifeMaterial material, Item.Settings settings) {
+        super(material, (int) damage, BuiltTool.getAttackSpeed(material, speed), settings);
+        this.material = material;
     }
 
-    public static Item create(ToolMaterial material){
-        return new Knife(material, new Item.Settings());
+    public static Item create(BuiltToolMaterial material) {
+        return new Knife(new KnifeMaterial(material), new Item.Settings());
     }
 
-    public static void register(Item item, String name, ToolMaterial material, String group){
-        item = create(material);
-        Registry.register(Registry.ITEM, ToolBuilder.makeID(name), item);
-        Groups.addTo(item, group);
+    @Override
+    public String getType() {
+        return "knife";
+    }
+
+    @Override
+    public BuiltToolMaterial getMaterial() {
+        return material;
+    }
+
+    @Override
+    public String getTranslationKey() {
+        return getTranslationName(material);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        addTooltips(tooltip, stack, material, ToolBuilder.toolStyle, ToolBuilder.effectStyle, ToolBuilder.modifierStyle);
+    }
+
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        onHit(stack, target, attacker);
+        return super.postHit(stack, target, attacker);
+    }
+
+    @Override
+    public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
+        onMine(material, stack, state, world, pos, miner, this::shouldDropXp);
+
+        return super.postMine(stack, world, state, pos, miner);
+    }
+
+    public boolean shouldDropXp(BlockState state, ItemStack stack){
+        if(getMiningSpeed(stack, state) == 15) return true;
+        else return false;
+    }
+
+    public static class KnifeMaterial extends BuiltToolMaterial {
+
+        public KnifeMaterial(HandleMaterial handle, HeadMaterial head, String name, Boolean isGripped) {
+            super(handle, head, name, isGripped);
+        }
+
+        public KnifeMaterial(BuiltToolMaterial material){
+            this(material.handle, material.head, material.getName(), material.isGripped);
+        }
+        
+        @Override
+        public int getDurability() {
+            return (int)(super.getDurability() * 0.90f);
+        }
     }
 }

@@ -1,6 +1,6 @@
 {
-  "parent": "item/handheld",
   "textures": {
     "layer0": "toolbuilder:item/handle/wood/full"
-  }
+  }, 
+  "parent": "item/handheld"
 }

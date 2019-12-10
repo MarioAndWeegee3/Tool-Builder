@@ -1,0 +1,8 @@
+{
+    "type":"stonecutting",
+    "ingredient":[
+        {"item":"bone"}
+    ],
+    "result":"toolbuilder:bone_handle",
+    "count":1
+}

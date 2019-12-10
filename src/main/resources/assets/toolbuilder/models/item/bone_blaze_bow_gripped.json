@@ -1,0 +1,30 @@
+{
+  "textures": {
+    "layer2": "toolbuilder:item/bow/grip/-1/true", 
+    "layer1": "toolbuilder:item/bow/handle/bone/-1", 
+    "layer0": "toolbuilder:item/bow/string/blaze/-1"
+  }, 
+  "overrides": [
+    {
+      "predicate": {
+        "pulling": 1
+      }, 
+      "model": "toolbuilder:item/bone_blaze_bow_gripped_0"
+    }, 
+    {
+      "predicate": {
+        "pull": 0.65, 
+        "pulling": 1
+      }, 
+      "model": "toolbuilder:item/bone_blaze_bow_gripped_1"
+    }, 
+    {
+      "predicate": {
+        "pull": 0.9, 
+        "pulling": 1
+      }, 
+      "model": "toolbuilder:item/bone_blaze_bow_gripped_2"
+    }
+  ], 
+  "parent": "toolbuilder:item/_bow_base"
+}

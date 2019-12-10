@@ -1,0 +1,15 @@
+{
+    "type":"crafting_shaped",
+    "pattern":[
+        "bb",
+        "ss"
+    ],
+    "key":{
+        "b":{"item":"blaze_powder"},
+        "s":{"item":"string"}
+    },
+    "result":{
+        "item":"toolbuilder:blaze_string",
+        "count":2
+    }
+}

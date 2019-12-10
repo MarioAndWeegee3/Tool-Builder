@@ -1,7 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "toolbuilder:item/axe/iron",
-    "layer1": "toolbuilder:item/handle/stone/axe"
-  }
-}

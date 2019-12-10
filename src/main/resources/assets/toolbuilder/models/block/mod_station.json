@@ -1,0 +1,8 @@
+{
+    "parent": "block/cube_bottom_top",
+    "textures": {
+        "bottom": "block/oak_planks",
+        "top": "block/smithing_table_top",
+        "side": "toolbuilder:block/mod_station/side"
+    }
+}

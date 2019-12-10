@@ -20,12 +20,24 @@
   "entrypoints": {
     "main": [
       "marioandweegee3.toolbuilder.ToolBuilder"
+    ],
+    "modmenu":[
+      "marioandweegee3.toolbuilder.client.ModMenuCompatTB"
+    ],
+    "client":[
+      "marioandweegee3.toolbuilder.client.ToolBuilderClient"
+    ],
+    "toolbuilder":[
+      "marioandweegee3.toolbuilder.common.tools.init.MaterialInit"
     ]
   },
+  "mixins":[
+    "toolbuilder.mixins.json"
+  ],
 
-  "requires": {
+  "depends": {
     "fabricloader": ">=0.4.0",
-    "fabric": "*"
+    "fabric": ">=0.3.1+build.208"
   },
   "suggests": {
     "flamingo": "*"

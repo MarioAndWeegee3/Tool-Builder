@@ -1,0 +1,10 @@
+{
+    "type":"crafting_shapeless",
+    "ingredients":[
+        {"item":"toolbuilder:bone_handle"},
+        {"item":"leather"}
+    ],
+    "result":{
+        "item":"toolbuilder:bone_gripped_handle"
+    }
+}

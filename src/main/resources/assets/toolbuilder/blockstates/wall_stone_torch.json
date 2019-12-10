@@ -1,0 +1,19 @@
+{
+    "variants": {
+      "facing=east": {
+        "model": "toolbuilder:block/wall_stone_torch"
+      },
+      "facing=south": {
+        "model": "toolbuilder:block/wall_stone_torch",
+        "y": 90
+      },
+      "facing=west": {
+        "model": "toolbuilder:block/wall_stone_torch",
+        "y": 180
+      },
+      "facing=north": {
+        "model": "toolbuilder:block/wall_stone_torch",
+        "y": 270
+      }
+    }
+  }

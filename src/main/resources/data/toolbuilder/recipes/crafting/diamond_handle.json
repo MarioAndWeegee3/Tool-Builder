@@ -1,0 +1,14 @@
+{
+    "type":"crafting_shaped",
+    "pattern":[
+        "x",
+        "x"
+    ],
+    "key":{
+        "x":{"item":"diamond"}
+    },
+    "result":{
+        "item":"toolbuilder:diamond_handle",
+        "count":2
+    }
+}

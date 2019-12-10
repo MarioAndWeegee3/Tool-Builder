@@ -1,0 +1,7 @@
+{
+  "textures": {
+    "layer1": "toolbuilder:item/handle/grip/full", 
+    "layer0": "toolbuilder:item/handle/gold/full"
+  }, 
+  "parent": "item/handheld"
+}

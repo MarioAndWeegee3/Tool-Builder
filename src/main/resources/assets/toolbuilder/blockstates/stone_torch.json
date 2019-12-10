@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "toolbuilder:block/stone_torch" }
+    }
+}
