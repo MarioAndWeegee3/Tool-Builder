@@ -115,11 +115,12 @@ public class Shears extends ShearsItem implements BuiltTool{
             mooshroom.remove();
 
             CowEntity cow = EntityType.COW.create(player.world);
-            cow.setPositionAndAngles(mooshroom.x, mooshroom.y, mooshroom.z, mooshroom.yaw, mooshroom.pitch);
+            cow.setPositionAndAngles(mooshroom.getX(), mooshroom.getY(), mooshroom.getZ(), mooshroom.yaw, mooshroom.pitch);
             cow.setHealth(mooshroom.getHealth());
-            cow.field_6283 = mooshroom.field_6283;
+            cow.bodyYaw = mooshroom.bodyYaw;
             if (mooshroom.hasCustomName()) {
                 cow.setCustomName(mooshroom.getCustomName());
+                cow.setCustomNameVisible(mooshroom.isCustomNameVisible());
             }
 
             player.world.spawnEntity(cow);

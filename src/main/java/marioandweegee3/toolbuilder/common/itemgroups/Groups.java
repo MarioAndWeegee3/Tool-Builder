@@ -54,7 +54,7 @@ public class Groups{
         ToolBuilder.logger.info("Registered "+toolCount+" tools!");
 
         armorGroup = FabricItemGroupBuilder.create(ToolBuilder.makeID("armor"))
-        .icon(()->new ItemStack(Registry.ITEM.get(ToolBuilder.makeID("copper_chestplate"))))
+        .icon(()->new ItemStack(Registry.ITEM.get(ToolBuilder.makeID("wood_chestplate"))))
         .appendItems(stacks ->{
             for(Item item : groupItems.get("armor")){
                 stacks.add(new ItemStack(item));

@@ -10,6 +10,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -36,7 +37,7 @@ public class ModStationBlock extends Block implements BlockEntityProvider {
     }
 
     @Override
-    public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult result) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult result) {
         ItemStack stack = player.getStackInHand(hand);
         if(!world.isClient){
             ModStationEntity entity = (ModStationEntity)world.getBlockEntity(pos);
@@ -54,7 +55,7 @@ public class ModStationBlock extends Block implements BlockEntityProvider {
                 entity.giveInventory(player);
             }
         }
-        return true;
+        return ActionResult.SUCCESS;
     }
 
 }

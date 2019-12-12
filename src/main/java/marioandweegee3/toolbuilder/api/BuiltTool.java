@@ -123,7 +123,7 @@ public interface BuiltTool {
 
     public default void onHit(ItemStack stack, LivingEntity target, LivingEntity attacker){
         if(getEffects(stack).contains(Effects.POISONOUS) && !target.world.isClient){
-            target.addPotionEffect(new StatusEffectInstance(StatusEffects.POISON, ConfigHandler.INSTANCE.getPoisonTime()));
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, ConfigHandler.INSTANCE.getPoisonTime()));
         }
         if(getEffects(stack).contains(Effects.FLAMING) && !target.world.isClient){
             target.setOnFireFor(ConfigHandler.INSTANCE.getFlamingTime());
@@ -165,7 +165,7 @@ public interface BuiltTool {
         if(getEffects(stack).contains(Effects.GLIMMERING) && !world.isClient){
             CompoundTag tag = stack.getOrCreateTag();
             int glimmers = 0;
-            if(tag.containsKey(Effects.glimmerNBTtag)){
+            if(tag.contains(Effects.glimmerNBTtag)){
                 glimmers = tag.getInt(Effects.glimmerNBTtag);
             }
 

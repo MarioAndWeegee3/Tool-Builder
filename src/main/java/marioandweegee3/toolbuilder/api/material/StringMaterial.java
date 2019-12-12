@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 
 public interface StringMaterial{
     public Ingredient getIngredient();
+    public String getMod();
     public String getName();
     public ArrayList<Effect> getEffects();
     public Identifier[] getIngredientIds();

@@ -58,6 +58,16 @@ public interface HeadMaterial extends ToolMaterial{
                 return "";
             }
 
+            @Override
+            public boolean isCotton() {
+                return false;
+            }
+
+            @Override
+            public String getMod() {
+                return "";
+            }
+
         };
     }
 
@@ -65,4 +75,6 @@ public interface HeadMaterial extends ToolMaterial{
     public String getName();
     public String getRepairString();
     public String getBlockString();
+    public boolean isCotton();
+    public String getMod();
 }

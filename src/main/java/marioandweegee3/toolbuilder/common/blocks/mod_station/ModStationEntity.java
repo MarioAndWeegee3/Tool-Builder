@@ -164,10 +164,10 @@ public class ModStationEntity extends BlockEntity implements Tickable, SidedInve
                 }
 
                 ListTag effectsTag = new ListTag();
-                if(toolTag.containsKey(Effects.effectNBTtag)){
+                if(toolTag.contains(Effects.effectNBTtag)){
                     effectsTag = toolTag.getList(Effects.effectNBTtag, 8);
                 }
-                effectsTag.add(new StringTag(modifier.getEffect().getID().toString()));
+                effectsTag.add(StringTag.of(modifier.getEffect().getID().toString()));
                 toolTag.put(Effects.effectNBTtag, effectsTag);
 
                 ToolBuilder.logger.info("Adding modifier "+modifier.getEffect().getID().toString()+" to tool "+toolStack.getTranslationKey());

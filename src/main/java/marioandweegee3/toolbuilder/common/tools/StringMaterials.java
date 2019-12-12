@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.effect.Effect;
 import marioandweegee3.toolbuilder.api.material.StringMaterial;
 import marioandweegee3.toolbuilder.common.effect.Effects;
@@ -56,6 +57,11 @@ public enum StringMaterials implements StringMaterial {
     @Override
     public Identifier[] getIngredientIds() {
         return ids;
+    }
+
+    @Override
+    public String getMod() {
+        return ToolBuilder.modID;
     }
 
 }

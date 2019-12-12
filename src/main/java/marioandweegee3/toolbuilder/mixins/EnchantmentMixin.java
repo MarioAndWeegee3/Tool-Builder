@@ -31,7 +31,7 @@ public abstract class EnchantmentMixin {
             if(enchantment == Enchantments.EFFICIENCY && tool.getEffects(stack).contains(Effects.GLIMMERING)){
                 CompoundTag tag = stack.getOrCreateTag();
                 int glimmers = 0;
-                if(tag.containsKey(Effects.glimmerNBTtag)){
+                if(tag.contains(Effects.glimmerNBTtag)){
                     glimmers = tag.getInt(Effects.glimmerNBTtag);
                 }
 

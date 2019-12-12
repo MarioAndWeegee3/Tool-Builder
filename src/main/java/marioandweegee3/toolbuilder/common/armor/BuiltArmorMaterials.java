@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.effect.Effect;
 import marioandweegee3.toolbuilder.api.material.BuiltArmorMaterial;
 import marioandweegee3.toolbuilder.api.material.HeadMaterial;
@@ -85,6 +86,11 @@ public enum BuiltArmorMaterials implements BuiltArmorMaterial {
     }
 
     @Override
+    public String getMod() {
+        return ToolBuilder.modID;
+    }
+
+    @Override
 	public float getToughness() {
         return toughness;
     }
@@ -97,6 +103,11 @@ public enum BuiltArmorMaterials implements BuiltArmorMaterial {
     @Override
     public String getRepairString() {
         return baseMaterial.getRepairString();
+    }
+
+    @Override
+    public boolean isCotton() {
+        return baseMaterial.isCotton();
     }
 
 }

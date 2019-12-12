@@ -110,7 +110,7 @@ public class Bow extends BowItem {
             }
             int punchLevel = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
             if (punchLevel > 0) {
-                projectile.method_7449(punchLevel);
+                projectile.setPunch(punchLevel);
             }
             int flameTime = getFlameTime(stack);
             if (flameTime > 0) {
@@ -122,7 +122,7 @@ public class Bow extends BowItem {
             }
             world.spawnEntity(projectile);
         }
-        world.playSound(null, player.x, player.y, player.z, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0f, 1.0f / (BowItem.RANDOM.nextFloat() * 0.4f + 1.2f) + float10 * 0.5f);
+        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0f, 1.0f / (BowItem.RANDOM.nextFloat() * 0.4f + 1.2f) + float10 * 0.5f);
         if (!infiniteArrow && !player.abilities.creativeMode) {
             arrow.decrement(1);
             if (arrow.isEmpty()) {

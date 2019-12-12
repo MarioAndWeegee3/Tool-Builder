@@ -9,9 +9,9 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.loot.condition.LootCondition;
-import net.minecraft.world.loot.context.LootContext;
-import net.minecraft.world.loot.context.LootContextParameters;
+import net.minecraft.loot.condition.LootCondition;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
 
 public class BuiltToolLootCondition implements LootCondition {
     protected String toolType;

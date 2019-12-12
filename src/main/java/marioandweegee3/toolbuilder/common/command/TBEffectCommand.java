@@ -64,10 +64,10 @@ public class TBEffectCommand {
             if(!tool.getEffects(stack).contains(effect)){
                 CompoundTag toolTag = stack.getOrCreateTag();
                 ListTag effectsTag = new ListTag();
-                if(toolTag.containsKey(Effects.effectNBTtag)){
+                if(toolTag.contains(Effects.effectNBTtag)){
                     effectsTag = toolTag.getList(Effects.effectNBTtag, 8);
                 }
-                effectsTag.add(new StringTag(effect.getID().toString()));
+                effectsTag.add(StringTag.of(effect.getID().toString()));
                 toolTag.put(Effects.effectNBTtag, effectsTag);
                 context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.applied").append(effectString), false);
             } else {
@@ -87,10 +87,10 @@ public class TBEffectCommand {
             if(!armor.getEffects(stack).contains(effect)){
                 CompoundTag tag = stack.getOrCreateTag();
                 ListTag effectsTag = new ListTag();
-                if(tag.containsKey(Effects.effectNBTtag)){
+                if(tag.contains(Effects.effectNBTtag)){
                     effectsTag = tag.getList(Effects.effectNBTtag, 8);
                 }
-                effectsTag.add(new StringTag(effect.getID().toString()));
+                effectsTag.add(StringTag.of(effect.getID().toString()));
                 tag.put(Effects.effectNBTtag, effectsTag);
                 context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.applied").append(effectString), false);
             } else {

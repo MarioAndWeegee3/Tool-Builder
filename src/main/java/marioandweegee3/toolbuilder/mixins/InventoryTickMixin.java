@@ -115,7 +115,7 @@ public abstract class InventoryTickMixin{
 
     private int tb_readArmorMagnetic(){
         CompoundTag tag = getOrCreateTag();
-        if(tag.containsKey(Effects.magneticTickNBTtag)){
+        if(tag.contains(Effects.magneticTickNBTtag)){
             return tag.getInt(Effects.magneticTickNBTtag);
         }
 

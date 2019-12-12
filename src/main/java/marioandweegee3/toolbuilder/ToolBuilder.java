@@ -26,7 +26,6 @@ import marioandweegee3.toolbuilder.api.registry.TBRegistries;
 import marioandweegee3.toolbuilder.client.models.BowModel;
 import marioandweegee3.toolbuilder.client.models.TBModels;
 import marioandweegee3.toolbuilder.client.models.ToolModel;
-import marioandweegee3.toolbuilder.common.armor.BuiltArmorMaterials;
 import marioandweegee3.toolbuilder.common.blocks.BlockTorches;
 import marioandweegee3.toolbuilder.common.blocks.Torch;
 import marioandweegee3.toolbuilder.common.blocks.WallTorch;
@@ -67,14 +66,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.item.WallStandingBlockItem;
+import net.minecraft.loot.ConstantLootTableRange;
+import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Style;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.loot.ConstantLootTableRange;
-import net.minecraft.world.loot.entry.ItemEntry;
 
 public class ToolBuilder implements ModInitializer {
     public static final String modID = "toolbuilder";
@@ -97,6 +96,8 @@ public class ToolBuilder implements ModInitializer {
     @Override
     public void onInitialize() {
         ConfigHandler.init();
+
+        final boolean cottonResourcesLoaded = FabricLoader.getInstance().isModLoaded("cotton-resources");
 
         Groups.makeGroupSets();
 
@@ -159,12 +160,32 @@ public class ToolBuilder implements ModInitializer {
 
         TBModels.simpleItems.put("raw_heavy_plate", "misc/raw_heavy_plate");
 
-        if(ConfigHandler.INSTANCE.shouldAddNetherCobaltLootTable()){
+        if(ConfigHandler.INSTANCE.shouldAddNetherCobaltLootTable() && cottonResourcesLoaded){
             TBData.blockLootTables.add(new BasicBlockLootTable(new Identifier("c:cobalt_nether_ore"), "blocks/"));
         }
 
         FabricLoader.getInstance().getEntrypoints("toolbuilder", TBInitializer.class).forEach(mod -> {
-            mod.tbInitialize();
+            for(HeadMaterial material : mod.headMaterials()){
+                if(material.isCotton() && !cottonResourcesLoaded){
+                    continue;
+                }
+                TBRegistries.HEAD_MATERIALS.put(new Identifier(material.getMod(), material.getName()), material);
+            }
+            for(HandleMaterial material : mod.handleMaterials()){
+                TBRegistries.HANDLE_MATERIALS.put(new Identifier(material.getMod(), material.getName()), material);
+            }
+            for(StringMaterial material : mod.stringMaterials()){
+                TBRegistries.STRING_MATERIALS.put(new Identifier(material.getMod(), material.getName()), material);
+            }
+            for(BuiltArmorMaterial material : mod.armorMaterials()){
+                if(material.isCotton() && !cottonResourcesLoaded){
+                    continue;
+                }
+                TBRegistries.ARMOR_MATERIALS.put(new Identifier(material.getMod(), material.getMaterialName()), material);
+            }
+            for(Effect effect : mod.effects()){
+                TBRegistries.EFFECTS.put(effect.getID(), effect);
+            }
         });
 
         for (ToolType toolType : ToolTypes.values()) {
@@ -176,7 +197,7 @@ public class ToolBuilder implements ModInitializer {
             }
         }
 
-        for(BuiltArmorMaterial material : BuiltArmorMaterials.values()){
+        for(BuiltArmorMaterial material : TBRegistries.ARMOR_MATERIALS.values()){
             makeArmorItems(material);
         }
 
@@ -201,7 +222,7 @@ public class ToolBuilder implements ModInitializer {
         Artifice.registerData("toolbuilder:recipes", pack -> {
             TBData.addRecipes(pack);
 
-            if(ConfigHandler.INSTANCE.shouldAddSteelRecipe()){
+            if(ConfigHandler.INSTANCE.shouldAddSteelRecipe() && cottonResourcesLoaded){
                 pack.addBlastingRecipe(makeID("steel_ingot"), recipe -> {
                     recipe.ingredientTag(new Identifier("c:iron_plate"));
                     recipe.experience(2);
@@ -237,7 +258,11 @@ public class ToolBuilder implements ModInitializer {
                 recipe.ingredientItem(new Identifier("water_bucket"));
                 recipe.ingredientItem(new Identifier("glass_bottle"));
                 for(int i = 0; i < 3; i++){
-                    recipe.ingredientTag(new Identifier("c:silver_ingot"));
+                    if(cottonResourcesLoaded){
+                        recipe.ingredientTag(new Identifier("c:silver_ingot"));
+                    } else {
+                        recipe.ingredientItem(new Identifier("iron_ingot"));
+                    }
                 }
                 recipe.result(makeID("holy_water"), 1);
             });
@@ -264,8 +289,13 @@ public class ToolBuilder implements ModInitializer {
             });
 
             pack.addShapelessRecipe(makeID("raw_heavy_plate"), recipe -> {
-                recipe.ingredientTag(new Identifier("c:lead_plate"));
-                recipe.ingredientTag(new Identifier("c:tungsten_plate"));
+                if(cottonResourcesLoaded){
+                    recipe.ingredientTag(new Identifier("c:lead_plate"));
+                    recipe.ingredientTag(new Identifier("c:tungsten_plate"));
+                } else {
+                    recipe.ingredientItem(makeID("obsidian_plate"));
+                    recipe.ingredientItem(makeID("obsidian_plate"));
+                }
                 recipe.ingredientItem(new Identifier("slime_ball"));
                 recipe.ingredientItem(makeID("obsidian_plate"));
                 recipe.result(makeID("raw_heavy_plate"), 1);

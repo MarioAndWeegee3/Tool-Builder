@@ -117,7 +117,7 @@ public enum HandleMaterials implements HandleMaterial {
 
     @Override
     public String getMod() {
-        return "toolbuilder";
+        return ToolBuilder.modID;
     }
 
     @Override

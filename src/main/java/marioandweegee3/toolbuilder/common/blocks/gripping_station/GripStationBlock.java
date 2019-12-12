@@ -10,6 +10,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +30,7 @@ public class GripStationBlock extends Block implements BlockEntityProvider {
     }
 
     @Override
-    public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult result) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult result) {
         ItemStack stack = player.getStackInHand(hand);
         if(!world.isClient){
             GripStationEntity entity = (GripStationEntity)world.getBlockEntity(pos);
@@ -48,7 +49,7 @@ public class GripStationBlock extends Block implements BlockEntityProvider {
                 entity.giveResultTool(player);
             }
         }
-        return true;
+        return ActionResult.SUCCESS;
     }
 
     @Override

@@ -3,6 +3,7 @@ package marioandweegee3.toolbuilder.common.tools;
 import java.util.HashSet;
 import java.util.Set;
 
+import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.effect.Effect;
 import marioandweegee3.toolbuilder.api.material.HeadMaterial;
 import marioandweegee3.toolbuilder.common.effect.Effects;
@@ -73,6 +74,7 @@ public enum HeadMaterials implements HeadMaterial{
     private Lazy<Ingredient> repairIngredient;
     private String repairString;
     private String blockString;
+    private boolean isCotton;
 
     private HeadMaterials(float attackDamage, float efficiency, int durability, int harvestLevel, int enchantability, Identifier item, boolean isTag, String block, String name, Effect... effects){
         this.attackDamage = attackDamage;
@@ -93,6 +95,7 @@ public enum HeadMaterials implements HeadMaterial{
         });
         this.repairString = isTag?"#"+item.toString():item.toString();
         this.blockString = block;
+        this.isCotton = item.getNamespace().equals("c") || block.startsWith("#c");
     }
 
     private HeadMaterials(ToolMaterial base, String repair, String block, String name, Effect... effects){
@@ -170,6 +173,16 @@ public enum HeadMaterials implements HeadMaterial{
     @Override
     public String getBlockString() {
         return blockString;
+    }
+
+    @Override
+    public boolean isCotton() {
+        return isCotton;
+    }
+
+    @Override
+    public String getMod() {
+        return ToolBuilder.modID;
     }
     
 }

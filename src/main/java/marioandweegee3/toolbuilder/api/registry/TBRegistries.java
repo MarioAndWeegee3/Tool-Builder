@@ -11,5 +11,6 @@ public class TBRegistries {
     public static Map<Identifier, HeadMaterial> HEAD_MATERIALS = new HashMap<>();
     public static Map<Identifier, HandleMaterial> HANDLE_MATERIALS = new HashMap<>();
     public static Map<Identifier, StringMaterial> STRING_MATERIALS = new HashMap<>();
+    public static Map<Identifier, BuiltArmorMaterial> ARMOR_MATERIALS = new HashMap<>();
     public static Map<Identifier, Effect> EFFECTS = new HashMap<>();
 }
