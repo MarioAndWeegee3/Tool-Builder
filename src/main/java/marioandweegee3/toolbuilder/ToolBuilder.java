@@ -160,13 +160,13 @@ public class ToolBuilder implements ModInitializer {
 
         TBModels.simpleItems.put("raw_heavy_plate", "misc/raw_heavy_plate");
 
-        if(ConfigHandler.INSTANCE.shouldAddNetherCobaltLootTable() && cottonResourcesLoaded){
+        if(ConfigHandler.INSTANCE.shouldAddNetherCobaltLootTable() && (cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
             TBData.blockLootTables.add(new BasicBlockLootTable(new Identifier("c:cobalt_nether_ore"), "blocks/"));
         }
 
         FabricLoader.getInstance().getEntrypoints("toolbuilder", TBInitializer.class).forEach(mod -> {
             for(HeadMaterial material : mod.headMaterials()){
-                if(material.isCotton() && !cottonResourcesLoaded){
+                if(material.isCotton() && !(cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
                     continue;
                 }
                 TBRegistries.HEAD_MATERIALS.put(new Identifier(material.getMod(), material.getName()), material);
@@ -178,7 +178,7 @@ public class ToolBuilder implements ModInitializer {
                 TBRegistries.STRING_MATERIALS.put(new Identifier(material.getMod(), material.getName()), material);
             }
             for(BuiltArmorMaterial material : mod.armorMaterials()){
-                if(material.isCotton() && !cottonResourcesLoaded){
+                if(material.isCotton() && !(cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
                     continue;
                 }
                 TBRegistries.ARMOR_MATERIALS.put(new Identifier(material.getMod(), material.getMaterialName()), material);
@@ -222,7 +222,7 @@ public class ToolBuilder implements ModInitializer {
         Artifice.registerData("toolbuilder:recipes", pack -> {
             TBData.addRecipes(pack);
 
-            if(ConfigHandler.INSTANCE.shouldAddSteelRecipe() && cottonResourcesLoaded){
+            if(ConfigHandler.INSTANCE.shouldAddSteelRecipe() && (cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
                 pack.addBlastingRecipe(makeID("steel_ingot"), recipe -> {
                     recipe.ingredientTag(new Identifier("c:iron_plate"));
                     recipe.experience(2);
@@ -258,7 +258,7 @@ public class ToolBuilder implements ModInitializer {
                 recipe.ingredientItem(new Identifier("water_bucket"));
                 recipe.ingredientItem(new Identifier("glass_bottle"));
                 for(int i = 0; i < 3; i++){
-                    if(cottonResourcesLoaded){
+                    if((cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
                         recipe.ingredientTag(new Identifier("c:silver_ingot"));
                     } else {
                         recipe.ingredientItem(new Identifier("iron_ingot"));
@@ -289,7 +289,7 @@ public class ToolBuilder implements ModInitializer {
             });
 
             pack.addShapelessRecipe(makeID("raw_heavy_plate"), recipe -> {
-                if(cottonResourcesLoaded){
+                if((cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
                     recipe.ingredientTag(new Identifier("c:lead_plate"));
                     recipe.ingredientTag(new Identifier("c:tungsten_plate"));
                 } else {

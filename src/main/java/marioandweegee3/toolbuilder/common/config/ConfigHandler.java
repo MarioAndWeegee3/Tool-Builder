@@ -53,6 +53,7 @@ public class ConfigHandler{
             )
             .add("shearLootTables", DEFAULTS.shearLootTables)
             .add("addNetherCobaltTable", DEFAULTS.addNetherCobaltLootTable)
+            .add("ignoreMissingCottonResources", DEFAULTS.ignoreCottonResourcesExclusion)
         .build();
 
         ConfigManager.INSTANCE.set(configID, config);
@@ -191,5 +192,10 @@ public class ConfigHandler{
     public Boolean shouldAddNetherCobaltLootTable(){
         refresh();
         return config.get("addNetherCobaltTable", Boolean.class);
+    }
+
+    public Boolean shouldIgnoreCottonResourcesExclusion(){
+        refresh();
+        return config.get("ignoreMissingCottonResources", Boolean.class);
     }
 }

@@ -44,4 +44,5 @@ public final class ToolBuilderConfig {
         };
     public final boolean removeVanillaToolRecipes = false;
     public final boolean addNetherCobaltLootTable = true;
+    public final boolean ignoreCottonResourcesExclusion = false;
 }
