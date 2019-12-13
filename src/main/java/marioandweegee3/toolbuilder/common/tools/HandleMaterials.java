@@ -18,7 +18,7 @@ import marioandweegee3.toolbuilder.common.effect.Effects;
 public enum HandleMaterials implements HandleMaterial {
     WOOD(0, 1, 1, 0, "wood", Effects.GROWING), 
     STONE(20, 0.95f, 0.9f, -8, "stone", Effects.RESILIENT), 
-    GOLD(-10, 1.2f, 1.18f, 10, "gold"),
+    GOLD(-10, 1.2f, 1.18f, 10, "gold", Effects.EXPERIENCE),
     BONE(30, 0.90f, 1.08f, -5, "bone"), 
     DIAMOND(35, 1.25f, 1.2f, -10, "diamond");
 

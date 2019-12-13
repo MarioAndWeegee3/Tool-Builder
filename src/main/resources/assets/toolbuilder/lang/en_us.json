@@ -270,6 +270,8 @@
     "block.toolbuilder.slime_crystal_block": "Slime Crystal Block",
     "item.toolbuilder.raw_heavy_plate": "Raw Heavy Plate",
     "item.toolbuilder.slime_crystal": "Slime Crystal",
+    "text.toolbuilder.durability": "Durability: ",
+    "text.toolbuilder.mining_speed": "Mining Speed: ",
     "text.autoconfig.toolbuilder.title": "Tool Builder",
     "text.autoconfig.toolbuilder.category.default": "Default",
     "text.autoconfig.toolbuilder.option.canCraftWithSticks": "Can craft with Sticks",

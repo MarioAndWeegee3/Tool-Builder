@@ -11,6 +11,7 @@ public class ToolBuilderClient implements ClientModInitializer{
     public void onInitializeClient() {
         Artifice.registerAssets("toolbuilder:items", pack ->{
             TBModels.addModels(pack);
+            
         });
     }
 }

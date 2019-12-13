@@ -1,5 +1,7 @@
 package marioandweegee3.toolbuilder.api;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -135,6 +137,11 @@ public interface BuiltTool {
 
     public default void addTooltips(List<Text> tooltip, ItemStack stack, BuiltToolMaterial material, Style mainStyle, Style effectStyle, Style modifierStyle){
         tooltip.add(new TranslatableText(material.handle.getTranslationKey()).setStyle(mainStyle));
+
+        tooltip.add(new TranslatableText("text.toolbuilder.durability").append(Integer.toString(stack.getMaxDamage())).setStyle(mainStyle));
+        DecimalFormat dec = new DecimalFormat("#.##");
+        dec.setRoundingMode(RoundingMode.HALF_UP);
+        tooltip.add(new TranslatableText("text.toolbuilder.mining_speed").append(dec.format(material.getMiningSpeed())).setStyle(mainStyle));
 
         if(material.isGripped){
             tooltip.add(new TranslatableText("text.toolbuilder.grip").setStyle(mainStyle));
