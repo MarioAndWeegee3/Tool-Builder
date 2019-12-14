@@ -28,7 +28,8 @@ public enum BuiltArmorMaterials implements BuiltArmorMaterial {
     COBALT(HeadMaterials.COBALT, 20, new int[]{3,5,6,3}, 0, Effects.LIGHT),
     ALUMINUM(HeadMaterials.ALUMINUM, 13, new int[]{2,5,6,2}, 0),
     TUNGSTEN(HeadMaterials.TUNGSTEN, 21, new int[]{3,5,7,3}, 0.3f, Effects.RESILIENT),
-    SLIME(HeadMaterials.SLIME, 16, new int[]{1,3,2,1}, 0, Effects.BOUNCY);
+    SLIME(HeadMaterials.SLIME, 16, new int[]{1,3,2,1}, 0, Effects.BOUNCY),
+    PRISMARINE(HeadMaterials.PRISMARINE, 19, new int[]{1,4,5,2}, 0, Effects.AQUATIC);
 
     private static final int[] BASE_DURABILITY = new int[]{13, 15, 16, 11};
     private HeadMaterial baseMaterial;

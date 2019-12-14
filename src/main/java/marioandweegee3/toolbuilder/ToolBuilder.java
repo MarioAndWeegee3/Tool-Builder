@@ -2,7 +2,6 @@ package marioandweegee3.toolbuilder;
 
 import java.util.Map;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.ArgumentCommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.swordglowsblue.artifice.api.Artifice;
@@ -60,6 +59,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.command.arguments.IdentifierArgumentType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -116,6 +116,10 @@ public class ToolBuilder implements ModInitializer {
         TBData.blockLootTables.add(new BasicBlockLootTable(makeID("mod_station")));
 
         register(StringItems.blazeString, "blaze_string");
+        register(StringItems.enderString, "ender_string");
+
+        TBModels.simpleItems.put("blaze_string", "string/blaze");
+        TBModels.simpleItems.put("ender_string", "string/ender");
 
         register(obsidian_plate, "obsidian_plate");
         register(new Item(new Item.Settings().group(ItemGroup.MATERIALS)), "slime_crystal");
@@ -157,8 +161,10 @@ public class ToolBuilder implements ModInitializer {
         register(Handles.diamond_gripped_handle, "diamond_gripped_handle");
 
         register(new Item(new Item.Settings().group(ItemGroup.MISC)), "raw_heavy_plate");
+        register(new Item(new Item.Settings().group(ItemGroup.MISC)), "ender_dust");
 
         TBModels.simpleItems.put("raw_heavy_plate", "misc/raw_heavy_plate");
+        TBModels.simpleItems.put("ender_dust", "misc/ender_dust");
 
         if(ConfigHandler.INSTANCE.shouldAddNetherCobaltLootTable() && (cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
             TBData.blockLootTables.add(new BasicBlockLootTable(new Identifier("c:cobalt_nether_ore"), "blocks/"));
@@ -237,15 +243,9 @@ public class ToolBuilder implements ModInitializer {
             });
 
             pack.addShapelessRecipe(makeID("slime_crystal_block"), recipe -> {
-                recipe.ingredientItem(makeID("slime_crystal"));
-                recipe.ingredientItem(makeID("slime_crystal"));
-                recipe.ingredientItem(makeID("slime_crystal"));
-                recipe.ingredientItem(makeID("slime_crystal"));
-                recipe.ingredientItem(makeID("slime_crystal"));
-                recipe.ingredientItem(makeID("slime_crystal"));
-                recipe.ingredientItem(makeID("slime_crystal"));
-                recipe.ingredientItem(makeID("slime_crystal"));
-                recipe.ingredientItem(makeID("slime_crystal"));
+                for(int i = 0; i < 9; i++){
+                    recipe.ingredientItem(makeID("slime_crystal"));
+                }
                 recipe.result(makeID("slime_crystal_block"), 1);
             });
 
@@ -316,6 +316,32 @@ public class ToolBuilder implements ModInitializer {
                 recipe.ingredientItem('x', new Identifier("obsidian"));
                 recipe.result(makeID("obsidian_plate"), 1);
             });
+
+            pack.addShapedRecipe(makeID("blaze_string"), recipe -> {
+                recipe.pattern(
+                    "bb",
+                    "ss"
+                );
+                recipe.ingredientItem('b', new Identifier("blaze_powder"));
+                recipe.ingredientItem('s', new Identifier("string"));
+                recipe.result(makeID("blaze_string"), 2);
+            });
+
+            pack.addBlastingRecipe(makeID("ender_dust"), recipe -> {
+                recipe.ingredientItem(new Identifier("ender_pearl"));
+                recipe.experience(3);
+                recipe.result(makeID("ender_dust"));
+            });
+
+            pack.addShapedRecipe(makeID("ender_string"), recipe -> {
+                recipe.pattern(
+                    "ee",
+                    "ss"
+                );
+                recipe.ingredientItem('e', makeID("ender_dust"));
+                recipe.ingredientItem('s', new Identifier("string"));
+                recipe.result(makeID("ender_string"), 2);
+            });
         });
 
         CommandRegistry.INSTANCE.register(false, dispatcher -> {
@@ -347,8 +373,8 @@ public class ToolBuilder implements ModInitializer {
             .requires(source -> source.hasPermissionLevel(3))
             .build();
 
-            ArgumentCommandNode<ServerCommandSource, String> effectSetNode = CommandManager
-            .argument("effect", StringArgumentType.string())
+            ArgumentCommandNode<ServerCommandSource, Identifier> effectSetNode = CommandManager
+            .argument("effect", IdentifierArgumentType.identifier())
             .suggests(Effects.effectSuggestions())
             .executes(TBEffectCommand::set)
             .requires(source -> source.hasPermissionLevel(3))

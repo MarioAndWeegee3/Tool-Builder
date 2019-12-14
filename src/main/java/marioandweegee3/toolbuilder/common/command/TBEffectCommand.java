@@ -2,7 +2,6 @@ package marioandweegee3.toolbuilder.common.command;
 
 import java.util.Set;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
@@ -11,6 +10,7 @@ import marioandweegee3.toolbuilder.api.effect.Effect;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
 import marioandweegee3.toolbuilder.api.registry.TBRegistries;
 import marioandweegee3.toolbuilder.common.effect.Effects;
+import net.minecraft.command.arguments.IdentifierArgumentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -50,14 +50,14 @@ public class TBEffectCommand {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
 
-        String effectString = StringArgumentType.getString(context, "effect");
+        Identifier effectId = IdentifierArgumentType.getIdentifier(context, "effect");
 
         if(stack.getItem() instanceof BuiltTool){
             BuiltTool tool = (BuiltTool) stack.getItem();
 
-            Effect effect = TBRegistries.EFFECTS.get(new Identifier(effectString));
+            Effect effect = TBRegistries.EFFECTS.get(effectId);
             if(effect == null){
-                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.invalid").append(effectString), false);
+                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.invalid").append(effectId.toString()), false);
                 return 0;
             }
 
@@ -69,18 +69,18 @@ public class TBEffectCommand {
                 }
                 effectsTag.add(StringTag.of(effect.getID().toString()));
                 toolTag.put(Effects.effectNBTtag, effectsTag);
-                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.applied").append(effectString), false);
+                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.applied").append(effectId.toString()), false);
             } else {
-                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.alreadyApplied").append(effectString), false);
+                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.alreadyApplied").append(effectId.toString()), false);
             }
         }
 
         if(stack.getItem() instanceof BuiltArmorItem){
             BuiltArmorItem armor = (BuiltArmorItem) stack.getItem();
 
-            Effect effect = TBRegistries.EFFECTS.get(new Identifier(effectString));
+            Effect effect = TBRegistries.EFFECTS.get(effectId);
             if(effect == null){
-                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.invalid").append(effectString), false);
+                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.invalid").append(effectId.toString()), false);
                 return 0;
             }
 
@@ -92,9 +92,9 @@ public class TBEffectCommand {
                 }
                 effectsTag.add(StringTag.of(effect.getID().toString()));
                 tag.put(Effects.effectNBTtag, effectsTag);
-                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.applied").append(effectString), false);
+                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.applied").append(effectId.toString()), false);
             } else {
-                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.alreadyApplied").append(effectString), false);
+                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.alreadyApplied").append(effectId.toString()), false);
             }
         }
 

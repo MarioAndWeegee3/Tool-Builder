@@ -22,15 +22,16 @@ public enum HandleMaterials implements HandleMaterial {
     BONE(30, 0.90f, 1.08f, -5, "bone"), 
     DIAMOND(35, 1.25f, 1.2f, -10, "diamond");
 
-    private float durability, extra, speedMod;
+    private float durabilityMultiplier, speedMod;
+    private int extraDurability;
     private int enchant;
     private String name;
     private Set<Effect> effects = new HashSet<>(0);
 
-    private HandleMaterials(float durability, float extra, float speedMod, int enchantModifier, String name,
+    private HandleMaterials(int extra, float multiplier, float speedMod, int enchantModifier, String name,
             Effect... effects) {
-        this.durability = durability;
-        this.extra = extra;
+        this.durabilityMultiplier = multiplier;
+        this.extraDurability = extra;
         this.enchant = enchantModifier;
         this.speedMod = speedMod;
         for (Effect effect : effects) {
@@ -39,8 +40,9 @@ public enum HandleMaterials implements HandleMaterial {
         this.name = name;
     }
 
-    public float getDurabilityModifier() {
-        return durability;
+    @Override
+    public int getExtraDurability() {
+        return extraDurability;
     }
 
     public ArrayList<Item> getRepairItems(boolean grip) {
@@ -103,8 +105,9 @@ public enum HandleMaterials implements HandleMaterial {
         }
     }
 
-    public float getExtraDurability() {
-        return extra;
+    @Override
+    public float getDurabilityMultiplier() {
+        return durabilityMultiplier;
     }
 
     public int getEnchantabilityModifier() {

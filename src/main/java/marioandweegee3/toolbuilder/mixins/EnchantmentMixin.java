@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.BuiltTool;
 import marioandweegee3.toolbuilder.api.effect.Effect;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
@@ -42,6 +43,9 @@ public abstract class EnchantmentMixin {
             if(enchantment == Enchantments.FORTUNE && tool.getEffects(stack).contains(Effects.ROYAL)){
                 level++;
             }
+            if(enchantment == Enchantments.AQUA_AFFINITY && tool.getEffects(stack).contains(Effects.AQUATIC)){
+                level++;
+            }
         }
 
         if(stack.getItem() instanceof BuiltArmorItem){
@@ -63,6 +67,10 @@ public abstract class EnchantmentMixin {
 
             for(Effect effect : tool.getEffects(stack)){
                 baseDamage = effect.getAttackDamage(stack, group, baseDamage);
+            }
+
+            if(baseDamage > 0){
+                ToolBuilder.logger.info("Attack Damage "+baseDamage);
             }
         }
 

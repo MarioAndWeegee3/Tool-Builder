@@ -65,7 +65,11 @@ public enum HeadMaterials implements HeadMaterial{
     SLIME(ToolMaterials.STONE.getAttackDamage(), ToolMaterials.STONE.getMiningSpeed(),
             ToolMaterials.IRON.getDurability() + 45, ToolMaterials.STONE.getMiningLevel(),
             ToolMaterials.GOLD.getEnchantability() - 7, new Identifier("toolbuilder:slime_crystal"), false,
-            "toolbuilder:slime_crystal_block", "slime", Effects.BOUNCY);
+            "toolbuilder:slime_crystal_block", "slime", Effects.BOUNCY),
+    PRISMARINE(ToolMaterials.DIAMOND.getAttackDamage() + 1.5f, ToolMaterials.IRON.getMiningSpeed() + 0.5f,
+            ToolMaterials.IRON.getDurability() + 65, ToolMaterials.STONE.getMiningLevel(),
+            ToolMaterials.IRON.getEnchantability(), new Identifier("prismarine_shard"), false, 
+            "prismarine_bricks", "prismarine", Effects.AQUATIC);
 
     private final String name;
     private float attackDamage, efficiency;

@@ -18,11 +18,15 @@ import marioandweegee3.toolbuilder.common.effect.MagneticEffect;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 import marioandweegee3.toolbuilder.common.tools.tooltypes.Bow;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.world.World;
 
 @Mixin(ItemStack.class)
@@ -68,7 +72,7 @@ public abstract class InventoryTickMixin{
                     }
                 } else if(getItem() instanceof Bow){
                     Bow bow = (Bow)getItem();
-                    if(bow.material.getEffects().contains(Effects.GROWING) && getDamage()-1 >= 0){
+                    if(bow.getEffects().contains(Effects.GROWING) && getDamage()-1 >= 0){
                         if(!world.isClient && holder instanceof LivingEntity && world.random.nextInt(20*tb_repairChance) == 0){
                             if(((LivingEntity)holder).getActiveItem().getItem() != getItem()){
                                 setDamage(getDamage()-1);
@@ -76,6 +80,7 @@ public abstract class InventoryTickMixin{
                         }
                     }
                 } else if(getItem() instanceof BuiltArmorItem){
+                    ArrayList<ItemStack> armorItems = new ArrayList<ItemStack>((Collection<ItemStack>)holder.getArmorItems());
                     BuiltArmorItem armor = (BuiltArmorItem) getItem();
                     if(armor.getEffects(copy()).contains(Effects.GROWING) && getDamage()-1 >= 0){
                         if(!world.isClient && holder instanceof LivingEntity && world.random.nextInt(20*tb_repairChance) == 0){
@@ -88,8 +93,6 @@ public abstract class InventoryTickMixin{
                         }
                     }
                     if(armor.getEffects(copy()).contains(Effects.MAGNETIC) && holder instanceof LivingEntity){
-                        ArrayList<ItemStack> armorItems = new ArrayList<ItemStack>((Collection<ItemStack>)holder.getArmorItems());
-
                         int tick = tb_readArmorMagnetic();
 
                         if(armorItems.contains(this) && !world.isClient){
@@ -101,6 +104,18 @@ public abstract class InventoryTickMixin{
                             }
 
                             tb_writeArmorMagnetic(tick);
+                        }
+                    }
+                    if(armor.getEffects(copy()).contains(Effects.AQUATIC) && holder instanceof LivingEntity){
+                        if(armorItems.contains(this) && !world.isClient){
+                            LivingEntity entity = (LivingEntity) holder;
+                            if(entity.isInFluid(FluidTags.WATER)){
+                                if(armor.getSlotType() == EquipmentSlot.HEAD){
+                                    entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 20, 0, false, false));
+                                } else {
+                                    entity.addStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 20, 1, false, false));
+                                }
+                            }
                         }
                     }
                 }

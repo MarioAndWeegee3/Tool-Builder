@@ -16,7 +16,8 @@ import net.minecraft.util.registry.Registry;
 
 public enum StringMaterials implements StringMaterial {
     STRING("string", new Effect[0], new Identifier("string")),
-    BLAZE("blaze", new Effect[] { Effects.FLAMING }, new Identifier("toolbuilder:blaze_string"));
+    BLAZE("blaze", new Effect[] { Effects.FLAMING }, new Identifier("toolbuilder:blaze_string")),
+    ENDER("ender", new Effect[]{ Effects.ENDER }, new Identifier("toolbuilder:ender_string"));
 
     private Lazy<Ingredient> ingredient;
     private Set<Effect> effects;

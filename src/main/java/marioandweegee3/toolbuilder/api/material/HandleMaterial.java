@@ -6,11 +6,11 @@ import marioandweegee3.toolbuilder.api.effect.Effect;
 import net.minecraft.item.Item;
 
 public interface HandleMaterial {
-    public float getDurabilityModifier();
+    public int getExtraDurability();
     public ArrayList<Item> getRepairItems(boolean grip);
     public float getMiningSpeedMultiplier();
     public float getDrawSpeedMultiplier();
-    public float getExtraDurability();
+    public float getDurabilityMultiplier();
     public int getEnchantabilityModifier();
     public String getName();
     public String getMod();

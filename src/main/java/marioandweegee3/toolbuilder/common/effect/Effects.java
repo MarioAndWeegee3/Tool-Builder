@@ -40,7 +40,18 @@ public enum Effects implements Effect {
     RESILIENT("resilient", new EffectResults(){}),
     MAGNETIC("magnetic", new EffectResults(){}),
     GLIMMERING("glimmering", new EffectResults(){}),
-    ROYAL("royal", new EffectResults(){});
+    ROYAL("royal", new EffectResults(){}),
+    AQUATIC("aquatic", new EffectResults(){
+        @Override
+        public float getAttackDamage(ItemStack stack, EntityGroup group, float baseDamage){
+            if(group == EntityGroup.AQUATIC){
+                return baseDamage + 1.5f;
+            } else {
+                return baseDamage;
+            }
+        }
+    }),
+    ENDER("ender", new EffectResults(){});
 
     private Effects(String name, EffectResults results) {
         this.name = name;
@@ -84,7 +95,7 @@ public enum Effects implements Effect {
 
         for(Identifier effect : TBRegistries.EFFECTS.keySet()){
             String name = effect.toString();
-            name = "\""+name+"\"";
+            //name = "\""+name+"\"";
             if(name.toLowerCase(Locale.ROOT).startsWith(remaining)){
                 builder.suggest(name);
             }

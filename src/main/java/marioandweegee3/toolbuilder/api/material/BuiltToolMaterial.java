@@ -66,8 +66,8 @@ public class BuiltToolMaterial implements ToolMaterial{
     @Override
     public int getDurability() {
         int newDurability = this.head.getDurability();
-        newDurability += this.handle.getDurabilityModifier();
-        newDurability *= this.handle.getExtraDurability();
+        newDurability += this.handle.getExtraDurability();
+        newDurability *= this.handle.getDurabilityMultiplier();
         return newDurability;
     }
 
