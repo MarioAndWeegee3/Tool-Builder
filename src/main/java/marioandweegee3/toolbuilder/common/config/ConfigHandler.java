@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import marioandweegee3.ml3api.config.Config;
+import marioandweegee3.ml3api.config.ConfigBuilder;
 import marioandweegee3.ml3api.config.ConfigManager;
 import marioandweegee3.toolbuilder.ToolBuilder;
 import net.minecraft.util.Identifier;
@@ -20,10 +21,10 @@ public class ConfigHandler{
     private Config config;
 
     private ConfigHandler(){
-        config = new Config.Builder()
-            .add("effects", new Config.Builder()
+        config = new ConfigBuilder()
+            .add("effects", new ConfigBuilder()
                 .add("poisonTime", DEFAULTS.poisonTime)
-                .add("holy", new Config.Builder()
+                .add("holy", new ConfigBuilder()
                     .add("damage", DEFAULTS.holyDamage)
                     .add("luckTime", DEFAULTS.holyLuckTime)
                     .add("luckLevel", DEFAULTS.holyLuckLevel)
@@ -34,7 +35,7 @@ public class ConfigHandler{
                 .add("flamingTime", DEFAULTS.flamingTime)
                 .add("flammableTimeMult", DEFAULTS.flammableTimeMult)
                 .add("durableMultiplier", DEFAULTS.durableDurabilityMult)
-                .add("bouncy", new Config.Builder()
+                .add("bouncy", new ConfigBuilder()
                     .add("damageArmor", DEFAULTS.bouncyDamage)
                     .add("limitHeight", DEFAULTS.limitBounceHeight)
                     .add("speedLimit", DEFAULTS.maxBounceSpeed)
@@ -45,7 +46,7 @@ public class ConfigHandler{
                 .add("magneticRange", DEFAULTS.magneticRange)
                 .build()
             )
-            .add("recipes", new Config.Builder()
+            .add("recipes", new ConfigBuilder()
                 .add("craftWithSticks", DEFAULTS.canCraftWithSticks)
                 .add("addSteelRecipe", DEFAULTS.addSteelRecipe)
                 .add("removeVanillaTools", DEFAULTS.removeVanillaToolRecipes)
