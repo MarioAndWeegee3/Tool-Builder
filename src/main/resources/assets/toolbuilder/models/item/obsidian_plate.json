@@ -1,6 +1,6 @@
 {
+  "parent": "item/generated",
   "textures": {
     "layer0": "toolbuilder:item/plate/obsidian"
-  }, 
-  "parent": "item/generated"
+  }
 }

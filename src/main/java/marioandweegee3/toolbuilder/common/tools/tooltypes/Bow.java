@@ -1,5 +1,7 @@
 package marioandweegee3.toolbuilder.common.tools.tooltypes;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -65,6 +67,11 @@ public class Bow extends BowItem {
         if(material.grip) {
             tooltip.add(new TranslatableText("text.toolbuilder.grip").setStyle(ToolBuilder.toolStyle));
         }
+
+        tooltip.add(new TranslatableText("text.toolbuilder.durability").append(""+stack.getMaxDamage()).setStyle(ToolBuilder.toolStyle));
+        DecimalFormat dec = new DecimalFormat("#.##");
+        dec.setRoundingMode(RoundingMode.HALF_UP);
+        tooltip.add(new TranslatableText("text.toolbuilder.draw_time").append(dec.format(20.0f * material.getDrawSpeedMultiplier())+" Ticks").setStyle(ToolBuilder.toolStyle));
         
         for(Effect effect : getEffects()){
             tooltip.add(effect.getTranslationName().setStyle(ToolBuilder.effectStyle));

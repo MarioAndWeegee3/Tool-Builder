@@ -103,6 +103,8 @@ public class ToolBuilder implements ModInitializer {
 
         register(BlockTorches.stone_torch, BlockTorches.wall_stone_torch, "stone_torch", ItemGroup.DECORATIONS);
 
+        TBData.blockLootTables.add(new BasicBlockLootTable(makeID("stone_torch")));
+
         register(GripStationBlock.BLOCK, "grip_station", ItemGroup.DECORATIONS);
         register(ModStationBlock.BLOCK, "mod_station", ItemGroup.DECORATIONS);
 
