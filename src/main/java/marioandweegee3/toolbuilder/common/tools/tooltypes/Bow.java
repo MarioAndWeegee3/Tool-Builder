@@ -71,7 +71,7 @@ public class Bow extends BowItem {
         tooltip.add(new TranslatableText("text.toolbuilder.durability").append(""+stack.getMaxDamage()).setStyle(ToolBuilder.toolStyle));
         DecimalFormat dec = new DecimalFormat("#.##");
         dec.setRoundingMode(RoundingMode.HALF_UP);
-        tooltip.add(new TranslatableText("text.toolbuilder.draw_time").append(dec.format(20.0f * material.getDrawSpeedMultiplier())+" Ticks").setStyle(ToolBuilder.toolStyle));
+        tooltip.add(new TranslatableText("text.toolbuilder.draw_time").append(dec.format(material.getDrawSpeedMultiplier())).setStyle(ToolBuilder.toolStyle));
         
         for(Effect effect : getEffects()){
             tooltip.add(effect.getTranslationName().setStyle(ToolBuilder.effectStyle));
@@ -154,12 +154,12 @@ public class Bow extends BowItem {
     }
     
     public float tbgetPullProgress(int useTicks) {
-        float float2 = useTicks / (20.0f * material.getDrawSpeedMultiplier());
-        float2 = (float2 * float2 + float2 * 2.0f) / 3.0f;
-        if (float2 > 1.0f) {
-            float2 = 1.0f;
+        float pullProgress = useTicks * material.getDrawSpeedMultiplier() / 20;
+        pullProgress = (pullProgress * pullProgress + pullProgress * 2.0f) / 3.0f;
+        if (pullProgress > 1.0f) {
+            pullProgress = 1.0f;
         }
-        return float2;
+        return pullProgress;
     }
     
     @Override

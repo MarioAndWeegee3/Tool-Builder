@@ -20,15 +20,8 @@ public class BowMaterial {
 
     public float getDrawSpeedMultiplier(){
         float speedMod = handle.getDrawSpeedMultiplier();
-        speedMod -= 1;
 
-        if(speedMod != 0){
-            speedMod = 1-speedMod;
-        }else{
-            speedMod = 1;
-        }
-
-        if(grip) speedMod += 0.2;
+        if(grip) speedMod *= 0.9;
 
         return speedMod;
     }

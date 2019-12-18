@@ -16,24 +16,25 @@ import marioandweegee3.toolbuilder.common.config.ConfigHandler;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 
 public enum HandleMaterials implements HandleMaterial {
-    WOOD(0, 1, 1, 0, "wood", Effects.GROWING), 
-    STONE(20, 0.95f, 0.9f, -8, "stone", Effects.RESILIENT), 
-    GOLD(-10, 1.2f, 1.18f, 10, "gold", Effects.EXPERIENCE),
-    BONE(30, 0.90f, 1.08f, -5, "bone"), 
-    DIAMOND(35, 1.25f, 1.2f, -10, "diamond");
+    WOOD(0, 1, 1, 1, 0, "wood", Effects.GROWING), 
+    STONE(20, 0.95f, 0.9f, 1.1f, -8, "stone", Effects.RESILIENT), 
+    GOLD(-10, 1.2f, 1.18f, 0.85f, 10, "gold", Effects.EXPERIENCE),
+    BONE(30, 0.90f, 1.08f, 0.92f, -5, "bone"), 
+    DIAMOND(35, 1.25f, 1.2f, 0.8f, -10, "diamond");
 
-    private float durabilityMultiplier, speedMod;
+    private float durabilityMultiplier, miningSpeedMod, drawSpeedMod;
     private int extraDurability;
     private int enchant;
     private String name;
     private Set<Effect> effects = new HashSet<>(0);
 
-    private HandleMaterials(int extra, float multiplier, float speedMod, int enchantModifier, String name,
+    private HandleMaterials(int extra, float multiplier, float miningSpeedMod, float drawSpeedMod, int enchantModifier, String name,
             Effect... effects) {
         this.durabilityMultiplier = multiplier;
         this.extraDurability = extra;
         this.enchant = enchantModifier;
-        this.speedMod = speedMod;
+        this.miningSpeedMod = miningSpeedMod;
+        this.drawSpeedMod = drawSpeedMod;
         for (Effect effect : effects) {
             this.effects.add(effect);
         }
@@ -92,17 +93,11 @@ public enum HandleMaterials implements HandleMaterial {
     }
 
     public float getMiningSpeedMultiplier() {
-        return speedMod;
+        return miningSpeedMod;
     }
 
     public float getDrawSpeedMultiplier() {
-        if (speedMod > 1) {
-            return speedMod + 0.15f;
-        } else if (speedMod < 1) {
-            return speedMod - 0.15f;
-        } else {
-            return speedMod;
-        }
+        return drawSpeedMod;
     }
 
     @Override
