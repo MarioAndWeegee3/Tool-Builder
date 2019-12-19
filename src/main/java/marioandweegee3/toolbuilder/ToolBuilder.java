@@ -1,5 +1,7 @@
 package marioandweegee3.toolbuilder;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.mojang.brigadier.tree.ArgumentCommandNode;
@@ -24,6 +26,7 @@ import marioandweegee3.toolbuilder.api.material.HeadMaterial;
 import marioandweegee3.toolbuilder.api.material.StringMaterial;
 import marioandweegee3.toolbuilder.api.registry.TBRegistries;
 import marioandweegee3.toolbuilder.client.models.BowModel;
+import marioandweegee3.toolbuilder.client.models.NewToolModel;
 import marioandweegee3.toolbuilder.client.models.TBModels;
 import marioandweegee3.toolbuilder.client.models.ToolModel;
 import marioandweegee3.toolbuilder.common.blocks.BlockTorches;
@@ -407,9 +410,18 @@ public class ToolBuilder implements ModInitializer {
     }
 
     public static void makeToolItem(HandleMaterial handle, HeadMaterial head, ToolType toolType, Boolean grip) {
-        Builder builder = new Builder(handle, head, toolType, grip);
+        ToolItemBuilder builder = new ToolItemBuilder(handle, head, toolType, grip);
         Item tool = builder.build();
-        TBModels.toolModels.add(new ToolModel(builder));
+        List<ToolType> newModels = Arrays.asList(
+            ToolTypes.SWORD,
+            ToolTypes.HAMMER,
+            ToolTypes.GREATSWORD
+        );
+        if(newModels.contains(toolType)){
+            TBModels.toolModels.add(new NewToolModel(builder));
+        } else {
+            TBModels.toolModels.add(new ToolModel(builder));
+        }
         TBData.toolRecipes.add(new ToolRecipe(builder));
         register(tool, builder.name, "tools");
         if(head == HeadMaterials.WOOD && handle == HandleMaterials.WOOD && !grip){
@@ -539,13 +551,13 @@ public class ToolBuilder implements ModInitializer {
         }
     }
     
-    public static class Builder{
+    public static class ToolItemBuilder{
         private BuiltToolMaterial material;
         private ToolType toolType;
 
         public String name;
 
-        public Builder(HandleMaterial handle, HeadMaterial head, ToolType toolType2, Boolean grip) {
+        public ToolItemBuilder(HandleMaterial handle, HeadMaterial head, ToolType toolType2, Boolean grip) {
             this.toolType = toolType2;
             this.name = makeName(head, handle, grip);
             this.material = BuiltToolMaterial.of(handle, head, name, grip);

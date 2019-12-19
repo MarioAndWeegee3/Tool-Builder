@@ -1,0 +1,54 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+    "parent":"toolbuilder:item/template/_tool_display",
+    "elements": [
+        {
+            "name": "Handle",
+            "from": [ 7, 1, 7 ], 
+            "to": [ 9, 6, 8 ], 
+            "faces": {
+                "north": { "texture": "#handle", "uv": [ 0, 0, 2, 5 ] },
+                "east": { "texture": "#handle", "uv": [ 2, 0, 3, 5 ] },
+                "south": { "texture": "#handle", "uv": [ 0, 0, 2, 5 ] },
+                "west": { "texture": "#handle", "uv": [ 2, 0, 3, 5 ] },
+                "down": { "texture": "#handle", "uv": [ 0, 11, 2, 12 ] }
+            }
+        },
+        {
+            "name": "Hand Guard",
+            "from": [ 5, 6, 6 ], 
+            "to": [ 11, 7, 9 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 0, 0, 6, 1 ] },
+                "east": { "texture": "#head", "uv": [ 0, 0, 3, 1 ] },
+                "south": { "texture": "#head", "uv": [ 0, 0, 6, 1 ] },
+                "west": { "texture": "#head", "uv": [ 0, 0, 3, 1 ] },
+                "up": { "texture": "#head", "uv": [ 0, 1, 6, 4 ] },
+                "down": { "texture": "#head", "uv": [ 0, 1, 6, 4 ] }
+            }
+        },
+        {
+            "name": "Head 1",
+            "from": [ 7, 7, 7 ], 
+            "to": [ 8, 14, 8 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 1, 6, 2, 13 ] },
+                "south": { "texture": "#head", "uv": [ 4, 6, 5, 13 ] },
+                "west": { "texture": "#head", "uv": [ 2, 7, 3, 14 ] },
+                "up": { "texture": "#head", "uv": [ 2, 6, 2, 8 ] }
+            }
+        },
+        {
+            "name": "Head 2",
+            "from": [ 8, 7, 7 ], 
+            "to": [ 9, 16, 8 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 2, 6, 3, 15 ] },
+                "east": { "texture": "#head", "uv": [ 3, 6, 4, 15 ] },
+                "south": { "texture": "#head", "uv": [ 2, 6, 3, 15 ] },
+                "west": { "texture": "#head", "uv": [ 2, 6, 3, 15 ] },
+                "up": { "texture": "#head", "uv": [ 3, 6, 4, 7 ] }
+            }
+        }
+    ]
+}

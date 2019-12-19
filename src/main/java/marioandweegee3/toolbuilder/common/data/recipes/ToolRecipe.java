@@ -15,8 +15,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ToolRecipe {
-    private ToolBuilder.Builder builder;
-    public ToolRecipe(ToolBuilder.Builder builder){
+    private ToolBuilder.ToolItemBuilder builder;
+    public ToolRecipe(ToolBuilder.ToolItemBuilder builder){
         this.builder = builder;
     }
 

@@ -81,7 +81,7 @@ public class GripStationEntity extends BlockEntity implements Tickable, SidedInv
                 ToolType toolType = ToolTypes.get(tool.getType());
                 if (inventory.get(1).getCount() >= toolType.getHandleGripCost() && !tool.getMaterial().isGripped
                         && !world.isClient) {
-                    ToolBuilder.Builder builder = new ToolBuilder.Builder(tool.getMaterial().handle,
+                    ToolBuilder.ToolItemBuilder builder = new ToolBuilder.ToolItemBuilder(tool.getMaterial().handle,
                             tool.getMaterial().head, toolType, true);
                     ItemStack toolStack = new ItemStack(
                             Registry.ITEM.get(new Identifier(tool.getModName(), builder.name)));
