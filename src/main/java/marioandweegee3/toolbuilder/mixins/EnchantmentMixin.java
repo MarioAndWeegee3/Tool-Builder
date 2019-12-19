@@ -7,15 +7,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.BuiltTool;
-import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
-import marioandweegee3.toolbuilder.common.effect.Effects;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
 
 @Mixin(EnchantmentHelper.class)
 public abstract class EnchantmentMixin {
@@ -26,32 +23,15 @@ public abstract class EnchantmentMixin {
 
         if(stack.getItem() instanceof BuiltTool){
             BuiltTool tool = (BuiltTool) stack.getItem();
-            if(enchantment == Enchantments.UNBREAKING && tool.getEffects(stack).contains(Effects.RESILIENT)){
-                level++;
-            }
-            if(enchantment == Enchantments.EFFICIENCY && tool.getEffects(stack).contains(Effects.GLIMMERING)){
-                CompoundTag tag = stack.getOrCreateTag();
-                int glimmers = 0;
-                if(tag.contains(Effects.glimmerNBTtag)){
-                    glimmers = tag.getInt(Effects.glimmerNBTtag);
-                }
-
-                if(glimmers == 1){
-                    level++;
-                }
-            }
-            if(enchantment == Enchantments.FORTUNE && tool.getEffects(stack).contains(Effects.ROYAL)){
-                level++;
-            }
-            if(enchantment == Enchantments.AQUA_AFFINITY && tool.getEffects(stack).contains(Effects.AQUATIC)){
-                level++;
+            for(EffectInstance effect : tool.getEffects(stack)) {
+                level += effect.getEffect().enchantmentLevelIncrement(enchantment, stack, effect.getLevel());
             }
         }
 
         if(stack.getItem() instanceof BuiltArmorItem){
             BuiltArmorItem armor = (BuiltArmorItem) stack.getItem();
-            if(enchantment == Enchantments.UNBREAKING && armor.getEffects(stack).contains(Effects.RESILIENT)){
-                level++;
+            for(EffectInstance effect : armor.getEffects(stack)) {
+                level += effect.getEffect().enchantmentLevelIncrement(enchantment, stack, effect.getLevel());
             }
         }
 
@@ -65,8 +45,8 @@ public abstract class EnchantmentMixin {
         if(stack.getItem() instanceof BuiltTool){
             BuiltTool tool = (BuiltTool)stack.getItem();
 
-            for(Effect effect : tool.getEffects(stack)){
-                baseDamage = effect.getAttackDamage(stack, group, baseDamage);
+            for(EffectInstance effect : tool.getEffects(stack)){
+                baseDamage += effect.getEffect().getAdditonalAttackDamage(stack, group, effect.getLevel());
             }
 
             if(baseDamage > 0){

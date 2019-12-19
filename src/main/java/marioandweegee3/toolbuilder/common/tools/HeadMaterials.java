@@ -5,6 +5,7 @@ import java.util.Set;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.material.HeadMaterial;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 import net.minecraft.item.Item;
@@ -160,8 +161,8 @@ public enum HeadMaterials implements HeadMaterial{
     }
     
     @Override
-    public Effect[] getEffects() {
-        return effects.toArray(new Effect[0]);
+    public Set<EffectInstance> getEffects() {
+        return EffectInstance.fromEffects(effects);
     }
 
     @Override

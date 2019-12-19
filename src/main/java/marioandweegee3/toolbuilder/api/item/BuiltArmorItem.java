@@ -1,13 +1,14 @@
 package marioandweegee3.toolbuilder.api.item;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
-import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.material.BuiltArmorMaterial;
-import marioandweegee3.toolbuilder.api.registry.TBRegistries;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
@@ -15,10 +16,8 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public class BuiltArmorItem extends ArmorItem {
@@ -32,33 +31,40 @@ public class BuiltArmorItem extends ArmorItem {
         return (BuiltArmorMaterial) super.getMaterial();
     }
 
-    public Set<Effect> getEffects(ItemStack stack){
-        Set<Effect> effects = new HashSet<>(0);
-        effects.addAll(getMaterial().getEffects());
-        effects.addAll(getModifierEffects(stack));
-        return effects;
+    public Set<EffectInstance> getEffects(ItemStack stack){
+        return EffectInstance.mergeSets(getModifierEffects(stack), EffectInstance.fromEffects(getMaterial().getEffects()));
     }
 
-    public Set<Effect> getModifierEffects(ItemStack stack){
-        Set<Effect> effects = new HashSet<>(0);
-        CompoundTag tag = stack.getOrCreateTag();
-        ListTag effectsTag = tag.getList(Effects.effectNBTtag, 8);
-        for(Tag tag2 : effectsTag){
-            if(!(tag2 instanceof StringTag)) continue;
-            
-            StringTag effectTag = (StringTag)tag2;
-            Effect effect = TBRegistries.EFFECTS.get(new Identifier(effectTag.asString()));
-            if(effect != null){
-                effects.add(effect);
+    public Set<EffectInstance> getModifierEffects(ItemStack stack) {
+        Set<EffectInstance> effects = new HashSet<>(0);
+        ListTag effectsTag = getModifierListTag(stack);
+        for (Tag tag2 : effectsTag) {
+            if (!(tag2 instanceof CompoundTag))
+                continue;
+
+            CompoundTag effectTag = (CompoundTag) tag2;
+            try {
+                effects.add(EffectInstance.fromTag(effectTag));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return effects;
     }
 
+    public ListTag getModifierListTag(ItemStack stack){
+        CompoundTag tag = stack.getOrCreateTag();
+        return tag.getList(Effects.effectNBTtag, 10);
+    }
+
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        for (Effect effect : getEffects(stack)) {
-            tooltip.add(effect.getTranslationName().setStyle(ToolBuilder.effectStyle));
+        List<EffectInstance> effects = new ArrayList<>(getEffects(stack));
+
+        Collections.sort(effects);
+
+        for(EffectInstance effect : effects){
+            tooltip.add(effect.getTooltip().setStyle(ToolBuilder.effectStyle));
         }
     }
 

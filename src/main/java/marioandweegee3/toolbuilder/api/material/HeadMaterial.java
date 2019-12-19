@@ -1,6 +1,9 @@
 package marioandweegee3.toolbuilder.api.material;
 
-import marioandweegee3.toolbuilder.api.effect.Effect;
+import java.util.HashSet;
+import java.util.Set;
+
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 
@@ -44,8 +47,8 @@ public interface HeadMaterial extends ToolMaterial{
             }
 
             @Override
-            public Effect[] getEffects() {
-                return new Effect[0];
+            public Set<EffectInstance> getEffects() {
+                return new HashSet<>();
             }
 
             @Override
@@ -71,7 +74,7 @@ public interface HeadMaterial extends ToolMaterial{
         };
     }
 
-    public Effect[] getEffects();
+    public Set<EffectInstance> getEffects();
     public String getName();
     public String getRepairString();
     public String getBlockString();

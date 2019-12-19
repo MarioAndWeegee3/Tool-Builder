@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import marioandweegee3.toolbuilder.api.ToolType;
 import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.entry.TBInitializer;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
 import marioandweegee3.toolbuilder.api.item.ModifierItem;
@@ -425,7 +426,7 @@ public class ToolBuilder implements ModInitializer {
         register(bow, builder.name, "tools");
         if(material == HandleMaterials.WOOD){
             int burnTime = 200;
-            if(string.getEffects().contains(Effects.FLAMING)) burnTime += 100;
+            if(EffectInstance.toEffectSet(builder.material.getEffects()).contains(Effects.FLAMING)) burnTime += 100;
             FuelRegistry.INSTANCE.add(bow, burnTime);
         }
     }

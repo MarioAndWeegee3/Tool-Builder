@@ -5,12 +5,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
-import marioandweegee3.toolbuilder.common.config.ConfigHandler;
-import marioandweegee3.toolbuilder.common.effect.Effects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
@@ -63,17 +62,12 @@ public abstract class EntityDamageMixin extends Entity {
         for(ItemStack stack : getArmorItems()){
             if(stack.getItem() instanceof BuiltArmorItem){
                 BuiltArmorItem armor = (BuiltArmorItem) stack.getItem();
-                if (armor.getEffects(stack).contains(Effects.LIGHT)) {
-                    damage *= ConfigHandler.INSTANCE.getLightFallDamageMultiplier().floatValue();
-                    if (damage > 0) {
-                        stack.damage(1, world.random, null);
-                    }
+                
+                for(EffectInstance instance : armor.getEffects(stack)){
+                    damage = instance.getEffect().modifyFallDamage(damage, armor, stack, instance.getLevel());
                 }
-                if (armor.getEffects(stack).contains(Effects.BOUNCY) && armor.getSlotType() == EquipmentSlot.FEET) {
-                    if (damage > 0 && ConfigHandler.INSTANCE.bouncyDamagesArmor()) {
-                        stack.damage(1, world.random, null);
-                    }
-                    damage = 0f;
+
+                if(damage <= 0){
                     b1 = false;
                 }
             }
@@ -93,25 +87,12 @@ public abstract class EntityDamageMixin extends Entity {
         float damage = ci.getReturnValueF();
         Entity entity = source.getAttacker();
         if(entity instanceof LivingEntity){
-            LivingEntity attacker = (LivingEntity)entity;
             for(ItemStack stack : getArmorItems()){
                 if(stack.getItem() instanceof BuiltArmorItem){
                     BuiltArmorItem armor = (BuiltArmorItem) stack.getItem();
-                    if (armor.getEffects(stack).contains(Effects.HOLY) && attacker.isUndead()) {
-                        damage -= ConfigHandler.INSTANCE.getHolyDamage() * 0.25;
-                    }
-
-                    if (armor.getEffects(stack).contains(Effects.MAGICAL) && source.getMagic()) {
-                        damage *= 0.9;
-                    }
-
-                    if (armor.getEffects(stack).contains(Effects.BOUNCY)
-                            && armor.getSlotType() == EquipmentSlot.HEAD
-                            && source == DamageSource.FLY_INTO_WALL) {
-                        if (damage > 0 && ConfigHandler.INSTANCE.bouncyDamagesArmor()) {
-                            stack.damage(1, world.random, null);
-                        }
-                        damage = 0;
+                    
+                    for(EffectInstance instance : armor.getEffects(stack)) {
+                        damage = instance.getEffect().modifyDamageRecieved(damage, source, armor, stack, instance.getLevel());
                     }
                 }
             }

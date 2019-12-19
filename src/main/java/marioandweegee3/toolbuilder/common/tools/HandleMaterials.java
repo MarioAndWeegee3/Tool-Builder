@@ -11,6 +11,7 @@ import java.util.Set;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.material.HandleMaterial;
 import marioandweegee3.toolbuilder.common.config.ConfigHandler;
 import marioandweegee3.toolbuilder.common.effect.Effects;
@@ -119,7 +120,7 @@ public enum HandleMaterials implements HandleMaterial {
     }
 
     @Override
-    public ArrayList<Effect> getEffects() {
-        return new ArrayList<>(effects);
+    public Set<EffectInstance> getEffects() {
+        return EffectInstance.fromEffects(effects);
     }
 }

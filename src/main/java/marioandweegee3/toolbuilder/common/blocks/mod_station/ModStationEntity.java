@@ -1,17 +1,19 @@
 package marioandweegee3.toolbuilder.common.blocks.mod_station;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.BuiltTool;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.item.Modifier;
-import marioandweegee3.toolbuilder.common.effect.Effects;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
@@ -149,28 +151,17 @@ public class ModStationEntity extends BlockEntity implements Tickable, SidedInve
             if(modStack.getItem() instanceof Modifier && toolStack.getItem() instanceof BuiltTool){
                 BuiltTool tool = (BuiltTool) toolStack.getItem();
                 Modifier modifier = (Modifier) modStack.getItem();
-                if(tool.getEffects(toolStack).contains(modifier.getEffect())) {
-                    inventory.set(2, toolStack.copy());
-                    inventory.get(0).setCount(0);
-                    return;
-                }
-                CompoundTag toolTag = toolStack.getOrCreateTag();
-                int modifiers = toolTag.getInt("num_modifiers");
-                int maxModifiers = tool.getNumModifiers(toolStack);
-                if(modifiers >= maxModifiers){
-                    inventory.set(2, toolStack.copy());
-                    inventory.get(0).setCount(0);
-                    return;
-                }
+                Set<EffectInstance> effects = EffectInstance.mergeSets(tool.getEffects(toolStack), new HashSet<>(Arrays.asList(new EffectInstance(modifier.getEffect(), 1))));
 
-                ListTag effectsTag = new ListTag();
-                if(toolTag.contains(Effects.effectNBTtag)){
-                    effectsTag = toolTag.getList(Effects.effectNBTtag, 8);
+                if(effects.equals(tool.getEffects(toolStack))) {
+                    return;
                 }
-                effectsTag.add(StringTag.of(modifier.getEffect().getID().toString()));
-                toolTag.put(Effects.effectNBTtag, effectsTag);
+                
+                CompoundTag toolTag = toolStack.getOrCreateTag();
 
                 ToolBuilder.logger.info("Adding modifier "+modifier.getEffect().getID().toString()+" to tool "+toolStack.getTranslationKey());
+
+                int modifiers = toolTag.getInt("num_modifiers");
 
                 modifiers++;
                 toolTag.putInt("num_modifiers", modifiers);
