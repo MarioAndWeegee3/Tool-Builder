@@ -49,16 +49,16 @@ dependencies {
 	// modCompile ("io.github.cottonmc:cotton-resources:${project.cr_version}"){
 	// 	exclude (group: "cloth-config", module: "ClothConfig2")
 	// }
-	modImplementation "com.github.vampire-studios:artifice-unofficial:${project.artifice_version}"
+	modImplementation "com.lettuce.fudge:artifice:${project.artifice_version}"
 	//modCompile "cloth-config:ClothConfig:${project.cloth_config_version}"
 	//modCompile "me.sargunvohra.mcmods:auto-config:${project.auto_config_version}"
 	modCompile "io.github.prospector:modmenu:${project.modmenu_version}"
 	modCompile ("me.shedaniel.cloth:config-2:${project.cloth_version}"){
 		exclude (group: "io.github.prospector", module: "modmenu")
 	}
-	modCompile "marioandweegee3:ml3api:${project.ml3api_version}"
+	modCompile "marioandweegee3:ml3api:fabric-${project.ml3api_version}"
 
-	include "com.github.vampire-studios:artifice-unofficial:${project.artifice_version}"
+	include "com.lettuce.fudge:artifice:${project.artifice_version}"
 	// include ("io.github.cottonmc:cotton-resources:${project.cr_version}"){
 	// 	exclude (group: "cloth-config", module: "ClothConfig2")
 	// }
@@ -67,7 +67,7 @@ dependencies {
 	include ("me.shedaniel.cloth:config-2:${project.cloth_version}"){
 		exclude (group: "io.github.prospector", module: "modmenu")
 	}
-	include "marioandweegee3:ml3api:${project.ml3api_version}"
+	include "marioandweegee3:ml3api:fabric-${project.ml3api_version}"
 
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
