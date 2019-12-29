@@ -415,9 +415,10 @@ public class ToolBuilder implements ModInitializer {
         List<ToolType> newModels = Arrays.asList(
             ToolTypes.SWORD,
             ToolTypes.HAMMER,
-            ToolTypes.GREATSWORD
+            ToolTypes.GREATSWORD,
+            ToolTypes.KNIFE
         );
-        if(newModels.contains(toolType)){
+        if(newModels.contains(toolType) && ConfigHandler.INSTANCE.shouldUseNewModels()){
             TBModels.toolModels.add(new NewToolModel(builder));
         } else {
             TBModels.toolModels.add(new ToolModel(builder));

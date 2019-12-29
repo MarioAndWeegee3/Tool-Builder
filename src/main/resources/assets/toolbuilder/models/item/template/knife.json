@@ -1,0 +1,89 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+    "textures": {
+        "handle": "toolbuilder:item/handle/model/wood/sword",
+        "blade": "toolbuilder:item/sword/model/iron"
+    },
+    "display": {
+        "gui": {
+            "rotation": [ 30, 45, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.625, 0.625, 0.625 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 0 ],
+            "scale": [ 0.25, 0.25, 0.25 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "head": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 315, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.4, 0.4, 0.4 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 75, 315, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        }
+    },
+    "elements": [
+        {
+            "name": "Handle",
+            "from": [ 7, 1, 7 ], 
+            "to": [ 9, 6, 8 ], 
+            "faces": {
+                "north": { "texture": "#handle", "uv": [ 0, 0, 2, 5 ] },
+                "east": { "texture": "#handle", "uv": [ 2, 0, 3, 5 ] },
+                "south": { "texture": "#handle", "uv": [ 0, 0, 2, 5 ] },
+                "west": { "texture": "#handle", "uv": [ 2, 0, 3, 5 ] },
+                "down": { "texture": "#handle", "uv": [ 0, 11, 2, 12 ] }
+            }
+        },
+        {
+            "name": "Hand Guard",
+            "from": [ 6, 6, 7 ], 
+            "to": [ 10, 7, 8 ], 
+            "faces": {
+                "north": { "texture": "#blade", "uv": [ 0, 0, 4, 1 ] },
+                "east": { "texture": "#blade", "uv": [ 0, 0, 1, 1 ] },
+                "south": { "texture": "#blade", "uv": [ 0, 0, 4, 1 ] },
+                "west": { "texture": "#blade", "uv": [ 0, 0, 1, 1 ] },
+                "up": { "texture": "#blade", "uv": [ 0, 1, 4, 2 ] },
+                "down": { "texture": "#blade", "uv": [ 0, 1, 4, 2 ] }
+            }
+        },
+        {
+            "name": "Blade 1",
+            "from": [ 7, 7, 7 ], 
+            "to": [ 8, 11, 8 ], 
+            "faces": {
+                "north": { "texture": "#blade", "uv": [ 1, 6, 2, 10 ] },
+                "south": { "texture": "#blade", "uv": [ 4, 6, 5, 10 ] },
+                "west": { "texture": "#blade", "uv": [ 2, 7, 3, 11 ] },
+                "up": { "texture": "#blade", "uv": [ 2, 6, 2, 8 ] }
+            }
+        },
+        {
+            "name": "Blade 2",
+            "from": [ 8, 7, 7 ], 
+            "to": [ 9, 13, 8 ], 
+            "faces": {
+                "north": { "texture": "#blade", "uv": [ 2, 6, 3, 12 ] },
+                "east": { "texture": "#blade", "uv": [ 3, 6, 4, 12 ] },
+                "south": { "texture": "#blade", "uv": [ 2, 6, 3, 12 ] },
+                "west": { "texture": "#blade", "uv": [ 2, 6, 3, 12 ] },
+                "up": { "texture": "#blade", "uv": [ 3, 6, 4, 7 ] }
+            }
+        }
+    ]
+}
