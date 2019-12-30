@@ -9,8 +9,7 @@
         "FireTimeMixin",
         "BypassArmorMixin",
         "EnchantmentMixin",
-        "RecipeRemoveMixin",
-        "RecipeAddMixin"
+        "RecipeRemoveMixin"
     ],
     "client": [
     ],

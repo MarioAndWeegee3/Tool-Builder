@@ -60,7 +60,7 @@ public enum HeadMaterials implements HeadMaterial{
             "tungsten", Effects.RESILIENT),
     PERIDOT(ToolMaterials.IRON.getAttackDamage(), ToolMaterials.DIAMOND.getMiningSpeed(),
             ToolMaterials.IRON.getDurability() + 30, ToolMaterials.IRON.getMiningLevel(),
-            ToolMaterials.IRON.getEnchantability() - 2, new Identifier("c:peridot"), true, "#c:peridot_block",
+            ToolMaterials.IRON.getEnchantability() - 2, new Identifier("c:peridot_gem"), true, "#c:peridot_block",
             "peridot", Effects.MAGICAL, Effects.GLIMMERING),
     SLIME(ToolMaterials.STONE.getAttackDamage(), ToolMaterials.STONE.getMiningSpeed(),
             ToolMaterials.IRON.getDurability() + 45, ToolMaterials.STONE.getMiningLevel(),
