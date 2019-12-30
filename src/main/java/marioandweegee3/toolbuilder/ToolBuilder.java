@@ -231,123 +231,127 @@ public class ToolBuilder implements ModInitializer {
             }
         });
 
-        Artifice.registerData("toolbuilder:recipes", pack -> {
+        Artifice.registerData(ToolBuilder.makeID("recipes"), pack -> {
             TBData.addRecipes(pack);
+        });
 
-            if(ConfigHandler.INSTANCE.shouldAddSteelRecipe() && (cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
-                pack.addBlastingRecipe(makeID("steel_ingot"), recipe -> {
-                    recipe.ingredientTag(new Identifier("c:iron_plate"));
-                    recipe.experience(2);
-                    recipe.result(new Identifier("c:steel_ingot"));
-                });
+        if(ConfigHandler.INSTANCE.shouldAddSteelRecipe() && (cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
+            TBData.blastingRecipes.put(makeID("steel_ingot"), recipe -> {
+                recipe.ingredientTag(new Identifier("c:iron_plate"));
+                recipe.experience(2);
+                recipe.type(new Identifier("minecraft:blasting"));
+                recipe.result(new Identifier("c:steel_ingot"));
+            });
+        }
+
+        TBData.blastingRecipes.put(makeID("slime_crystal_blasting"), recipe -> {
+            recipe.ingredientItem(new Identifier("slime_block"));
+            recipe.experience(1);
+            recipe.type(new Identifier("minecraft:blasting"));
+            recipe.result(makeID("slime_crystal"));
+        });
+
+        TBData.shapelessRecipes.put(makeID("slime_crystal_block"), recipe -> {
+            for(int i = 0; i < 9; i++){
+                recipe.ingredientItem(makeID("slime_crystal"));
             }
+            recipe.result(makeID("slime_crystal_block"), 1);
+        });
 
-            pack.addBlastingRecipe(makeID("slime_crystal_blasting"), recipe -> {
-                recipe.ingredientItem(new Identifier("slime_block"));
-                recipe.experience(1);
-                recipe.result(makeID("slime_crystal"));
-            });
+        TBData.shapelessRecipes.put(makeID("slime_crystal_from_block"), recipe -> {
+            recipe.ingredientItem(makeID("slime_crystal_block"));
+            recipe.result(makeID("slime_crystal"), 9);
+        });
 
-            pack.addShapelessRecipe(makeID("slime_crystal_block"), recipe -> {
-                for(int i = 0; i < 9; i++){
-                    recipe.ingredientItem(makeID("slime_crystal"));
-                }
-                recipe.result(makeID("slime_crystal_block"), 1);
-            });
-
-            pack.addShapelessRecipe(makeID("slime_crystal_from_block"), recipe -> {
-                recipe.ingredientItem(makeID("slime_crystal_block"));
-                recipe.result(makeID("slime_crystal"), 9);
-            });
-
-            pack.addShapelessRecipe(makeID("holy_water"), recipe -> {
-                recipe.ingredientItem(new Identifier("water_bucket"));
-                recipe.ingredientItem(new Identifier("glass_bottle"));
-                for(int i = 0; i < 3; i++){
-                    if((cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
-                        recipe.ingredientTag(new Identifier("c:silver_ingot"));
-                    } else {
-                        recipe.ingredientItem(new Identifier("iron_ingot"));
-                    }
-                }
-                recipe.result(makeID("holy_water"), 1);
-            });
-
-            pack.addShapelessRecipe(makeID("poison_tip"), recipe -> {
-                recipe.ingredientTag(new Identifier("logs"));
-                recipe.ingredientItem(new Identifier("spider_eye"));
-                recipe.result(makeID("poison_tip"), 1);
-            });
-
-            pack.addShapelessRecipe(makeID("moss"), recipe -> {
-                for(int i = 0; i < 9; i++){
-                    recipe.ingredientItem(new Identifier("vine"));
-                }
-                recipe.result(makeID("moss"), 1);
-            });
-
-            pack.addShapelessRecipe(makeID("blazing_stone"), recipe -> {
-                recipe.ingredientItem(new Identifier("smooth_stone"));
-                for(int i = 0; i < 6; i++){
-                    recipe.ingredientItem(new Identifier("blaze_powder"));
-                }
-                recipe.result(makeID("blazing_stone"), 1);
-            });
-
-            pack.addShapelessRecipe(makeID("raw_heavy_plate"), recipe -> {
+        TBData.shapelessRecipes.put(makeID("holy_water"), recipe -> {
+            recipe.ingredientItem(new Identifier("water_bucket"));
+            recipe.ingredientItem(new Identifier("glass_bottle"));
+            for(int i = 0; i < 3; i++){
                 if((cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
-                    recipe.ingredientTag(new Identifier("c:lead_plate"));
-                    recipe.ingredientTag(new Identifier("c:tungsten_plate"));
+                    recipe.ingredientTag(new Identifier("c:silver_ingot"));
                 } else {
-                    recipe.ingredientItem(makeID("obsidian_plate"));
-                    recipe.ingredientItem(makeID("obsidian_plate"));
+                    recipe.ingredientItem(new Identifier("iron_ingot"));
                 }
-                recipe.ingredientItem(new Identifier("slime_ball"));
+            }
+            recipe.result(makeID("holy_water"), 1);
+        });
+
+        TBData.shapelessRecipes.put(makeID("poison_tip"), recipe -> {
+            recipe.ingredientTag(new Identifier("logs"));
+            recipe.ingredientItem(new Identifier("spider_eye"));
+            recipe.result(makeID("poison_tip"), 1);
+        });
+
+        TBData.shapelessRecipes.put(makeID("moss"), recipe -> {
+            for(int i = 0; i < 9; i++){
+                recipe.ingredientItem(new Identifier("vine"));
+            }
+            recipe.result(makeID("moss"), 1);
+        });
+
+        TBData.shapelessRecipes.put(makeID("blazing_stone"), recipe -> {
+            recipe.ingredientItem(new Identifier("smooth_stone"));
+            for(int i = 0; i < 6; i++){
+                recipe.ingredientItem(new Identifier("blaze_powder"));
+            }
+            recipe.result(makeID("blazing_stone"), 1);
+        });
+
+        TBData.shapelessRecipes.put(makeID("raw_heavy_plate"), recipe -> {
+            if((cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
+                recipe.ingredientTag(new Identifier("c:lead_plate"));
+                recipe.ingredientTag(new Identifier("c:tungsten_plate"));
+            } else {
                 recipe.ingredientItem(makeID("obsidian_plate"));
-                recipe.result(makeID("raw_heavy_plate"), 1);
-            });
+                recipe.ingredientItem(makeID("obsidian_plate"));
+            }
+            recipe.ingredientItem(new Identifier("slime_ball"));
+            recipe.ingredientItem(makeID("obsidian_plate"));
+            recipe.result(makeID("raw_heavy_plate"), 1);
+        });
 
-            pack.addBlastingRecipe(makeID("heavy_plate"), recipe -> {
-                recipe.cookingTime(200);
-                recipe.ingredientItem(makeID("raw_heavy_plate"));
-                recipe.experience(1);
-                recipe.result(makeID("heavy_plate"));
-            });
+        TBData.blastingRecipes.put(makeID("heavy_plate"), recipe -> {
+            recipe.cookingTime(200);
+            recipe.ingredientItem(makeID("raw_heavy_plate"));
+            recipe.experience(1);
+            recipe.type(new Identifier("minecraft:blasting"));
+            recipe.result(makeID("heavy_plate"));
+        });
 
-            pack.addShapedRecipe(makeID("obsidian_plate"), recipe -> {
-                recipe.pattern(
-                    "xx",
-                    "xx"
-                );
-                recipe.ingredientItem('x', new Identifier("obsidian"));
-                recipe.result(makeID("obsidian_plate"), 1);
-            });
+        TBData.shapedRecipes.put(makeID("obsidian_plate"), recipe -> {
+            recipe.pattern(
+                "xx",
+                "xx"
+            );
+            recipe.ingredientItem('x', new Identifier("obsidian"));
+            recipe.result(makeID("obsidian_plate"), 1);
+        });
 
-            pack.addShapedRecipe(makeID("blaze_string"), recipe -> {
-                recipe.pattern(
-                    "bb",
-                    "ss"
-                );
-                recipe.ingredientItem('b', new Identifier("blaze_powder"));
-                recipe.ingredientItem('s', new Identifier("string"));
-                recipe.result(makeID("blaze_string"), 2);
-            });
+        TBData.shapedRecipes.put(makeID("blaze_string"), recipe -> {
+            recipe.pattern(
+                "bb",
+                "ss"
+            );
+            recipe.ingredientItem('b', new Identifier("blaze_powder"));
+            recipe.ingredientItem('s', new Identifier("string"));
+            recipe.result(makeID("blaze_string"), 2);
+        });
 
-            pack.addBlastingRecipe(makeID("ender_dust"), recipe -> {
-                recipe.ingredientItem(new Identifier("ender_pearl"));
-                recipe.experience(3);
-                recipe.result(makeID("ender_dust"));
-            });
+        TBData.blastingRecipes.put(makeID("ender_dust"), recipe -> {
+            recipe.ingredientItem(new Identifier("ender_pearl"));
+            recipe.experience(3);
+            recipe.type(new Identifier("minecraft:blasting"));
+            recipe.result(makeID("ender_dust"));
+        });
 
-            pack.addShapedRecipe(makeID("ender_string"), recipe -> {
-                recipe.pattern(
-                    "ee",
-                    "ss"
-                );
-                recipe.ingredientItem('e', makeID("ender_dust"));
-                recipe.ingredientItem('s', new Identifier("string"));
-                recipe.result(makeID("ender_string"), 2);
-            });
+        TBData.shapedRecipes.put(makeID("ender_string"), recipe -> {
+            recipe.pattern(
+                "ee",
+                "ss"
+            );
+            recipe.ingredientItem('e', makeID("ender_dust"));
+            recipe.ingredientItem('s', new Identifier("string"));
+            recipe.result(makeID("ender_string"), 2);
         });
 
         CommandRegistry.INSTANCE.register(false, dispatcher -> {
