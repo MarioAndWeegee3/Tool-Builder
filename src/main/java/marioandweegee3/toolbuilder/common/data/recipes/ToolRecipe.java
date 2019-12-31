@@ -77,5 +77,12 @@ public class ToolRecipe {
 
             recipe.result(ToolBuilder.makeID(builder.name), 1);
         });
+
+        if(builder.getType().fabricTagToAddTo() == null) return;
+
+        pack.addItemTag(builder.getType().fabricTagToAddTo(), tag -> {
+            tag.replace(false);
+            tag.value(ToolBuilder.makeID(builder.name));
+        });
     }
 }

@@ -107,6 +107,8 @@ public class ToolBuilder implements ModInitializer {
 
         TBData.blockLootTables.add(new BasicBlockLootTable(makeID("stone_torch")));
 
+        TBModels.simpleItems.put("stone_torch", "block/torch/stone");
+
         register(GripStationBlock.BLOCK, "grip_station", ItemGroup.DECORATIONS);
         register(ModStationBlock.BLOCK, "mod_station", ItemGroup.DECORATIONS);
 
@@ -157,6 +159,15 @@ public class ToolBuilder implements ModInitializer {
         register(Handles.gold_handle, "gold_handle");
         register(Handles.bone_handle, "bone_handle");
         register(Handles.diamond_handle, "diamond_handle");
+
+        for(HandleMaterial handle : HandleMaterials.values()){
+            TBModels.simpleItems.put(handle.getName()+"_handle", "item/handle/"+handle.getName()+"_full");
+            TBModels.customItems.put(handle.getName()+"_gripped_handle", model -> {
+                model.parent(new Identifier("item/generated"));
+                model.texture("layer0", makeID("item/handle/"+handle.getName()+"/full"));
+                model.texture("layer1", makeID("item/handle/grip/full"));
+            });
+        }
 
         register(Handles.wood_gripped_handle, "wood_gripped_handle");
         register(Handles.stone_gripped_handle, "stone_gripped_handle");

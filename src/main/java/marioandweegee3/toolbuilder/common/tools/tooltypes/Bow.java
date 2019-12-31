@@ -50,7 +50,19 @@ public class Bow extends BowItem {
                 return (stack.getMaxUseTime() - entity.getItemUseTimeLeft()) / (20.0f * material.getDrawSpeedMultiplier());
             }
         });
-        this.addPropertyGetter(new Identifier("pulling"), (stack, world, entity) -> (entity != null && entity.isUsingItem() && entity.getActiveItem() == stack) ? 1.0f : 0.0f);
+        this.addPropertyGetter(new Identifier("pulling"), (stack, world, entity) -> getPullProgressInt((entity != null && entity.isUsingItem() && entity.getActiveItem() == stack) ? 1.0f : 0.0f));
+    }
+
+    private static int getPullProgressInt(float pull){
+        if(pull <= 0){
+            return 0;
+        } else if(pull >= 0.65 && pull < 0.9){
+            return 1;
+        } else if(pull >= 0.9){
+            return 2;
+        } else {
+            return 0;
+        }
     }
 
     public static Bow create(BowMaterial material){

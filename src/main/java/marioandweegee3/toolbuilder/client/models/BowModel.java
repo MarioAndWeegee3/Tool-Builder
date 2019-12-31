@@ -28,6 +28,31 @@ public class BowModel {
                 model.texture("layer3", makeid("item/bow/arrow/"+i[0]));
             });
         }
+
+        pack.addItemModel(makeid(builder.name), model ->{
+            model.parent(makeid("item/_bow_base"));
+
+            model.texture("layer0", makeid("item/bow/string/"+string+"/-1"));
+            model.texture("layer1", makeid("item/bow/handle/"+handle+"/-1"));
+            model.texture("layer2", makeid("item/bow/grip/-1/"+grip));
+
+            model.override(settings -> {
+                settings.predicate("pulling", 1);
+                settings.model(makeid("item/"+builder.name+"_0"));
+            });
+
+            model.override(settings -> {
+                settings.predicate("pulling", 1);
+                settings.predicate("pull", 1);
+                settings.model(makeid("item/"+builder.name+"_1"));
+            });
+
+            model.override(settings -> {
+                settings.predicate("pulling", 1);
+                settings.predicate("pull", 2);
+                settings.model(makeid("item/"+builder.name+"_2"));
+            });
+        });
     }
 
     private Identifier makeid(String name){
