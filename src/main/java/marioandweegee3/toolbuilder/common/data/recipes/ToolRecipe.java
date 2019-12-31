@@ -23,6 +23,11 @@ public class ToolRecipe {
 
     public void add(ServerResourcePackBuilder pack){
         pack.addShapedRecipe(ToolBuilder.makeID(builder.name), this::processRecipe);
+
+        pack.addItemTag(builder.getType().fabricTagToAddTo(), tag -> {
+            tag.replace(false);
+            tag.value(ToolBuilder.makeID(builder.name));
+        });
     }
 
     public void processRecipe(ShapedRecipeBuilder recipe) {
