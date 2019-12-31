@@ -229,10 +229,6 @@ public class ToolBuilder implements ModInitializer {
             }
         });
 
-        Artifice.registerData(ToolBuilder.makeID("recipes"), pack -> {
-            TBData.addRecipes(pack);
-        });
-
         if(ConfigHandler.INSTANCE.shouldAddSteelRecipe() && (cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
             TBData.blastingRecipes.put(makeID("steel_ingot"), recipe -> {
                 recipe.ingredientTag(new Identifier("c:iron_plate"));
@@ -350,6 +346,10 @@ public class ToolBuilder implements ModInitializer {
             recipe.ingredientItem('e', makeID("ender_dust"));
             recipe.ingredientItem('s', new Identifier("string"));
             recipe.result(makeID("ender_string"), 2);
+        });
+
+        Artifice.registerData(ToolBuilder.makeID("recipes"), pack -> {
+            TBData.addRecipes(pack);
         });
 
         CommandRegistry.INSTANCE.register(false, dispatcher -> {
