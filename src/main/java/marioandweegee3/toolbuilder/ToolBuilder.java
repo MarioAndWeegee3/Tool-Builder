@@ -1,7 +1,5 @@
 package marioandweegee3.toolbuilder;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import com.mojang.brigadier.tree.ArgumentCommandNode;
@@ -416,13 +414,7 @@ public class ToolBuilder implements ModInitializer {
     public static void makeToolItem(HandleMaterial handle, HeadMaterial head, ToolType toolType, Boolean grip) {
         ToolItemBuilder builder = new ToolItemBuilder(handle, head, toolType, grip);
         Item tool = builder.build();
-        List<ToolType> newModels = Arrays.asList(
-            ToolTypes.SWORD,
-            ToolTypes.HAMMER,
-            ToolTypes.GREATSWORD,
-            ToolTypes.KNIFE
-        );
-        if(newModels.contains(toolType) && ConfigHandler.INSTANCE.shouldUseNewModels()){
+        if(ConfigHandler.INSTANCE.shouldUseNewModels()){
             TBModels.toolModels.add(new NewToolModel(builder));
         } else {
             TBModels.toolModels.add(new ToolModel(builder));

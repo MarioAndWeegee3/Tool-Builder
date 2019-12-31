@@ -1,0 +1,94 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+    "parent":"toolbuilder:item/template/_tool_display",
+    "elements": [
+        {
+            "name": "Handle",
+            "from": [ 7, 1, 7 ], 
+            "to": [ 9, 10, 8 ], 
+            "faces": {
+                "north": { "texture": "#handle", "uv": [ 2, 0, 4, 9 ] },
+                "east": { "texture": "#handle", "uv": [ 2, 5, 3, 14 ] },
+                "south": { "texture": "#handle", "uv": [ 0, 0, 2, 9 ] },
+                "west": { "texture": "#handle", "uv": [ 3, 0, 4, 9 ] },
+                "down": { "texture": "#handle", "uv": [ 5, 0, 7, 1 ] }
+            }
+        },
+        {
+            "name": "Head 1",
+            "from": [ 5, 10, 7 ], 
+            "to": [ 11, 15, 8 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 12, 4, 16, 9 ] },
+                "east": { "texture": "#head", "uv": [ 12, 4, 13, 9 ] },
+                "south": { "texture": "#head", "uv": [ 12, 4, 16, 9 ] },
+                "west": { "texture": "#head", "uv": [ 12, 4, 13, 9 ] },
+                "up": { "texture": "#head", "uv": [ 4, 14, 10, 15 ] },
+                "down": { "texture": "#head", "uv": [ 0, 0, 6, 1 ] }
+            }
+        },
+        {
+            "name": "Head 2",
+            "from": [ 5, 9, 8 ], 
+            "to": [ 11, 10, 10 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 6, 8, 12, 9 ] },
+                "east": { "texture": "#head", "uv": [ 7, 9, 9, 10 ] },
+                "south": { "texture": "#head", "uv": [ 7, 10, 13, 11 ] },
+                "west": { "texture": "#head", "uv": [ 7, 10, 9, 11 ] },
+                "up": { "texture": "#head", "uv": [ 9, 9, 15, 11 ] },
+                "down": { "texture": "#head", "uv": [ 8, 11, 14, 13 ] }
+            }
+        },
+        {
+            "name": "Head 3",
+            "from": [ 4, 10, 8 ], 
+            "to": [ 5, 14, 10 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 12, 5, 13, 9 ] },
+                "east": { "texture": "#head", "uv": [ 12, 5, 14, 9 ] },
+                "south": { "texture": "#head", "uv": [ 12, 5, 13, 9 ] },
+                "west": { "texture": "#head", "uv": [ 12, 5, 14, 9 ] },
+                "up": { "texture": "#head", "uv": [ 12, 5, 13, 7 ] },
+                "down": { "texture": "#head", "uv": [ 12, 8, 13, 10 ] }
+            }
+        },
+        {
+            "name": "Head 5",
+            "from": [ 7, 10, 6 ], 
+            "to": [ 9, 14, 7 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 12, 5, 14, 9 ] },
+                "east": { "texture": "#head", "uv": [ 12, 5, 13, 9 ] },
+                "west": { "texture": "#head", "uv": [ 12, 5, 13, 9 ] },
+                "up": { "texture": "#head", "uv": [ 12, 5, 14, 6 ] },
+                "down": { "texture": "#head", "uv": [ 12, 8, 14, 9 ] }
+            }
+        },
+        {
+            "name": "Head 6",
+            "from": [ 6, 15, 7 ], 
+            "to": [ 10, 16, 8 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 12, 0, 16, 1 ] },
+                "east": { "texture": "#head", "uv": [ 15, 1, 16, 2 ] },
+                "south": { "texture": "#head", "uv": [ 12, 0, 16, 1 ] },
+                "west": { "texture": "#head", "uv": [ 15, 0, 16, 1 ] },
+                "up": { "texture": "#head", "uv": [ 12, 0, 16, 1 ] }
+            }
+        },
+        {
+            "name": "Head 4",
+            "from": [ 11, 10, 8 ], 
+            "to": [ 12, 14, 10 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 12, 5, 13, 9 ] },
+                "east": { "texture": "#head", "uv": [ 12, 5, 14, 9 ] },
+                "south": { "texture": "#head", "uv": [ 12, 5, 13, 9 ] },
+                "west": { "texture": "#head", "uv": [ 12, 5, 14, 9 ] },
+                "up": { "texture": "#head", "uv": [ 12, 5, 13, 7 ] },
+                "down": { "texture": "#head", "uv": [ 12, 8, 13, 10 ] }
+            }
+        }
+    ]
+}

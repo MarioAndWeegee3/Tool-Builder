@@ -1,0 +1,106 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+    "parent":"toolbuilder:item/template/_tool_display",
+    "elements": [
+        {
+            "name": "Head Left 1",
+            "from": [ 5, 7, 7 ], 
+            "to": [ 7, 11, 8 ], 
+            "faces": {
+                "north": { "texture": "#guard", "uv": [ 2, 2, 4, 6 ] },
+                "east": { "texture": "#guard", "uv": [ 2, 2, 3, 6 ] },
+                "south": { "texture": "#guard", "uv": [ 3, 2, 5, 6 ] },
+                "west": { "texture": "#guard", "uv": [ 3, 2, 4, 6 ] },
+                "up": { "texture": "#guard", "uv": [ 3, 2, 5, 3 ] },
+                "down": { "texture": "#guard", "uv": [ 3, 2, 5, 3 ] }
+            }
+        },
+        {
+            "name": "Head Left 2",
+            "from": [ 6, 11, 7 ], 
+            "to": [ 7, 12, 8 ], 
+            "faces": {
+                "north": { "texture": "#guard", "uv": [ 4, 1, 5, 2 ] },
+                "east": { "texture": "#guard", "uv": [ 4, 1, 5, 2 ] },
+                "south": { "texture": "#guard", "uv": [ 4, 1, 5, 2 ] },
+                "west": { "texture": "#guard", "uv": [ 4, 1, 5, 2 ] },
+                "up": { "texture": "#guard", "uv": [ 4, 1, 5, 2 ] }
+            }
+        },
+        {
+            "name": "Head Right 1",
+            "from": [ 9, 7, 7 ], 
+            "to": [ 11, 11, 8 ], 
+            "faces": {
+                "north": { "texture": "#guard", "uv": [ 3, 2, 5, 6 ] },
+                "east": { "texture": "#guard", "uv": [ 0, 0, 1, 4 ] },
+                "south": { "texture": "#guard", "uv": [ 2, 2, 4, 6 ] },
+                "west": { "texture": "#guard", "uv": [ 0, 0, 1, 4 ] },
+                "up": { "texture": "#guard", "uv": [ 2, 2, 4, 3 ] },
+                "down": { "texture": "#guard", "uv": [ 2, 2, 4, 3 ] }
+            }
+        },
+        {
+            "name": "Head Right 2",
+            "from": [ 9, 11, 7 ], 
+            "to": [ 10, 12, 8 ], 
+            "faces": {
+                "north": { "texture": "#guard", "uv": [ 0, 0, 1, 1 ] },
+                "east": { "texture": "#guard", "uv": [ 0, 0, 1, 1 ] },
+                "south": { "texture": "#guard", "uv": [ 0, 0, 1, 1 ] },
+                "west": { "texture": "#guard", "uv": [ 0, 0, 1, 1 ] },
+                "up": { "texture": "#guard", "uv": [ 0, 0, 1, 1 ] }
+            }
+        },
+        {
+            "name": "Head Center Top",
+            "from": [ 7, 6, 7 ], 
+            "to": [ 9, 7, 8 ], 
+            "faces": {
+                "north": { "texture": "#guard", "uv": [ 0, 0, 2, 1 ] },
+                "east": { "texture": "#guard", "uv": [ 0, 0, 1, 1 ] },
+                "south": { "texture": "#guard", "uv": [ 0, 0, 2, 1 ] },
+                "west": { "texture": "#guard", "uv": [ 0, 0, 1, 1 ] },
+                "up": { "texture": "#guard", "uv": [ 0, 0, 2, 1 ] },
+                "down": { "texture": "#guard", "uv": [ 0, 0, 2, 1 ] }
+            }
+        },
+        {
+            "name": "Head Center Bottom",
+            "from": [ 7, 4, 7 ], 
+            "to": [ 9, 5, 8 ], 
+            "faces": {
+                "north": { "texture": "#guard", "uv": [ 0, 0, 2, 1 ] },
+                "south": { "texture": "#guard", "uv": [ 0, 0, 2, 1 ] },
+                "up": { "texture": "#guard", "uv": [ 0, 0, 2, 1 ] },
+                "down": { "texture": "#guard", "uv": [ 0, 0, 2, 1 ] }
+            }
+        },
+        {
+            "name": "Handle Left",
+            "from": [ 6, 1, 7 ], 
+            "to": [ 7, 6, 8 ], 
+            "faces": {
+                "north": { "texture": "#handle", "uv": [ 0, 0, 1, 5 ] },
+                "east": { "texture": "#handle", "uv": [ 0, 0, 1, 5 ] },
+                "south": { "texture": "#handle", "uv": [ 0, 0, 1, 5 ] },
+                "west": { "texture": "#handle", "uv": [ 0, 0, 1, 5 ] },
+                "up": { "texture": "#handle", "uv": [ 0, 0, 1, 1 ] },
+                "down": { "texture": "#handle", "uv": [ 0, 0, 1, 1 ] }
+            }
+        },
+        {
+            "name": "Handle Right",
+            "from": [ 9, 1, 7 ], 
+            "to": [ 10, 6, 8 ], 
+            "faces": {
+                "north": { "texture": "#handle", "uv": [ 3, 0, 4, 5 ] },
+                "east": { "texture": "#handle", "uv": [ 3, 0, 4, 5 ] },
+                "south": { "texture": "#handle", "uv": [ 3, 0, 4, 5 ] },
+                "west": { "texture": "#handle", "uv": [ 3, 0, 4, 5 ] },
+                "up": { "texture": "#handle", "uv": [ 3, 0, 4, 1 ] },
+                "down": { "texture": "#handle", "uv": [ 3, 0, 4, 1 ] }
+            }
+        }
+    ]
+}

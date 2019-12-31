@@ -55,7 +55,7 @@ public class Excavator extends ShovelItem implements BigTool {
     @Override
     public boolean isEffectiveOn(BlockState state) {
         return super.isEffectiveOn(state)
-                || Arrays.asList(Material.CLAY, Material.EARTH, Material.SAND, Material.SNOW, Material.SNOW_BLOCK)
+                || Arrays.asList(Material.CLAY, Material.EARTH, Material.SAND, Material.SNOW, Material.SNOW_BLOCK, Material.ORGANIC)
                         .contains(state.getMaterial());
     }
 

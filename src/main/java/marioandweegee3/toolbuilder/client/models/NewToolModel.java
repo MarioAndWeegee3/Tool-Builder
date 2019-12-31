@@ -16,8 +16,9 @@ public class NewToolModel extends ToolModel{
             String head = builder.getMaterial().head.getName();
             String handle = builder.getMaterial().handle.getName();
             model.parent(makeid("item/template/"+type));
-            model.texture("head", makeid("item/"+type+"/model/"+head));
+            model.texture("head", makeid("item/model/"+head));
             model.texture("handle", makeid("item/handle/model/"+handle));
+            model.texture("guard", makeid("item/model/guard/"+head));
         });
     }
 }
