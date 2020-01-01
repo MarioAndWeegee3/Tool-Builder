@@ -45,6 +45,7 @@ import marioandweegee3.toolbuilder.common.items.StringItems;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 import marioandweegee3.toolbuilder.common.tools.HandleMaterials;
 import marioandweegee3.toolbuilder.common.tools.HeadMaterials;
+import marioandweegee3.toolbuilder.common.tools.StringMaterials;
 import marioandweegee3.toolbuilder.common.tools.tooltypes.Bow;
 import marioandweegee3.toolbuilder.common.tools.tooltypes.ToolTypes;
 import net.fabricmc.api.ModInitializer;
@@ -163,6 +164,10 @@ public class ToolBuilder implements ModInitializer {
                 model.texture("layer1", makeID("item/handle/grip/full"));
             });
             TBLang.addHandle(handle);
+        }
+
+        for(StringMaterial string : StringMaterials.values()){
+            TBLang.addStringMaterial(string);
         }
 
         register(Handles.wood_gripped_handle, "wood_gripped_handle");

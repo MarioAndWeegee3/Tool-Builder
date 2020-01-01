@@ -14,6 +14,7 @@ import marioandweegee3.toolbuilder.ToolBuilder.BowBuilder;
 import marioandweegee3.toolbuilder.ToolBuilder.ToolItemBuilder;
 import marioandweegee3.toolbuilder.api.material.BuiltToolMaterial;
 import marioandweegee3.toolbuilder.api.material.HandleMaterial;
+import marioandweegee3.toolbuilder.api.material.StringMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -145,5 +146,10 @@ public class TBLang {
     public static void addItemGroup(String group){
         String key = "itemGroup.toolbuilder."+group;
         entriesUS.put(key, "Tool Builder "+WordUtils.capitalize(group.replace("_", " ")));
+    }
+
+    public static void addStringMaterial(StringMaterial string){
+        String key = "string."+string.getMod()+"."+string.getName();
+        entriesUS.put(key, WordUtils.capitalize(string.getName())+" String");
     }
 }
