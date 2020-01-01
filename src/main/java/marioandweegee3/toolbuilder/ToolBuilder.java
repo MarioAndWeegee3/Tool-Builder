@@ -23,6 +23,7 @@ import marioandweegee3.toolbuilder.api.material.HandleMaterial;
 import marioandweegee3.toolbuilder.api.material.HeadMaterial;
 import marioandweegee3.toolbuilder.api.material.StringMaterial;
 import marioandweegee3.toolbuilder.api.registry.TBRegistries;
+import marioandweegee3.toolbuilder.client.lang.TBLang;
 import marioandweegee3.toolbuilder.client.models.BowModel;
 import marioandweegee3.toolbuilder.client.models.NewToolModel;
 import marioandweegee3.toolbuilder.client.models.TBModels;
@@ -30,10 +31,6 @@ import marioandweegee3.toolbuilder.client.models.ToolModel;
 import marioandweegee3.toolbuilder.common.blocks.BlockTorches;
 import marioandweegee3.toolbuilder.common.blocks.Torch;
 import marioandweegee3.toolbuilder.common.blocks.WallTorch;
-import marioandweegee3.toolbuilder.common.blocks.gripping_station.GripStationBlock;
-import marioandweegee3.toolbuilder.common.blocks.gripping_station.GripStationEntity;
-import marioandweegee3.toolbuilder.common.blocks.mod_station.ModStationBlock;
-import marioandweegee3.toolbuilder.common.blocks.mod_station.ModStationEntity;
 import marioandweegee3.toolbuilder.common.command.TBEffectCommand;
 import marioandweegee3.toolbuilder.common.config.ConfigHandler;
 import marioandweegee3.toolbuilder.common.data.TBData;
@@ -60,7 +57,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.command.arguments.IdentifierArgumentType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.BlockItem;
@@ -88,9 +84,6 @@ public class ToolBuilder implements ModInitializer {
     public static final Style effectStyle = new Style().setColor(Formatting.AQUA);
     public static final Style modifierStyle = new Style().setColor(Formatting.DARK_GREEN);
 
-    public static final BlockEntityType<GripStationEntity> GRIPPING_STATION = BlockEntityType.Builder.create(GripStationEntity::new, GripStationBlock.BLOCK).build(null);
-    public static final BlockEntityType<ModStationEntity> MOD_STATION = BlockEntityType.Builder.create(ModStationEntity::new, ModStationBlock.BLOCK).build(null);
-
     public static void debugDummy(){
         logger.info("DEBUG DUMMY METHOD CALLED - CHANGE CODE FOR RELEASE");
     }
@@ -105,18 +98,15 @@ public class ToolBuilder implements ModInitializer {
 
         register(BlockTorches.stone_torch, BlockTorches.wall_stone_torch, "stone_torch", ItemGroup.DECORATIONS);
 
+        register(new Block(FabricBlockSettings.copy(Blocks.SMITHING_TABLE).build()), "grip_station", ItemGroup.DECORATIONS);
+        register(new Block(FabricBlockSettings.copy(Blocks.SMITHING_TABLE).build()), "mod_station", ItemGroup.DECORATIONS);
+
         TBData.blockLootTables.add(new BasicBlockLootTable(makeID("stone_torch")));
 
-        TBModels.simpleItems.put("stone_torch", "block/torch/stone");
-
-        register(GripStationBlock.BLOCK, "grip_station", ItemGroup.DECORATIONS);
-        register(ModStationBlock.BLOCK, "mod_station", ItemGroup.DECORATIONS);
+        TBModels.blockItems.add("stone_torch");
 
         TBModels.blockItems.add("grip_station");
         TBModels.blockItems.add("mod_station");
-
-        Registry.register(Registry.BLOCK_ENTITY, makeID("gripping_station"), GRIPPING_STATION);
-        Registry.register(Registry.BLOCK_ENTITY, makeID("mod_station"), MOD_STATION);
 
         TBData.blockLootTables.add(new BasicBlockLootTable(makeID("grip_station")));
         TBData.blockLootTables.add(new BasicBlockLootTable(makeID("mod_station")));
@@ -128,6 +118,9 @@ public class ToolBuilder implements ModInitializer {
         TBModels.simpleItems.put("ender_string", "string/ender");
 
         register(obsidian_plate, "obsidian_plate");
+
+        TBModels.simpleItems.put("obsidian_plate", "plate/obsidian");
+
         register(new Item(new Item.Settings().group(ItemGroup.MATERIALS)), "slime_crystal");
 
         TBModels.simpleItems.put("slime_crystal", "misc/slime_crystal");
@@ -147,12 +140,14 @@ public class ToolBuilder implements ModInitializer {
         register(new ModifierItem(Effects.GROWING), "moss");
         register(new ModifierItem(Effects.FLAMING), "blazing_stone");
         register(new ModifierItem(Effects.DURABLE), "heavy_plate");
+        register(new ModifierItem(Effects.MAGNETIC), "magnet");
 
         TBModels.simpleItems.put("poison_tip", "modifier/poison");
         TBModels.simpleItems.put("holy_water", "modifier/holy");
         TBModels.simpleItems.put("moss", "modifier/growing");
         TBModels.simpleItems.put("blazing_stone", "modifier/flaming");
         TBModels.simpleItems.put("heavy_plate", "modifier/durable");
+        TBModels.simpleItems.put("magnet", "modifier/magnetic");
 
         register(Handles.wood_handle, "wood_handle");
         register(Handles.stone_handle, "stone_handle");
@@ -161,12 +156,13 @@ public class ToolBuilder implements ModInitializer {
         register(Handles.diamond_handle, "diamond_handle");
 
         for(HandleMaterial handle : HandleMaterials.values()){
-            TBModels.simpleItems.put(handle.getName()+"_handle", "item/handle/"+handle.getName()+"_full");
+            TBModels.simpleItems.put(handle.getName()+"_handle", "handle/"+handle.getName()+"/full");
             TBModels.customItems.put(handle.getName()+"_gripped_handle", model -> {
                 model.parent(new Identifier("item/generated"));
                 model.texture("layer0", makeID("item/handle/"+handle.getName()+"/full"));
                 model.texture("layer1", makeID("item/handle/grip/full"));
             });
+            TBLang.addHandle(handle);
         }
 
         register(Handles.wood_gripped_handle, "wood_gripped_handle");
@@ -182,7 +178,7 @@ public class ToolBuilder implements ModInitializer {
         TBModels.simpleItems.put("ender_dust", "misc/ender_dust");
 
         if(ConfigHandler.INSTANCE.shouldAddNetherCobaltLootTable() && (cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
-            TBData.blockLootTables.add(new BasicBlockLootTable(new Identifier("c:cobalt_nether_ore"), "blocks/"));
+            TBData.blockLootTables.add(new BasicBlockLootTable(new Identifier("c:cobalt_nether_ore")));
         }
 
         FabricLoader.getInstance().getEntrypoints("toolbuilder", TBInitializer.class).forEach(mod -> {

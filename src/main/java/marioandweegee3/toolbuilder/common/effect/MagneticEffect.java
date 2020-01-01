@@ -11,13 +11,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class MagneticEffect{
-    public static void run(LivingEntity miner, World world){
+    public static void run(LivingEntity miner, World world, int level){
         //Based on code from Tinkers Construct
         double x = miner.getX();
         double y = miner.getY();
         double z = miner.getZ();
 
-        double range = ConfigHandler.INSTANCE.getMagneticRange();
+        double range = ConfigHandler.INSTANCE.getMagneticRange() * level;
 
         List<ItemEntity> items = world.getEntities(ItemEntity.class, new Box(x-range, y-range, z-range, x+range, y+range, z+range), null);
 

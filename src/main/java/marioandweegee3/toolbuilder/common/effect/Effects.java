@@ -262,7 +262,7 @@ public enum Effects implements Effect {
             }
         }
     }), 
-    MAGNETIC("magnetic", 1, new EffectBase(){
+    MAGNETIC("magnetic", 3, new EffectBase(){
         @Override
         public void onArmorInventoryTick(ItemStack stack, LivingEntity holder, int level) {
             CompoundTag tag = stack.getOrCreateTag();
@@ -270,7 +270,7 @@ public enum Effects implements Effect {
             if(tick <= 2){
                 tick++;
             } else {
-                MagneticEffect.run(holder, holder.world);
+                MagneticEffect.run(holder, holder.world, level);
                 tick = 0;
             }
             MagneticEffect.writeTicks(tick, tag);
@@ -278,13 +278,13 @@ public enum Effects implements Effect {
 
         @Override
         public void onHit(ItemStack stack, LivingEntity target, LivingEntity attacker, int level) {
-            MagneticEffect.run(attacker, target.world);
+            MagneticEffect.run(attacker, target.world, level);
         }
 
         @Override
         public void postMine(BuiltToolMaterial material, ItemStack stack, BlockState state, World world, BlockPos pos,
                 LivingEntity miner, XpDropCheck dropCheck, int level) {
-            MagneticEffect.run(miner, world);
+            MagneticEffect.run(miner, world, level);
         }
     }), 
     GLIMMERING("glimmering", 3, new EffectBase(){

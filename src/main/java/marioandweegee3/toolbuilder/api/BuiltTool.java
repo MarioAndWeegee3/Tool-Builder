@@ -148,6 +148,8 @@ public interface BuiltTool {
         DecimalFormat dec = new DecimalFormat("#.##");
         dec.setRoundingMode(RoundingMode.HALF_UP);
         tooltip.add(new TranslatableText("text.toolbuilder.mining_speed").append(dec.format(material.getMiningSpeed())).setStyle(mainStyle));
+        tooltip.add(new TranslatableText("text.toolbuilder.enchantability").append(material.getEnchantability()+"").setStyle(mainStyle));
+        tooltip.add(new TranslatableText("text.toolbuilder.mining_level").append(material.getMiningLevel()+"").setStyle(mainStyle));
 
         if(material.isGripped){
             tooltip.add(new TranslatableText("text.toolbuilder.grip").setStyle(mainStyle));

@@ -29,6 +29,8 @@ public class ToolRecipe {
         pack.addShapedRecipe(ToolBuilder.makeID(builder.name), recipe -> {
             recipe.pattern(type.getRecipePattern());
 
+            recipe.group(ToolBuilder.makeID(builder.getType().getName()+"_"+builder.getMaterial().head.getName()));
+
             if(head.getRepairString().startsWith("#")){
                 Identifier id = new Identifier(head.getRepairString().substring(1));
                 recipe.ingredientTag('x', id);

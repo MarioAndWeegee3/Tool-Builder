@@ -7,7 +7,7 @@ import marioandweegee3.toolbuilder.api.material.BowMaterial;
 import net.minecraft.util.Identifier;
 
 public class BowModel {
-    private ToolBuilder.BowBuilder builder;
+    public ToolBuilder.BowBuilder builder;
 
     public BowModel(ToolBuilder.BowBuilder builder){
         this.builder = builder;

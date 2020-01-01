@@ -3,6 +3,8 @@ package marioandweegee3.toolbuilder.api.material;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
@@ -71,6 +73,11 @@ public interface HeadMaterial extends ToolMaterial{
                 return "";
             }
 
+            @Override
+            public String getUSTranslation() {
+                return StringUtils.capitalize(this.getName());
+            }
+
         };
     }
 
@@ -80,4 +87,5 @@ public interface HeadMaterial extends ToolMaterial{
     public String getBlockString();
     public boolean isCotton();
     public String getMod();
+    public String getUSTranslation();
 }

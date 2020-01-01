@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.base.Optional;
+
 import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.material.BuiltArmorMaterial;
@@ -18,6 +20,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 public class BuiltArmorItem extends ArmorItem {
@@ -66,6 +69,19 @@ public class BuiltArmorItem extends ArmorItem {
         for(EffectInstance effect : effects){
             tooltip.add(effect.getTooltip().setStyle(ToolBuilder.effectStyle));
         }
+
+        int numModifiers = Optional.of(stack.getOrCreateTag().getInt("num_modifiers")).or(0);
+        tooltip.add(new TranslatableText("text.toolbuilder.modifiers").append(numModifiers+"").setStyle(ToolBuilder.modifierStyle));
+        tooltip.add(new TranslatableText("text.toolbuilder.max_modifiers").append(Integer.toString(getNumModifiers(stack))).setStyle(ToolBuilder.modifierStyle));
+    }
+
+    public int getNumModifiers(ItemStack stack){
+        for(EffectInstance instance : getEffects(stack)){
+            if(instance.getEffect() == Effects.EXTRA_MODS){
+                return 3;
+            }
+        }
+        return 2;
     }
 
 }

@@ -108,6 +108,16 @@ public class EffectInstance implements Comparable<EffectInstance> {
         return effects;
     }
 
+    public static int getLevel(Collection<EffectInstance> instances, Effect effect){
+        int level = 0;
+        for(EffectInstance instance : instances){
+            if(instance.effect.equals(effect)){
+                level += instance.level;
+            }
+        }
+        return level;
+    }
+
     @Override
     public int compareTo(EffectInstance o) {
         return this.effect.getName().compareTo(o.effect.getName());

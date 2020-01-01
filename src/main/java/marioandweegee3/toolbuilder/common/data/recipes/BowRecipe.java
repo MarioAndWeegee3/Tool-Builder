@@ -30,6 +30,8 @@ public class BowRecipe {
                 " ys"
             });
 
+            recipe.group(ToolBuilder.makeID("bow_"+builder.getMaterial().handle.getName()));
+
             if(handle.getRepairItems(material.grip).contains(Items.STICK)){
                 if(ConfigHandler.INSTANCE.canCraftWithSticks()){
                     recipe.multiIngredient('y', ing -> {

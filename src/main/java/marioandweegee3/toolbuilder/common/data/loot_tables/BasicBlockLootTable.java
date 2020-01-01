@@ -6,19 +6,13 @@ import net.minecraft.util.Identifier;
 
 public class BasicBlockLootTable {
     protected Identifier block;
-    protected String header;
 
     public BasicBlockLootTable(Identifier block){
-        this(block, "block/");
-    }
-
-    public BasicBlockLootTable(Identifier block, String header){
         this.block = block;
-        this.header = header;
     }
 
     public void add(ServerResourcePackBuilder pack){
-        pack.addLootTable(new Identifier(block.getNamespace(), header+block.getPath()), table -> {
+        pack.addLootTable(new Identifier(block.getNamespace(), "blocks/"+block.getPath()), table -> {
             table.pool(pool -> {
                 pool.condition(new Identifier("survives_explosion"), j->{});
                 pool.rolls(1);

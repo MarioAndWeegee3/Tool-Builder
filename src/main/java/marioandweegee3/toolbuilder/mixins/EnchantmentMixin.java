@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.BuiltTool;
 import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
@@ -47,10 +46,6 @@ public abstract class EnchantmentMixin {
 
             for(EffectInstance effect : tool.getEffects(stack)){
                 baseDamage += effect.getEffect().getAdditonalAttackDamage(stack, group, effect.getLevel());
-            }
-
-            if(baseDamage > 0){
-                ToolBuilder.logger.info("Attack Damage "+baseDamage);
             }
         }
 
