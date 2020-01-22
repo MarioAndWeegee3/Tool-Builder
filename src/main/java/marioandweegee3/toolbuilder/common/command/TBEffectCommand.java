@@ -11,6 +11,7 @@ import marioandweegee3.toolbuilder.api.BuiltTool;
 import marioandweegee3.toolbuilder.api.effect.Effect;
 import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
+import marioandweegee3.toolbuilder.api.item.Modifiable;
 import marioandweegee3.toolbuilder.api.registry.TBRegistries;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 import net.minecraft.command.arguments.IdentifierArgumentType;
@@ -48,14 +49,14 @@ public class TBEffectCommand {
         return 1;
     }
 
-    public static int set(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    public static int add(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = context.getSource().getPlayer();
         ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
 
         Identifier effectId = IdentifierArgumentType.getIdentifier(context, "effect");
 
-        if(stack.getItem() instanceof BuiltTool){
-            BuiltTool tool = (BuiltTool) stack.getItem();
+        if(stack.getItem() instanceof Modifiable){
+            Modifiable tool = (Modifiable) stack.getItem();
 
             Effect effect = TBRegistries.EFFECTS.get(effectId);
             if(effect == null){
@@ -73,30 +74,6 @@ public class TBEffectCommand {
                 }
                 effectListTag.add(new EffectInstance(effect, 1).toTag());
                 toolTag.put(Effects.effectNBTtag, effectListTag);
-                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.applied").append(effectId.toString()), false);
-            } else {
-                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.alreadyApplied").append(effectId.toString()), false);
-            }
-        }
-
-        if(stack.getItem() instanceof BuiltArmorItem){
-            BuiltArmorItem armor = (BuiltArmorItem) stack.getItem();
-
-            Effect effect = TBRegistries.EFFECTS.get(effectId);
-            if(effect == null){
-                context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.invalid").append(effectId.toString()), false);
-                return 0;
-            }
-
-            Set<EffectInstance> effects = EffectInstance.mergeSets(armor.getEffects(stack), new HashSet<>(Arrays.asList(new EffectInstance(effect, 1))));
-
-            if(!armor.getEffects(stack).equals(effects)){
-                CompoundTag armorTag = stack.getOrCreateTag();
-                ListTag effectListTag = new ListTag();
-                for(EffectInstance instance : effects){
-                    effectListTag.add(instance.toTag());
-                }
-                armorTag.put(Effects.effectNBTtag, effectListTag);
                 context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.applied").append(effectId.toString()), false);
             } else {
                 context.getSource().sendFeedback(new TranslatableText("text.toolbuilder.commands.effect.set.alreadyApplied").append(effectId.toString()), false);

@@ -6,9 +6,6 @@ import com.mojang.brigadier.tree.ArgumentCommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.swordglowsblue.artifice.api.Artifice;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import marioandweegee3.ml3api.registry.RegistryHelper;
 import marioandweegee3.toolbuilder.api.ToolType;
 import marioandweegee3.toolbuilder.api.effect.Effect;
@@ -80,8 +77,6 @@ import net.minecraft.util.registry.Registry;
 public class ToolBuilder implements ModInitializer {
     public static final String modID = "toolbuilder";
 
-    public static final Logger logger = LogManager.getLogger("ToolBuilder");
-
     public static final Item obsidian_plate = new Item(new Item.Settings().group(ItemGroup.MATERIALS));
 
     public static final Style toolStyle = new Style().setColor(Formatting.GRAY);
@@ -91,7 +86,7 @@ public class ToolBuilder implements ModInitializer {
     public static final RegistryHelper HELPER = new RegistryHelper(modID);
 
     public static void debugDummy(){
-        logger.info("DEBUG DUMMY METHOD CALLED - CHANGE CODE FOR RELEASE");
+        HELPER.log("DEBUG DUMMY METHOD CALLED - CHANGE CODE FOR RELEASE");
     }
 
     @Override
@@ -103,7 +98,7 @@ public class ToolBuilder implements ModInitializer {
         LootConditions.register(new BuiltToolLootConditionFactory());
 
         Groups.makeGroupSets();
-        
+
         registerTorch(BlockTorches.stone_torch, BlockTorches.wall_stone_torch, "stone_torch", ItemGroup.DECORATIONS);
 
         HELPER.registerBlock("grip_station", new Block(FabricBlockSettings.copy(Blocks.SMITHING_TABLE).build()), ItemGroup.DECORATIONS);
@@ -396,8 +391,8 @@ public class ToolBuilder implements ModInitializer {
             .executes(TBEffectCommand::get)
             .build();
 
-            LiteralCommandNode<ServerCommandSource> effectSetNameNode = CommandManager
-            .literal("set")
+            LiteralCommandNode<ServerCommandSource> effectAddNameNode = CommandManager
+            .literal("add")
             .requires(source -> source.hasPermissionLevel(3))
             .build();
 
@@ -407,10 +402,10 @@ public class ToolBuilder implements ModInitializer {
             .requires(source -> source.hasPermissionLevel(3))
             .build();
 
-            ArgumentCommandNode<ServerCommandSource, Identifier> effectSetNode = CommandManager
+            ArgumentCommandNode<ServerCommandSource, Identifier> effectAddNode = CommandManager
             .argument("effect", IdentifierArgumentType.identifier())
             .suggests(Effects.effectSuggestions())
-            .executes(TBEffectCommand::set)
+            .executes(TBEffectCommand::add)
             .requires(source -> source.hasPermissionLevel(3))
             .build();
 
@@ -419,22 +414,22 @@ public class ToolBuilder implements ModInitializer {
             tbNode.addChild(effectsNode);
             toolbuilderNode.addChild(effectsNode);
             effectsNode.addChild(effectGetNode);
-            effectsNode.addChild(effectSetNameNode);
+            effectsNode.addChild(effectAddNameNode);
             effectsNode.addChild(effectClearNode);
-            effectSetNameNode.addChild(effectSetNode);
+            effectAddNameNode.addChild(effectAddNode);
         });
 
         Groups.init();
 
         int effectCount = 0;
-        logger.info("Registered these effects: ");
+        HELPER.log("Registered these effects: ");
 
         for(Map.Entry<Identifier, Effect> entry : TBRegistries.EFFECTS.entrySet()){
             effectCount++;
-            logger.info(entry.getKey());
+            HELPER.log(entry.getKey().toString());
         }
 
-        logger.info("Registered "+effectCount+" effects.");
+        HELPER.log("Registered "+effectCount+" effects.");
     }
 
     public static void registerTorch(Torch block, WallTorch block2, String name, ItemGroup group){

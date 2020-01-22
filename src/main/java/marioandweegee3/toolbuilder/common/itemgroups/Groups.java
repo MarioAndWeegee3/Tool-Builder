@@ -54,7 +54,7 @@ public class Groups{
             }
         })
         .build();
-        ToolBuilder.logger.info("Registered "+toolCount+" tools!");
+        ToolBuilder.HELPER.log("Registered "+toolCount+" tools!");
 
         armorGroup = FabricItemGroupBuilder.create(ToolBuilder.makeID("armor"))
         .icon(()->new ItemStack(Registry.ITEM.get(ToolBuilder.makeID("wood_chestplate"))))
@@ -64,6 +64,6 @@ public class Groups{
             }
         })
         .build();
-        ToolBuilder.logger.info("Registered "+armorCount+" armor!");
+        ToolBuilder.HELPER.log("Registered "+armorCount+" armor!");
     }
 }

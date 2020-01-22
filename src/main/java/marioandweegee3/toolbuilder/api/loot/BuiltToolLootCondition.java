@@ -2,7 +2,6 @@ package marioandweegee3.toolbuilder.api.loot;
 
 import java.util.Random;
 
-import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.BuiltTool;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -32,7 +31,6 @@ public class BuiltToolLootCondition implements LootCondition {
 
     @Override
     public boolean test(LootContext context) {
-        ToolBuilder.logger.info("loot check for BuiltToolLootCondition");
         Entity entity = context.get(LootContextParameters.KILLER_ENTITY);
 
         if(!(entity instanceof LivingEntity)){
