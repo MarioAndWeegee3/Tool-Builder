@@ -10,6 +10,6 @@ public interface ToolType {
     public String[] getRecipePattern();
 
     public int getHandleGripCost();
-
+    
     public Identifier fabricTagToAddTo();
 }

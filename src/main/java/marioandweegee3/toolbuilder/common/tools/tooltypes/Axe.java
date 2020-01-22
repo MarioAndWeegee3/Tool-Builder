@@ -24,6 +24,7 @@ public class Axe extends AxeItem implements BuiltTool {
     private Axe(BuiltToolMaterial material, Item.Settings settings) {
         super(material, damage, BuiltTool.getAttackSpeed(material, speed), settings);
         this.material = material;
+        
     }
 
     public static Item create(BuiltToolMaterial material) {
