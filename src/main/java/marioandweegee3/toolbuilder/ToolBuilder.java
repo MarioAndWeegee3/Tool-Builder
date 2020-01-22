@@ -31,6 +31,8 @@ import marioandweegee3.toolbuilder.client.models.NewToolModel;
 import marioandweegee3.toolbuilder.client.models.TBModels;
 import marioandweegee3.toolbuilder.client.models.ToolModel;
 import marioandweegee3.toolbuilder.common.blocks.BlockTorches;
+import marioandweegee3.toolbuilder.common.blocks.Torch;
+import marioandweegee3.toolbuilder.common.blocks.WallTorch;
 import marioandweegee3.toolbuilder.common.command.TBEffectCommand;
 import marioandweegee3.toolbuilder.common.config.ConfigHandler;
 import marioandweegee3.toolbuilder.common.data.TBData;
@@ -64,6 +66,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
+import net.minecraft.item.WallStandingBlockItem;
 import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.condition.LootConditions;
 import net.minecraft.loot.entry.ItemEntry;
@@ -72,6 +75,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Style;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class ToolBuilder implements ModInitializer {
     public static final String modID = "toolbuilder";
@@ -99,9 +103,8 @@ public class ToolBuilder implements ModInitializer {
         LootConditions.register(new BuiltToolLootConditionFactory());
 
         Groups.makeGroupSets();
-
-        HELPER.registerBlock("stone_torch", BlockTorches.stone_torch, ItemGroup.DECORATIONS);
-        HELPER.registerBlock("wall_stone_torch", BlockTorches.wall_stone_torch, ItemGroup.DECORATIONS);
+        
+        registerTorch(BlockTorches.stone_torch, BlockTorches.wall_stone_torch, "stone_torch", ItemGroup.DECORATIONS);
 
         HELPER.registerBlock("grip_station", new Block(FabricBlockSettings.copy(Blocks.SMITHING_TABLE).build()), ItemGroup.DECORATIONS);
         HELPER.registerBlock("mod_station", new Block(FabricBlockSettings.copy(Blocks.SMITHING_TABLE).build()), ItemGroup.DECORATIONS);
@@ -432,6 +435,13 @@ public class ToolBuilder implements ModInitializer {
         }
 
         logger.info("Registered "+effectCount+" effects.");
+    }
+
+    public static void registerTorch(Torch block, WallTorch block2, String name, ItemGroup group){
+        WallStandingBlockItem item = new WallStandingBlockItem(block, block2, new Item.Settings().group(group));
+        Registry.register(Registry.ITEM, makeID(name), item);
+        Registry.register(Registry.BLOCK, makeID(name), block);
+        Registry.register(Registry.BLOCK, makeID("wall_"+name), block2);
     }
 
     public static void makeToolItem(HandleMaterial handle, HeadMaterial head, ToolType toolType, Boolean grip) {
