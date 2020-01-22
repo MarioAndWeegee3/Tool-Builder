@@ -16,6 +16,7 @@ import marioandweegee3.toolbuilder.api.entry.TBInitializer;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
 import marioandweegee3.toolbuilder.api.item.ModifierItem;
 import marioandweegee3.toolbuilder.api.loot.BuiltToolLootCondition;
+import marioandweegee3.toolbuilder.api.loot.serial.BuiltToolLootConditionSerializer;
 import marioandweegee3.toolbuilder.api.material.BowMaterial;
 import marioandweegee3.toolbuilder.api.material.BuiltArmorMaterial;
 import marioandweegee3.toolbuilder.api.material.BuiltToolMaterial;
@@ -66,6 +67,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.item.WallStandingBlockItem;
 import net.minecraft.loot.ConstantLootTableRange;
+import net.minecraft.loot.condition.LootConditions;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -94,6 +96,8 @@ public class ToolBuilder implements ModInitializer {
         ConfigHandler.init();
 
         final boolean cottonResourcesLoaded = FabricLoader.getInstance().isModLoaded("cotton-resources");
+
+        LootConditions.register(new BuiltToolLootConditionSerializer());
 
         Groups.makeGroupSets();
 
@@ -235,7 +239,7 @@ public class ToolBuilder implements ModInitializer {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
                 .withRolls(ConstantLootTableRange.create(1))
                 .withEntry(ItemEntry.builder(Items.WITHER_SKELETON_SKULL))
-                .withCondition(new BuiltToolLootCondition(ToolTypes.GREATSWORD.getName(), true));
+                .withCondition(new BuiltToolLootCondition(ToolTypes.GREATSWORD.getName(), 20));
 
                 supplier.withPool(poolBuilder);
             }
