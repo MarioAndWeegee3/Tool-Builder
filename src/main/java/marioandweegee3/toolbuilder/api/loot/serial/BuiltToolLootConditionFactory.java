@@ -8,9 +8,9 @@ import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.loot.BuiltToolLootCondition;
 import net.minecraft.loot.condition.LootCondition;
 
-public class BuiltToolLootConditionSerializer extends LootCondition.Factory<BuiltToolLootCondition> {
+public class BuiltToolLootConditionFactory extends LootCondition.Factory<BuiltToolLootCondition> {
 
-    public BuiltToolLootConditionSerializer() {
+    public BuiltToolLootConditionFactory() {
         super(ToolBuilder.makeID("built_tool"), BuiltToolLootCondition.class);
     }
 

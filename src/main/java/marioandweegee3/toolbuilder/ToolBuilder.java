@@ -16,7 +16,7 @@ import marioandweegee3.toolbuilder.api.entry.TBInitializer;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
 import marioandweegee3.toolbuilder.api.item.ModifierItem;
 import marioandweegee3.toolbuilder.api.loot.BuiltToolLootCondition;
-import marioandweegee3.toolbuilder.api.loot.serial.BuiltToolLootConditionSerializer;
+import marioandweegee3.toolbuilder.api.loot.serial.BuiltToolLootConditionFactory;
 import marioandweegee3.toolbuilder.api.material.BowMaterial;
 import marioandweegee3.toolbuilder.api.material.BuiltArmorMaterial;
 import marioandweegee3.toolbuilder.api.material.BuiltToolMaterial;
@@ -97,7 +97,7 @@ public class ToolBuilder implements ModInitializer {
 
         final boolean cottonResourcesLoaded = FabricLoader.getInstance().isModLoaded("cotton-resources");
 
-        LootConditions.register(new BuiltToolLootConditionSerializer());
+        LootConditions.register(new BuiltToolLootConditionFactory());
 
         Groups.makeGroupSets();
 

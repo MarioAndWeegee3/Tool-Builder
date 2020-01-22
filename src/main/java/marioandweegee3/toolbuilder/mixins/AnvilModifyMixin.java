@@ -15,7 +15,7 @@ import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.BuiltTool;
 import marioandweegee3.toolbuilder.api.effect.Effect;
 import marioandweegee3.toolbuilder.api.effect.EffectInstance;
-import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
+import marioandweegee3.toolbuilder.api.item.Modifiable;
 import marioandweegee3.toolbuilder.api.item.ModifierItem;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 import marioandweegee3.toolbuilder.common.tools.tooltypes.ToolTypes;
@@ -55,8 +55,8 @@ public abstract class AnvilModifyMixin extends Container {
         ItemStack stack = this.inventory.getInvStack(0).copy();
         ItemStack modStack = this.inventory.getInvStack(1).copy();
         ItemStack resultStack = this.result.getInvStack(0).copy();
-        if(stack.getItem() instanceof BuiltTool){
-            BuiltTool tool = (BuiltTool) stack.getItem();
+        if(stack.getItem() instanceof Modifiable){
+            Modifiable tool = (Modifiable) stack.getItem();
             if(!modStack.isEmpty() && resultStack.isEmpty()){
                 if(modStack.getItem() instanceof ModifierItem){
                     ModifierItem modifier = (ModifierItem) modStack.getItem();
@@ -96,58 +96,20 @@ public abstract class AnvilModifyMixin extends Container {
                         result.setInvStack(0, stack);
                         levelCost.set(1);
                     }
-                } else if(modStack.getItem() == Items.LEATHER && !tool.getMaterial().isGripped){
-                    int gripCost = ToolTypes.get(tool.getType()).getHandleGripCost();
-                    if(gripCost > 0){
+                } else if(tool instanceof BuiltTool && modStack.getItem() == Items.LEATHER && !((BuiltTool)tool).getMaterial().isGripped){
+                    int gripCost = ToolTypes.get(((BuiltTool)tool).getType()).getHandleGripCost();
+                    if (gripCost > 0) {
                         ToolBuilder.debugDummy();
                         CompoundTag tag = stack.getOrCreateTag();
 
-                        Item grippedItem = Registry.ITEM.get(new Identifier(Registry.ITEM.getId((Item) tool).toString()+"_gripped"));
+                        Item grippedItem = Registry.ITEM
+                                .get(new Identifier(Registry.ITEM.getId((Item) tool).toString() + "_gripped"));
 
                         ItemStack resStack = new ItemStack(grippedItem);
                         resStack.setTag(tag);
 
                         result.setInvStack(0, resStack);
                         repairItemUsage = gripCost;
-                        levelCost.set(1);
-                    }
-                }
-            }
-        } else if(stack.getItem() instanceof BuiltArmorItem){
-            BuiltArmorItem armor = (BuiltArmorItem) stack.getItem();
-            if(!modStack.isEmpty() && resultStack.isEmpty()){
-                if(modStack.getItem() instanceof ModifierItem){
-                    Effect effect = ((ModifierItem)modStack.getItem()).getEffect();
-                    if(effect == null){
-                        return;
-                    }
-        
-                    Set<EffectInstance> effects = EffectInstance.mergeSets(armor.getEffects(stack), new HashSet<>(Arrays.asList(new EffectInstance(effect, 1))));
-        
-                    if(!armor.getEffects(stack).equals(effects)){
-                        CompoundTag armorTag = stack.getOrCreateTag();
-
-                        int numModifiers = Optional.of(armorTag.getInt("num_modifiers")).orElse(0);
-
-                        int effectLevel = EffectInstance.getLevel(effects, effect);
-
-                        if(numModifiers >= armor.getNumModifiers(stack) && effectLevel >= effect.getMaxLevel()){
-                            return;
-                        }
-
-                        numModifiers++;
-                        armorTag.putInt("num_modifiers", numModifiers);
-
-                        ListTag effectListTag = new ListTag();
-                        for(EffectInstance instance : effects){
-                            effectListTag.add(instance.toTag());
-                        }
-                        armorTag.put(Effects.effectNBTtag, effectListTag);
-
-                        stack.setTag(armorTag);
-                        repairItemUsage = 1;
-
-                        result.setInvStack(0, stack);
                         levelCost.set(1);
                     }
                 }
