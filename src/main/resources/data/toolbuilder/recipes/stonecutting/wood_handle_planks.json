@@ -1,8 +1,0 @@
-{
-    "type":"stonecutting",
-    "ingredient":[
-        {"tag":"planks"}
-    ],
-    "result":"toolbuilder:wood_handle",
-    "count":2
-}

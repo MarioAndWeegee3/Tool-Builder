@@ -1,11 +1,11 @@
 package marioandweegee3.toolbuilder.common.tools;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.material.StringMaterial;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 import net.minecraft.item.Item;
@@ -51,8 +51,8 @@ public enum StringMaterials implements StringMaterial {
     }
 
     @Override
-    public ArrayList<Effect> getEffects() {
-        return new ArrayList<>(effects);
+    public Set<EffectInstance> getEffects() {
+        return EffectInstance.fromEffects(effects);
     }
 
     @Override

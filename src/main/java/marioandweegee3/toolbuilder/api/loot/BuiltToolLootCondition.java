@@ -2,7 +2,6 @@ package marioandweegee3.toolbuilder.api.loot;
 
 import java.util.Random;
 
-import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.BuiltTool;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -15,16 +14,23 @@ import net.minecraft.loot.context.LootContextParameters;
 
 public class BuiltToolLootCondition implements LootCondition {
     protected String toolType;
-    protected boolean checkRng;
+    protected int chanceDenominator;
 
-    public BuiltToolLootCondition(String toolType, boolean checkRng){
+    public BuiltToolLootCondition(String toolType, int chanceDenominator){
         this.toolType = toolType;
-        this.checkRng = checkRng;
+        this.chanceDenominator = chanceDenominator;
+    }
+
+    public String getToolType(){
+        return toolType;
+    }
+    
+    public int getChanceDenominator() {
+        return chanceDenominator;
     }
 
     @Override
     public boolean test(LootContext context) {
-        ToolBuilder.logger.info("loot check for BuiltToolLootCondition");
         Entity entity = context.get(LootContextParameters.KILLER_ENTITY);
 
         if(!(entity instanceof LivingEntity)){
@@ -40,11 +46,7 @@ public class BuiltToolLootCondition implements LootCondition {
         if(stack.getItem() instanceof BuiltTool){
             BuiltTool tool = (BuiltTool) stack.getItem();
             if(tool.getType() == this.toolType){
-                if(checkRng){
-                    return onSuccess(stack);
-                } else {
-                    return true;
-                }
+                return checkSuccess(stack);
             } else {
                 return false;
             }
@@ -53,7 +55,7 @@ public class BuiltToolLootCondition implements LootCondition {
         }
     }
 
-    protected boolean onSuccess(ItemStack stack){
+    protected boolean checkSuccess(ItemStack stack){
         Random rng = new Random();
 
         int chanceDenominator = 20;
@@ -61,6 +63,10 @@ public class BuiltToolLootCondition implements LootCondition {
         int lootingLevel = EnchantmentHelper.getLevel(Enchantments.LOOTING, stack);
 
         chanceDenominator -= lootingLevel * 3;
+
+        if(chanceDenominator > 1){
+            chanceDenominator = 1;
+        }
 
         if(rng.nextInt(chanceDenominator) == 0){
             return true;

@@ -11,24 +11,25 @@ import java.util.Set;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.material.HandleMaterial;
 import marioandweegee3.toolbuilder.common.config.ConfigHandler;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 
 public enum HandleMaterials implements HandleMaterial {
-    WOOD(0, 1, 1, 1, 0, "wood", Effects.GROWING), 
-    STONE(20, 0.95f, 0.9f, 1.1f, -8, "stone", Effects.RESILIENT), 
-    GOLD(-10, 1.2f, 1.18f, 0.85f, 10, "gold", Effects.EXPERIENCE),
-    BONE(30, 0.90f, 1.08f, 0.92f, -5, "bone"), 
-    DIAMOND(35, 1.25f, 1.2f, 0.8f, -10, "diamond");
+    WOOD(0, 1, 1, 1, 0, "#planks", "wood", Effects.GROWING), 
+    STONE(20, 0.95f, 0.9f, 1.1f, -8, "cobblestone", "stone", Effects.RESILIENT), 
+    GOLD(-10, 1.2f, 1.18f, 0.85f, 10, "gold_ingot", "gold", Effects.EXPERIENCE),
+    BONE(30, 0.90f, 1.08f, 0.92f, -5, "bone", "bone"), 
+    DIAMOND(35, 1.25f, 1.2f, 0.8f, -10, "diamond", "diamond");
 
     private float durabilityMultiplier, miningSpeedMod, drawSpeedMod;
     private int extraDurability;
     private int enchant;
-    private String name;
+    private String name, craftIngredient;
     private Set<Effect> effects = new HashSet<>(0);
 
-    private HandleMaterials(int extra, float multiplier, float miningSpeedMod, float drawSpeedMod, int enchantModifier, String name,
+    private HandleMaterials(int extra, float multiplier, float miningSpeedMod, float drawSpeedMod, int enchantModifier, String craftIngredient, String name,
             Effect... effects) {
         this.durabilityMultiplier = multiplier;
         this.extraDurability = extra;
@@ -39,6 +40,7 @@ public enum HandleMaterials implements HandleMaterial {
             this.effects.add(effect);
         }
         this.name = name;
+        this.craftIngredient = craftIngredient;
     }
 
     @Override
@@ -119,7 +121,12 @@ public enum HandleMaterials implements HandleMaterial {
     }
 
     @Override
-    public ArrayList<Effect> getEffects() {
-        return new ArrayList<>(effects);
+    public Set<EffectInstance> getEffects() {
+        return EffectInstance.fromEffects(effects);
+    }
+
+    @Override
+    public String getCraftIngredient() {
+        return craftIngredient;
     }
 }

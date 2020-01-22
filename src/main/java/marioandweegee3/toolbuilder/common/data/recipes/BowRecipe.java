@@ -33,12 +33,21 @@ public class BowRecipe {
             "y s",
             " ys"
         });
-        recipe.group(ToolBuilder.makeID("bow_"+handle.getName()));
+        
+        recipe.group(ToolBuilder.makeID("bow_"+builder.getMaterial().handle.getName()));
 
         if(handle.getRepairItems(material.grip).contains(Items.STICK)){
             if(ConfigHandler.INSTANCE.canCraftWithSticks()){
                 recipe.multiIngredient('y', ing -> {
                     ing.item(new Identifier("stick"));
+                    for(Item item : handle.getRepairItems(material.grip)){
+                        if(item != Items.STICK){
+                            ing.item(Registry.ITEM.getId(item));
+                        }
+                    }
+                });
+            } else {
+                recipe.multiIngredient('y', ing -> {
                     for(Item item : handle.getRepairItems(material.grip)){
                         if(item != Items.STICK){
                             ing.item(Registry.ITEM.getId(item));

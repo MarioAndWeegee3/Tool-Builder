@@ -5,18 +5,19 @@ import java.util.List;
 import marioandweegee3.toolbuilder.common.config.ConfigHandler;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class MagneticEffect{
-    public static void run(LivingEntity miner, World world){
+    public static void run(LivingEntity miner, World world, int level){
         //Based on code from Tinkers Construct
         double x = miner.getX();
         double y = miner.getY();
         double z = miner.getZ();
 
-        double range = ConfigHandler.INSTANCE.getMagneticRange();
+        double range = ConfigHandler.INSTANCE.getMagneticRange() * level;
 
         List<ItemEntity> items = world.getEntities(ItemEntity.class, new Box(x-range, y-range, z-range, x+range, y+range, z+range), null);
 
@@ -43,5 +44,16 @@ public class MagneticEffect{
 
             pulled++;
         }
+    }
+
+    public static void writeTicks(int ticks, CompoundTag tag){
+        tag.putInt(Effects.magneticTickNBTtag, ticks);
+    }
+
+    public static int readTicks(CompoundTag tag){
+        if(tag.contains(Effects.magneticTickNBTtag)){
+            return tag.getInt(Effects.magneticTickNBTtag);
+        }
+        return 0;
     }
 }

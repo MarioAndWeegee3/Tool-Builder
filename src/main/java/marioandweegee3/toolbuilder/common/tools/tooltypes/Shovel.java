@@ -1,5 +1,6 @@
 package marioandweegee3.toolbuilder.common.tools.tooltypes;
 
+import java.util.Arrays;
 import java.util.List;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
@@ -7,6 +8,7 @@ import marioandweegee3.toolbuilder.api.BuiltTool;
 import marioandweegee3.toolbuilder.api.material.*;
 import marioandweegee3.toolbuilder.common.itemgroups.Groups;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Material;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -36,6 +38,13 @@ public class Shovel extends ShovelItem implements BuiltTool{
         item = create(material);
         Registry.register(Registry.ITEM, ToolBuilder.makeID(name), item);
         Groups.addTo(item, group);
+    }
+
+    @Override
+    public boolean isEffectiveOn(BlockState state) {
+        return super.isEffectiveOn(state)
+                || Arrays.asList(Material.CLAY, Material.EARTH, Material.SAND, Material.SNOW, Material.SNOW_BLOCK, Material.ORGANIC)
+                        .contains(state.getMaterial());
     }
 
     @Override

@@ -29,7 +29,7 @@ public abstract class RecipeRemoveMixin implements ReloadableResourceManager {
 
             if(tb_shouldRemove(id)){
                 sortedResources.remove(id);
-                ToolBuilder.logger.info("Removed "+id);
+                ToolBuilder.HELPER.log("Removed "+id);
             }
         }
     }

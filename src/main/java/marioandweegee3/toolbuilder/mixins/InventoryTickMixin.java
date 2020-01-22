@@ -12,26 +12,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import marioandweegee3.toolbuilder.api.BuiltTool;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
-import marioandweegee3.toolbuilder.common.config.ConfigHandler;
-import marioandweegee3.toolbuilder.common.effect.MagneticEffect;
-import marioandweegee3.toolbuilder.common.effect.Effects;
 import marioandweegee3.toolbuilder.common.tools.tooltypes.Bow;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.world.World;
 
 @Mixin(ItemStack.class)
 public abstract class InventoryTickMixin{
-    private static final int tb_repairChance = 30;
     @Shadow
     public abstract Item getItem();
 
@@ -56,85 +49,43 @@ public abstract class InventoryTickMixin{
     @Shadow
     public abstract boolean damage(int int_1, Random random_1, ServerPlayerEntity serverPlayerEntity_1);
 
+    @Shadow
+    public abstract void setTag(CompoundTag tag);
+
     @SuppressWarnings("all")
     @Inject(method = "inventoryTick", at = @At("RETURN"))
     private void tick(World world, Entity holder, int int1, boolean boolean1, CallbackInfo ci){
         if(getItem() != null){
             if(holder != null){
+                if(!(holder instanceof LivingEntity) || world.isClient) return;
+
+                ItemStack copy = copy();
                 if(getItem() instanceof BuiltTool){
                     BuiltTool tool = (BuiltTool)getItem();
-                    if(tool.getEffects(copy()).contains(Effects.GROWING) && getDamage()-1 >= 0){
-                        if(!world.isClient && holder instanceof LivingEntity && world.random.nextInt(20*tb_repairChance) == 0){
-                            if(((LivingEntity)holder).getActiveItem().getItem() != getItem()){
-                                setDamage(getDamage()-1);
-                            }
-                        }
+                    for(EffectInstance effect : tool.getEffects(copy)) {
+                        effect.getEffect().onInventoryTick(copy, (LivingEntity) holder, effect.getLevel());
                     }
+                    this.setTag(copy.getOrCreateTag());
                 } else if(getItem() instanceof Bow){
                     Bow bow = (Bow)getItem();
-                    if(bow.getEffects().contains(Effects.GROWING) && getDamage()-1 >= 0){
-                        if(!world.isClient && holder instanceof LivingEntity && world.random.nextInt(20*tb_repairChance) == 0){
-                            if(((LivingEntity)holder).getActiveItem().getItem() != getItem()){
-                                setDamage(getDamage()-1);
-                            }
-                        }
+                    for(EffectInstance effect : bow.getEffects()) {
+                        effect.getEffect().onInventoryTick(copy, (LivingEntity) holder, effect.getLevel());
                     }
+                    this.setTag(copy.getOrCreateTag());
                 } else if(getItem() instanceof BuiltArmorItem){
                     ArrayList<ItemStack> armorItems = new ArrayList<ItemStack>((Collection<ItemStack>)holder.getArmorItems());
                     BuiltArmorItem armor = (BuiltArmorItem) getItem();
-                    if(armor.getEffects(copy()).contains(Effects.GROWING) && getDamage()-1 >= 0){
-                        if(!world.isClient && holder instanceof LivingEntity && world.random.nextInt(20*tb_repairChance) == 0){
-                            setDamage(getDamage()-1);
+                    if(armorItems.contains(this) && !world.isClient) {
+                        for(EffectInstance instance : armor.getEffects(copy)){
+                            instance.getEffect().onArmorInventoryTick(copy, (LivingEntity) holder, instance.getLevel());
                         }
                     }
-                    if(armor.getEffects(copy()).contains(Effects.FLAMING) && !holder.isOnFire()){
-                        if(!world.isClient){
-                            holder.setOnFireFor(ConfigHandler.INSTANCE.getFlamingTime());
-                        }
-                    }
-                    if(armor.getEffects(copy()).contains(Effects.MAGNETIC) && holder instanceof LivingEntity){
-                        int tick = tb_readArmorMagnetic();
-
-                        if(armorItems.contains(this) && !world.isClient){
-                            if(tick <= 2){
-                                tick++;
-                            } else {
-                                MagneticEffect.run((LivingEntity) holder, world);
-                                tick = 0;
-                            }
-
-                            tb_writeArmorMagnetic(tick);
-                        }
-                    }
-                    if(armor.getEffects(copy()).contains(Effects.AQUATIC) && holder instanceof LivingEntity){
-                        if(armorItems.contains(this) && !world.isClient){
-                            LivingEntity entity = (LivingEntity) holder;
-                            if(entity.isInFluid(FluidTags.WATER)){
-                                if(armor.getSlotType() == EquipmentSlot.HEAD){
-                                    entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 20, 0, false, false));
-                                } else {
-                                    entity.addStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 20, 1, false, false));
-                                }
-                            }
-                        }
-                    }
+                    this.setTag(copy.getOrCreateTag());
                 }
+
+                
             }
         }
-    }
-
-    private void tb_writeArmorMagnetic(int ticks){
-        CompoundTag tag = getOrCreateTag();
-        tag.putInt(Effects.magneticTickNBTtag, ticks);
-    }
-
-    private int tb_readArmorMagnetic(){
-        CompoundTag tag = getOrCreateTag();
-        if(tag.contains(Effects.magneticTickNBTtag)){
-            return tag.getInt(Effects.magneticTickNBTtag);
-        }
-
-        return 0;
     }
 
     @Inject(method = "getMaxDamage", at = @At("RETURN"), cancellable = true)
@@ -143,13 +94,13 @@ public abstract class InventoryTickMixin{
 
         if(getItem() instanceof BuiltTool){
             BuiltTool tool = (BuiltTool)getItem();
-            if(tool.getEffects(copy()).contains(Effects.DURABLE)){
-                maxDamage *= ConfigHandler.INSTANCE.getDurableMultiplier();
+            for(EffectInstance instance : tool.getEffects(copy())){
+                maxDamage = instance.getEffect().modifyDurability(maxDamage);
             }
         } else if(getItem() instanceof BuiltArmorItem){
             BuiltArmorItem armor = (BuiltArmorItem) getItem();
-            if(armor.getEffects(copy()).contains(Effects.DURABLE)){
-                maxDamage *= ConfigHandler.INSTANCE.getDurableMultiplier();
+            for(EffectInstance instance : armor.getEffects(copy())){
+                maxDamage = instance.getEffect().modifyDurability(maxDamage);
             }
         }
 

@@ -1,0 +1,56 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+    "parent":"toolbuilder:item/template/_tool_display",
+    "elements": [
+        {
+            "name": "Handle",
+            "from": [ 7, 1, 7 ], 
+            "to": [ 9, 12, 8 ], 
+            "faces": {
+                "north": { "texture": "#handle", "uv": [ 2, 0, 4, 11 ] },
+                "east": { "texture": "#handle", "uv": [ 2, 5, 3, 16 ] },
+                "south": { "texture": "#handle", "uv": [ 0, 0, 2, 11 ] },
+                "west": { "texture": "#handle", "uv": [ 3, 0, 4, 11 ] },
+                "down": { "texture": "#handle", "uv": [ 5, 0, 7, 1 ] }
+            }
+        },
+        {
+            "name": "Head Center",
+            "from": [ 4, 12, 6 ], 
+            "to": [ 10, 15, 9 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 2, 0, 8, 3 ] },
+                "east": { "texture": "#head", "uv": [ 2, 11, 4, 16 ] },
+                "south": { "texture": "#head", "uv": [ 2, 0, 8, 3 ] },
+                "west": { "texture": "#head", "uv": [ 2, 11, 4, 16 ] },
+                "up": { "texture": "#head", "uv": [ 2, 0, 8, 3 ] },
+                "down": { "texture": "#head", "uv": [ 2, 0, 8, 3 ] }
+            }
+        },
+        {
+            "name": "Cap",
+            "from": [ 7, 15, 7 ], 
+            "to": [ 9, 16, 8 ], 
+            "faces": {
+                "north": { "texture": "#handle", "uv": [ 2, 0, 4, 1 ] },
+                "east": { "texture": "#handle", "uv": [ 1, 0, 2, 1 ] },
+                "south": { "texture": "#handle", "uv": [ 0, 0, 2, 1 ] },
+                "west": { "texture": "#handle", "uv": [ 0, 0, 1, 1 ] },
+                "up": { "texture": "#handle", "uv": [ 5, 0, 7, 1 ], "rotation": 180 }
+            }
+        },
+        {
+            "name": "Head Front",
+            "from": [ 2, 10, 7 ], 
+            "to": [ 5, 17, 8 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 1, 0, 4, 7 ], "rotation": 180 },
+                "east": { "texture": "#head", "uv": [ 3, 13, 4, 16 ] },
+                "south": { "texture": "#head", "uv": [ 1, 0, 4, 7 ] },
+                "west": { "texture": "#head", "uv": [ 0, 0, 1, 7 ] },
+                "up": { "texture": "#head", "uv": [ 1, 0, 4, 1 ] },
+                "down": { "texture": "#head", "uv": [ 1, 0, 4, 1 ] }
+            }
+        }
+    ]
+}

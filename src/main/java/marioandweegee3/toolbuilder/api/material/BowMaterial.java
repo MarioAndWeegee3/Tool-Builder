@@ -1,10 +1,9 @@
 package marioandweegee3.toolbuilder.api.material;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
-import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import net.minecraft.item.Item;
 
 public class BowMaterial {
@@ -34,10 +33,7 @@ public class BowMaterial {
         return handle.getRepairItems(grip);
     }
 
-    public Set<Effect> getEffects(){
-        Set<Effect> effects = new HashSet<>(0);
-        effects.addAll(handle.getEffects());
-        effects.addAll(string.getEffects());
-        return effects;
+    public Set<EffectInstance> getEffects(){
+        return EffectInstance.mergeSets(handle.getEffects(), string.getEffects());
     }
 }

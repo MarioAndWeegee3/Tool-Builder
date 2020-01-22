@@ -1,8 +1,0 @@
-{
-    "type":"stonecutting",
-    "ingredient":[
-        {"item":"gold_ingot"}
-    ],
-    "result":"toolbuilder:gold_handle",
-    "count":2
-}

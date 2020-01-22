@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import marioandweegee3.toolbuilder.api.BuiltTool;
-import marioandweegee3.toolbuilder.common.effect.Effects;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.util.SetBypassArmor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -36,9 +36,11 @@ public abstract class BypassArmorMixin extends DamageSource implements SetBypass
                     ItemStack stack = ((LivingEntity)source).getStackInHand(Hand.MAIN_HAND);
                     BuiltTool tool = (BuiltTool)stack.getItem();
 
-                    if(tool.getEffects(stack).contains(Effects.MAGICAL)){
-                        ((SetBypassArmor)this).set();
-                        this.setUsesMagic();
+                    for(EffectInstance effect : tool.getEffects(stack)) {
+                        if(effect.getEffect().bypassesArmor(name, (LivingEntity) source, effect.getLevel())){
+                            this.set();
+                            this.setUsesMagic();
+                        }
                     }
                 }
             }

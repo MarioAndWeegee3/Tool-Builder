@@ -1,9 +1,0 @@
-{
-    "type":"stonecutting",
-    "ingredient":[
-        {"item":"cobblestone"},
-        {"item":"stone"}
-    ],
-    "result":"toolbuilder:stone_handle",
-    "count":2
-}

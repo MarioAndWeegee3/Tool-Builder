@@ -4,6 +4,7 @@ import java.util.List;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
 import marioandweegee3.toolbuilder.api.BuiltTool;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
 import marioandweegee3.toolbuilder.api.material.BuiltToolMaterial;
 import marioandweegee3.toolbuilder.common.effect.Effects;
@@ -116,36 +117,36 @@ public class Rapier extends SwordItem implements BuiltTool {
             }
             entity.setSprinting(true);
 
-            float increase = (float) (0.02 * time + 0.2);
-            if(increase > 0.56f){
-                increase = 0.56f;
+            float vertical = (float) (0.02 * time + 0.2);
+            if(vertical > 0.56f){
+                vertical = 0.56f;
             }
             
-            float speed = 0.05f * time;
-            if(speed > 0.925f){
-                speed = 0.925f;
+            float horizontal = 0.05f * time;
+            if(horizontal > 0.925f){
+                horizontal = 0.925f;
             }
 
-            if(getEffects(stack).contains(Effects.LIGHT)){
-                speed += 0.1f;
-                increase += 0.02f;
+            if(EffectInstance.toEffectSet(getEffects(stack)).contains(Effects.LIGHT)){
+                horizontal += 0.1f;
+                vertical += 0.02f;
             }
 
             for(ItemStack armorStack : entity.getArmorItems()){
                 if(armorStack.getItem() instanceof BuiltArmorItem){
                     BuiltArmorItem armor = (BuiltArmorItem) armorStack.getItem();
-                    if(armor.getEffects(armorStack).contains(Effects.LIGHT)){
-                        speed += 0.1f;
-                        increase += 0.02f;
+                    if(EffectInstance.toEffectSet(armor.getEffects(armorStack)).contains(Effects.LIGHT)){
+                        horizontal += 0.1f;
+                        vertical += 0.02f;
                         break;
                     }
                 }
             }
 
             entity.setVelocity(
-                -MathHelper.sin((float) (entity.yaw / 180 * Math.PI)) * MathHelper.cos((float) (entity.pitch / 180 * Math.PI)) * speed,
-                entity.getVelocity().y + increase, 
-                MathHelper.cos((float) (entity.yaw / 180 * Math.PI)) * MathHelper.cos((float) (entity.pitch / 180 * Math.PI)) * speed
+                -MathHelper.sin((float) (entity.yaw / 180 * Math.PI)) * MathHelper.cos((float) (entity.pitch / 180 * Math.PI)) * horizontal,
+                entity.getVelocity().y + vertical, 
+                MathHelper.cos((float) (entity.yaw / 180 * Math.PI)) * MathHelper.cos((float) (entity.pitch / 180 * Math.PI)) * horizontal
             );
 
             entity.fallDistance = 0;

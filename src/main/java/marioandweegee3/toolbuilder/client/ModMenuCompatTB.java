@@ -41,6 +41,7 @@ public class ModMenuCompatTB implements ModMenuApi{
             general.addEntry(entryBuilder.startStrList("Shear Loot Tables", config.get("shearLootTables", ArrayList.class)).setDefaultValue(Arrays.asList(DEFAULTS.shearLootTables)).setSaveConsumer(val->config.set("shearLootTables", val)).build());
             general.addEntry(entryBuilder.startBooleanToggle("Add Nether Cobalt Loot Table", config.get("addNetherCobaltTable", Boolean.class)).setDefaultValue(DEFAULTS.addNetherCobaltLootTable).setSaveConsumer(val->config.set("addNetherCobaltTable", val)).build());
             general.addEntry(entryBuilder.startBooleanToggle("Ignore Missing Cotton Resources", config.get("ignoreMissingCottonResources", Boolean.class)).setDefaultValue(DEFAULTS.ignoreCottonResourcesExclusion).setSaveConsumer(val->config.set("ignoreMissingCottonResources", val)).build());
+            general.addEntry(entryBuilder.startBooleanToggle("Use New Tool Models", config.get("useNewModels", Boolean.class)).setDefaultValue(DEFAULTS.useNewModels).setSaveConsumer(val -> config.set("useNewModels", val)).build());
 
             ConfigCategory effects = builder.getOrCreateCategory("Effects");
             effects.addEntry(entryBuilder.startIntField("Poisonous Duration", config.getSubConfig("effects").getInt("poisonTime")).setDefaultValue(DEFAULTS.poisonTime).setSaveConsumer(val->config.setSubConfigVal("effects", "poisonTime", val)).build());

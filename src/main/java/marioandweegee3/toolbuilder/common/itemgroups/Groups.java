@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
+import marioandweegee3.toolbuilder.client.lang.TBLang;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -26,7 +27,9 @@ public class Groups{
     public static void makeGroupSets(){
         groupItems = Maps.newHashMap();
         groupItems.put("tools", new ArrayList<>(0));
+        TBLang.addItemGroup("tools");
         groupItems.put("armor", new ArrayList<>(0));
+        TBLang.addItemGroup("armor");
     }
 
     public static void addTo(Item item, String group){
@@ -51,7 +54,7 @@ public class Groups{
             }
         })
         .build();
-        ToolBuilder.logger.info("Registered "+toolCount+" tools!");
+        ToolBuilder.HELPER.log("Registered "+toolCount+" tools!");
 
         armorGroup = FabricItemGroupBuilder.create(ToolBuilder.makeID("armor"))
         .icon(()->new ItemStack(Registry.ITEM.get(ToolBuilder.makeID("wood_chestplate"))))
@@ -61,6 +64,6 @@ public class Groups{
             }
         })
         .build();
-        ToolBuilder.logger.info("Registered "+armorCount+" armor!");
+        ToolBuilder.HELPER.log("Registered "+armorCount+" armor!");
     }
 }

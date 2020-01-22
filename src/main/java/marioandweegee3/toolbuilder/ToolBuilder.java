@@ -6,15 +6,15 @@ import com.mojang.brigadier.tree.ArgumentCommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.swordglowsblue.artifice.api.Artifice;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import marioandweegee3.ml3api.registry.RegistryHelper;
 import marioandweegee3.toolbuilder.api.ToolType;
 import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.entry.TBInitializer;
 import marioandweegee3.toolbuilder.api.item.BuiltArmorItem;
 import marioandweegee3.toolbuilder.api.item.ModifierItem;
 import marioandweegee3.toolbuilder.api.loot.BuiltToolLootCondition;
+import marioandweegee3.toolbuilder.api.loot.serial.BuiltToolLootConditionFactory;
 import marioandweegee3.toolbuilder.api.material.BowMaterial;
 import marioandweegee3.toolbuilder.api.material.BuiltArmorMaterial;
 import marioandweegee3.toolbuilder.api.material.BuiltToolMaterial;
@@ -22,22 +22,21 @@ import marioandweegee3.toolbuilder.api.material.HandleMaterial;
 import marioandweegee3.toolbuilder.api.material.HeadMaterial;
 import marioandweegee3.toolbuilder.api.material.StringMaterial;
 import marioandweegee3.toolbuilder.api.registry.TBRegistries;
+import marioandweegee3.toolbuilder.client.lang.TBLang;
 import marioandweegee3.toolbuilder.client.models.BowModel;
+import marioandweegee3.toolbuilder.client.models.NewToolModel;
 import marioandweegee3.toolbuilder.client.models.TBModels;
 import marioandweegee3.toolbuilder.client.models.ToolModel;
 import marioandweegee3.toolbuilder.common.blocks.BlockTorches;
 import marioandweegee3.toolbuilder.common.blocks.Torch;
 import marioandweegee3.toolbuilder.common.blocks.WallTorch;
-import marioandweegee3.toolbuilder.common.blocks.gripping_station.GripStationBlock;
-import marioandweegee3.toolbuilder.common.blocks.gripping_station.GripStationEntity;
-import marioandweegee3.toolbuilder.common.blocks.mod_station.ModStationBlock;
-import marioandweegee3.toolbuilder.common.blocks.mod_station.ModStationEntity;
 import marioandweegee3.toolbuilder.common.command.TBEffectCommand;
 import marioandweegee3.toolbuilder.common.config.ConfigHandler;
 import marioandweegee3.toolbuilder.common.data.TBData;
 import marioandweegee3.toolbuilder.common.data.loot_tables.BasicBlockLootTable;
 import marioandweegee3.toolbuilder.common.data.recipes.ArmorRecipe;
 import marioandweegee3.toolbuilder.common.data.recipes.BowRecipe;
+import marioandweegee3.toolbuilder.common.data.recipes.HandleRecipe;
 import marioandweegee3.toolbuilder.common.data.recipes.ToolRecipe;
 import marioandweegee3.toolbuilder.common.itemgroups.Groups;
 import marioandweegee3.toolbuilder.common.items.Handles;
@@ -46,8 +45,10 @@ import marioandweegee3.toolbuilder.common.items.StringItems;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 import marioandweegee3.toolbuilder.common.tools.HandleMaterials;
 import marioandweegee3.toolbuilder.common.tools.HeadMaterials;
+import marioandweegee3.toolbuilder.common.tools.StringMaterials;
 import marioandweegee3.toolbuilder.common.tools.tooltypes.Bow;
 import marioandweegee3.toolbuilder.common.tools.tooltypes.ToolTypes;
+import marioandweegee3.toolbuilder.util.MiscUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
@@ -58,15 +59,14 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.command.arguments.IdentifierArgumentType;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.item.WallStandingBlockItem;
 import net.minecraft.loot.ConstantLootTableRange;
+import net.minecraft.loot.condition.LootConditions;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -78,19 +78,16 @@ import net.minecraft.util.registry.Registry;
 public class ToolBuilder implements ModInitializer {
     public static final String modID = "toolbuilder";
 
-    public static final Logger logger = LogManager.getLogger("ToolBuilder");
-
     public static final Item obsidian_plate = new Item(new Item.Settings().group(ItemGroup.MATERIALS));
 
     public static final Style toolStyle = new Style().setColor(Formatting.GRAY);
     public static final Style effectStyle = new Style().setColor(Formatting.AQUA);
     public static final Style modifierStyle = new Style().setColor(Formatting.DARK_GREEN);
 
-    public static final BlockEntityType<GripStationEntity> GRIPPING_STATION = BlockEntityType.Builder.create(GripStationEntity::new, GripStationBlock.BLOCK).build(null);
-    public static final BlockEntityType<ModStationEntity> MOD_STATION = BlockEntityType.Builder.create(ModStationEntity::new, ModStationBlock.BLOCK).build(null);
+    public static final RegistryHelper HELPER = new RegistryHelper(modID);
 
     public static void debugDummy(){
-        logger.info("DEBUG DUMMY METHOD CALLED - CHANGE CODE FOR RELEASE");
+        HELPER.log("DEBUG DUMMY METHOD CALLED - CHANGE CODE FOR RELEASE");
     }
 
     @Override
@@ -99,37 +96,41 @@ public class ToolBuilder implements ModInitializer {
 
         final boolean cottonResourcesLoaded = FabricLoader.getInstance().isModLoaded("cotton-resources");
 
+        LootConditions.register(new BuiltToolLootConditionFactory());
+
         Groups.makeGroupSets();
 
-        register(BlockTorches.stone_torch, BlockTorches.wall_stone_torch, "stone_torch", ItemGroup.DECORATIONS);
+        registerTorch(BlockTorches.stone_torch, BlockTorches.wall_stone_torch, "stone_torch", ItemGroup.DECORATIONS);
+
+        HELPER.registerBlock("grip_station", new Block(FabricBlockSettings.copy(Blocks.SMITHING_TABLE).build()), ItemGroup.DECORATIONS);
+        HELPER.registerBlock("mod_station", new Block(FabricBlockSettings.copy(Blocks.SMITHING_TABLE).build()), ItemGroup.DECORATIONS);
 
         TBData.blockLootTables.add(new BasicBlockLootTable(makeID("stone_torch")));
 
-        register(GripStationBlock.BLOCK, "grip_station", ItemGroup.DECORATIONS);
-        register(ModStationBlock.BLOCK, "mod_station", ItemGroup.DECORATIONS);
+        TBModels.blockItems.add("stone_torch");
 
         TBModels.blockItems.add("grip_station");
         TBModels.blockItems.add("mod_station");
 
-        Registry.register(Registry.BLOCK_ENTITY, makeID("gripping_station"), GRIPPING_STATION);
-        Registry.register(Registry.BLOCK_ENTITY, makeID("mod_station"), MOD_STATION);
-
         TBData.blockLootTables.add(new BasicBlockLootTable(makeID("grip_station")));
         TBData.blockLootTables.add(new BasicBlockLootTable(makeID("mod_station")));
 
-        register(StringItems.blazeString, "blaze_string");
-        register(StringItems.enderString, "ender_string");
+        HELPER.registerItem("blaze_string", StringItems.blazeString);
+        HELPER.registerItem("ender_string", StringItems.enderString);
 
         TBModels.simpleItems.put("blaze_string", "string/blaze");
         TBModels.simpleItems.put("ender_string", "string/ender");
 
-        register(obsidian_plate, "obsidian_plate");
-        register(new Item(new Item.Settings().group(ItemGroup.MATERIALS)), "slime_crystal");
+        HELPER.registerItem("obsidian_plate", obsidian_plate);
+
+        TBModels.simpleItems.put("obsidian_plate", "plate/obsidian");
+
+        HELPER.registerItem("slime_crystal", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 
         TBModels.simpleItems.put("slime_crystal", "misc/slime_crystal");
 
-        register(new Block(FabricBlockSettings.copy(Blocks.OBSIDIAN).strength(100, 2400).build()), "dense_obsidian", ItemGroup.BUILDING_BLOCKS);
-        register(new Block(FabricBlockSettings.of(Material.GLASS).build()), "slime_crystal_block", ItemGroup.BUILDING_BLOCKS);
+        HELPER.registerBlock("dense_obsidian", new Block(FabricBlockSettings.copy(Blocks.OBSIDIAN).strength(100, 2400).build()), ItemGroup.BUILDING_BLOCKS);
+        HELPER.registerBlock("slime_crystal_block", new Block(FabricBlockSettings.of(Material.GLASS).build()), ItemGroup.BUILDING_BLOCKS);
 
         TBModels.simpleBlocks.put("slime_crystal_block", "slime_crystal_block");
         TBModels.simpleBlocks.put("dense_obsidian", "dense_obsidian");
@@ -138,38 +139,61 @@ public class ToolBuilder implements ModInitializer {
         TBModels.blockItems.add("slime_crystal_block");
         TBModels.blockItems.add("dense_obsidian");
 
-        register(new ModifierItem(Effects.POISONOUS), "poison_tip");
-        register(new HolyWaterItem(), "holy_water");
-        register(new ModifierItem(Effects.GROWING), "moss");
-        register(new ModifierItem(Effects.FLAMING), "blazing_stone");
-        register(new ModifierItem(Effects.DURABLE), "heavy_plate");
+        HELPER.registerAllItems(MiscUtils.toMap(new Object[][]{
+            {"poison_tip", new ModifierItem(Effects.POISONOUS)},
+            {"holy_water", new HolyWaterItem()},
+            {"moss", new ModifierItem(Effects.GROWING)},
+            {"blazing_stone", new ModifierItem(Effects.FLAMING)},
+            {"heavy_plate", new ModifierItem(Effects.DURABLE)},
+            {"magnet", new ModifierItem(Effects.MAGNETIC)}
+        }));
 
         TBModels.simpleItems.put("poison_tip", "modifier/poison");
         TBModels.simpleItems.put("holy_water", "modifier/holy");
         TBModels.simpleItems.put("moss", "modifier/growing");
         TBModels.simpleItems.put("blazing_stone", "modifier/flaming");
         TBModels.simpleItems.put("heavy_plate", "modifier/durable");
+        TBModels.simpleItems.put("magnet", "modifier/magnetic");
 
-        register(Handles.wood_handle, "wood_handle");
-        register(Handles.stone_handle, "stone_handle");
-        register(Handles.gold_handle, "gold_handle");
-        register(Handles.bone_handle, "bone_handle");
-        register(Handles.diamond_handle, "diamond_handle");
+        HELPER.registerAllItems(MiscUtils.toMap(new Object[][]{
+            {"wood_handle", Handles.wood_handle},
+            {"wood_gripped_handle", Handles.wood_gripped_handle},
+            {"stone_handle", Handles.stone_handle},
+            {"stone_gripped_handle", Handles.stone_gripped_handle},
+            {"gold_handle", Handles.gold_handle},
+            {"gold_gripped_handle", Handles.gold_gripped_handle},
+            {"bone_handle", Handles.bone_handle},
+            {"bone_gripped_handle", Handles.bone_gripped_handle},
+            {"diamond_handle", Handles.diamond_handle},
+            {"diamond_gripped_handle", Handles.diamond_gripped_handle}
+        }));
 
-        register(Handles.wood_gripped_handle, "wood_gripped_handle");
-        register(Handles.stone_gripped_handle, "stone_gripped_handle");
-        register(Handles.gold_gripped_handle, "gold_gripped_handle");
-        register(Handles.bone_gripped_handle, "bone_gripped_handle");
-        register(Handles.diamond_gripped_handle, "diamond_gripped_handle");
+        for(HandleMaterial handle : HandleMaterials.values()){
+            TBModels.simpleItems.put(handle.getName()+"_handle", "handle/"+handle.getName()+"/full");
+            TBModels.customItems.put(handle.getName()+"_gripped_handle", model -> {
+                model.parent(new Identifier("item/generated"));
+                model.texture("layer0", makeID("item/handle/"+handle.getName()+"/full"));
+                model.texture("layer1", makeID("item/handle/grip/full"));
+            });
+            TBLang.addHandle(handle);
+        }
 
-        register(new Item(new Item.Settings().group(ItemGroup.MISC)), "raw_heavy_plate");
-        register(new Item(new Item.Settings().group(ItemGroup.MISC)), "ender_dust");
+        for(StringMaterial string : StringMaterials.values()){
+            TBLang.addStringMaterial(string);
+        }
 
-        TBModels.simpleItems.put("raw_heavy_plate", "misc/raw_heavy_plate");
-        TBModels.simpleItems.put("ender_dust", "misc/ender_dust");
+        String[] miscItems = new String[]{
+            "raw_heavy_plate",
+            "ender_dust"
+        };
+
+        for(String item : miscItems){
+            HELPER.registerItem(item, new Item(new Item.Settings().group(ItemGroup.MISC)));
+            TBModels.simpleItems.put(item, "misc/"+item);
+        }
 
         if(ConfigHandler.INSTANCE.shouldAddNetherCobaltLootTable() && (cottonResourcesLoaded || ConfigHandler.INSTANCE.shouldIgnoreCottonResourcesExclusion())){
-            TBData.blockLootTables.add(new BasicBlockLootTable(new Identifier("c:cobalt_nether_ore"), "blocks/"));
+            TBData.blockLootTables.add(new BasicBlockLootTable(new Identifier("c:cobalt_nether_ore")));
         }
 
         FabricLoader.getInstance().getEntrypoints("toolbuilder", TBInitializer.class).forEach(mod -> {
@@ -214,6 +238,7 @@ public class ToolBuilder implements ModInitializer {
                 makeBowItem(material, false, string);
                 makeBowItem(material, true, string);
             }
+            TBData.handleRecipes.add(new HandleRecipe(material));
         }
 
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
@@ -221,7 +246,7 @@ public class ToolBuilder implements ModInitializer {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
                 .withRolls(ConstantLootTableRange.create(1))
                 .withEntry(ItemEntry.builder(Items.WITHER_SKELETON_SKULL))
-                .withCondition(new BuiltToolLootCondition(ToolTypes.GREATSWORD.getName(), true));
+                .withCondition(new BuiltToolLootCondition(ToolTypes.GREATSWORD.getName(), 20));
 
                 supplier.withPool(poolBuilder);
             }
@@ -346,14 +371,35 @@ public class ToolBuilder implements ModInitializer {
             recipe.result(makeID("ender_string"), 2);
         });
 
+        TBData.shapedRecipes.put(makeID("stone_torch"), recipe -> {
+            recipe.pattern(
+                "c",
+                "s"
+            );
+            recipe.ingredientTag('c', new Identifier("coals"));
+            recipe.ingredientItem('s', makeID("stone_handle"));
+            recipe.result(makeID("stone_torch"), 4);
+        });
+
         TBData.shapedRecipes.put(makeID("dense_obsidian"), recipe -> {
             recipe.pattern(
-                "ooo",
-                "ooo",
-                "ooo"
+                "ppp", 
+                "ppp", 
+                "ppp"
             );
-            recipe.ingredientItem('o', makeID("obsidian_plate"));
+
+            recipe.ingredientItem('p', makeID("obsidian_plate"));
             recipe.result(makeID("dense_obsidian"), 1);
+        });
+
+        TBData.shapelessRecipes.put(makeID("stick_from_wood_handle"), recipe ->{
+            recipe.ingredientItem(makeID("wood_handle"));
+            recipe.result(new Identifier("stick"), 1);
+        });
+
+        TBData.shapelessRecipes.put(makeID("wood_handle_from_stick"), recipe ->{
+            recipe.ingredientItem(new Identifier("stick"));
+            recipe.result(makeID("wood_handle"), 1);
         });
 
         Artifice.registerData(makeID("recipes"), pack -> {
@@ -378,8 +424,8 @@ public class ToolBuilder implements ModInitializer {
             .executes(TBEffectCommand::get)
             .build();
 
-            LiteralCommandNode<ServerCommandSource> effectSetNameNode = CommandManager
-            .literal("set")
+            LiteralCommandNode<ServerCommandSource> effectAddNameNode = CommandManager
+            .literal("add")
             .requires(source -> source.hasPermissionLevel(3))
             .build();
 
@@ -389,10 +435,10 @@ public class ToolBuilder implements ModInitializer {
             .requires(source -> source.hasPermissionLevel(3))
             .build();
 
-            ArgumentCommandNode<ServerCommandSource, Identifier> effectSetNode = CommandManager
+            ArgumentCommandNode<ServerCommandSource, Identifier> effectAddNode = CommandManager
             .argument("effect", IdentifierArgumentType.identifier())
             .suggests(Effects.effectSuggestions())
-            .executes(TBEffectCommand::set)
+            .executes(TBEffectCommand::add)
             .requires(source -> source.hasPermissionLevel(3))
             .build();
 
@@ -401,30 +447,42 @@ public class ToolBuilder implements ModInitializer {
             tbNode.addChild(effectsNode);
             toolbuilderNode.addChild(effectsNode);
             effectsNode.addChild(effectGetNode);
-            effectsNode.addChild(effectSetNameNode);
+            effectsNode.addChild(effectAddNameNode);
             effectsNode.addChild(effectClearNode);
-            effectSetNameNode.addChild(effectSetNode);
+            effectAddNameNode.addChild(effectAddNode);
         });
 
         Groups.init();
 
         int effectCount = 0;
-        logger.info("Registered these effects: ");
+        HELPER.log("Registered these effects: ");
 
         for(Map.Entry<Identifier, Effect> entry : TBRegistries.EFFECTS.entrySet()){
             effectCount++;
-            logger.info(entry.getKey());
+            HELPER.log(entry.getKey().toString());
         }
 
-        logger.info("Registered "+effectCount+" effects.");
+        HELPER.log("Registered "+effectCount+" effects.");
+    }
+
+    public static void registerTorch(Torch block, WallTorch block2, String name, ItemGroup group){
+        WallStandingBlockItem item = new WallStandingBlockItem(block, block2, new Item.Settings().group(group));
+        Registry.register(Registry.ITEM, makeID(name), item);
+        Registry.register(Registry.BLOCK, makeID(name), block);
+        Registry.register(Registry.BLOCK, makeID("wall_"+name), block2);
     }
 
     public static void makeToolItem(HandleMaterial handle, HeadMaterial head, ToolType toolType, Boolean grip) {
-        Builder builder = new Builder(handle, head, toolType, grip);
+        ToolItemBuilder builder = new ToolItemBuilder(handle, head, toolType, grip);
         Item tool = builder.build();
-        TBModels.toolModels.add(new ToolModel(builder));
+        if(ConfigHandler.INSTANCE.shouldUseNewModels()){
+            TBModels.toolModels.add(new NewToolModel(builder));
+        } else {
+            TBModels.toolModels.add(new ToolModel(builder));
+        }
         TBData.toolRecipes.add(new ToolRecipe(builder));
-        register(tool, builder.name, "tools");
+        HELPER.registerItem(builder.name, tool);
+        Groups.addTo(tool, "tools");
         if(head == HeadMaterials.WOOD && handle == HandleMaterials.WOOD && !grip){
             FuelRegistry.INSTANCE.add(tool, 200);
         }
@@ -436,10 +494,11 @@ public class ToolBuilder implements ModInitializer {
         TBModels.bowModels.add(new BowModel(builder));
         TBData.bowRecipes.add(new BowRecipe(builder));
         
-        register(bow, builder.name, "tools");
+        HELPER.registerItem(builder.name, bow);
+        Groups.addTo(bow, "tools");
         if(material == HandleMaterials.WOOD){
             int burnTime = 200;
-            if(string.getEffects().contains(Effects.FLAMING)) burnTime += 100;
+            if(EffectInstance.toEffectSet(builder.material.getEffects()).contains(Effects.FLAMING)) burnTime += 100;
             FuelRegistry.INSTANCE.add(bow, burnTime);
         }
     }
@@ -450,38 +509,11 @@ public class ToolBuilder implements ModInitializer {
     }
 
     public static Identifier makeID(String name){
-        return new Identifier(modID, name);
+        return HELPER.makeId(name);
     }
 
     public static Item makeItem(){
         return new Item(new Item.Settings());
-    }
-
-    public static void register(Item item, String name, ItemGroup group){
-        item = new Item(new Item.Settings().group(group));
-        Registry.register(Registry.ITEM, makeID(name), item);
-    }
-
-    public static void register(Item item, String name){
-        Registry.register(Registry.ITEM, makeID(name), item);
-    }
-
-    public static void register(Item item, String name, String group){
-        Registry.register(Registry.ITEM, makeID(name), item);
-        Groups.addTo(item, group);
-    }
-
-    public static void register(Block block, String name, ItemGroup group){
-        BlockItem item = new BlockItem(block, new Item.Settings().group(group));
-        Registry.register(Registry.ITEM, makeID(name), item);
-        Registry.register(Registry.BLOCK, makeID(name), block);
-    }
-
-    public static void register(Torch block, WallTorch block2, String name, ItemGroup group){
-        WallStandingBlockItem item = new WallStandingBlockItem(block, block2, new Item.Settings().group(group));
-        Registry.register(Registry.ITEM, makeID(name), item);
-        Registry.register(Registry.BLOCK, makeID(name), block);
-        Registry.register(Registry.BLOCK, makeID("wall_"+name), block2);
     }
 
     public static class BowBuilder{
@@ -544,7 +576,9 @@ public class ToolBuilder implements ModInitializer {
         private void register(EquipmentSlot slot){
             TBData.armorRecipes.add(new ArmorRecipe(this, slot));
             TBModels.simpleItems.put(makeName(slot), "armor/"+armorMaterial.getMaterialName()+"/"+getTypeString(slot));
-            ToolBuilder.register(build(slot), makeName(slot), "armor");
+            Item item = build(slot);
+            HELPER.registerItem(makeName(slot), item);
+            Groups.addTo(item, "armor");
         }
 
         public Item build(EquipmentSlot slot){
@@ -552,13 +586,13 @@ public class ToolBuilder implements ModInitializer {
         }
     }
     
-    public static class Builder{
+    public static class ToolItemBuilder{
         private BuiltToolMaterial material;
         private ToolType toolType;
 
         public String name;
 
-        public Builder(HandleMaterial handle, HeadMaterial head, ToolType toolType2, Boolean grip) {
+        public ToolItemBuilder(HandleMaterial handle, HeadMaterial head, ToolType toolType2, Boolean grip) {
             this.toolType = toolType2;
             this.name = makeName(head, handle, grip);
             this.material = BuiltToolMaterial.of(handle, head, name, grip);

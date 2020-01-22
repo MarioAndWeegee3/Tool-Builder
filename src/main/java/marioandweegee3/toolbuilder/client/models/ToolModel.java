@@ -7,9 +7,9 @@ import marioandweegee3.toolbuilder.api.material.BuiltToolMaterial;
 import net.minecraft.util.Identifier;
 
 public class ToolModel {
-    private ToolBuilder.Builder builder;
+    protected ToolBuilder.ToolItemBuilder builder;
 
-    public ToolModel(ToolBuilder.Builder builder){
+    public ToolModel(ToolBuilder.ToolItemBuilder builder){
         this.builder = builder;
     }
 
@@ -29,7 +29,7 @@ public class ToolModel {
         });
     }
 
-    private Identifier makeid(String name){
+    protected Identifier makeid(String name){
         return ToolBuilder.makeID(name);
     }
 }

@@ -2,14 +2,15 @@ package marioandweegee3.toolbuilder.common.tools.tooltypes;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
-import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import marioandweegee3.toolbuilder.api.material.BowMaterial;
-import marioandweegee3.toolbuilder.common.effect.Effects;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -49,7 +50,19 @@ public class Bow extends BowItem {
                 return (stack.getMaxUseTime() - entity.getItemUseTimeLeft()) / (20.0f * material.getDrawSpeedMultiplier());
             }
         });
-        this.addPropertyGetter(new Identifier("pulling"), (stack, world, entity) -> (entity != null && entity.isUsingItem() && entity.getActiveItem() == stack) ? 1.0f : 0.0f);
+        this.addPropertyGetter(new Identifier("pulling"), (stack, world, entity) -> getPullProgressInt((entity != null && entity.isUsingItem() && entity.getActiveItem() == stack) ? 1.0f : 0.0f));
+    }
+
+    private static int getPullProgressInt(float pull){
+        if(pull <= 0){
+            return 0;
+        } else if(pull >= 0.65 && pull < 0.9){
+            return 1;
+        } else if(pull >= 0.9){
+            return 2;
+        } else {
+            return 0;
+        }
     }
 
     public static Bow create(BowMaterial material){
@@ -73,8 +86,12 @@ public class Bow extends BowItem {
         dec.setRoundingMode(RoundingMode.HALF_UP);
         tooltip.add(new TranslatableText("text.toolbuilder.draw_time").append(dec.format(material.getDrawSpeedMultiplier())).setStyle(ToolBuilder.toolStyle));
         
-        for(Effect effect : getEffects()){
-            tooltip.add(effect.getTranslationName().setStyle(ToolBuilder.effectStyle));
+        List<EffectInstance> effects = new ArrayList<>(getEffects());
+
+        Collections.sort(effects);
+
+        for(EffectInstance effect : effects){
+            tooltip.add(effect.getTooltip().setStyle(ToolBuilder.effectStyle));
         }
     }
 
@@ -108,8 +125,8 @@ public class Bow extends BowItem {
         if (!world.isClient) {
             ArrowItem arrowItem = (ArrowItem)((arrow.getItem() instanceof ArrowItem) ? arrow.getItem() : Items.ARROW);
             ProjectileEntity projectile = arrowItem.createArrow(world, arrow, player);
-            if(getEffects().contains(Effects.ENDER)){
-                velocityMult += 0.6f;
+            for(EffectInstance instance : getEffects()){
+                velocityMult = instance.getEffect().modifyArrowVelocity(velocityMult, instance.getLevel());
             }
             projectile.setProperties(player, player.pitch, player.yaw, 0.0f, velocityMult * 3.0f, 1.0f);
             if (velocityMult >= 1.0f) {
@@ -148,7 +165,9 @@ public class Bow extends BowItem {
 
         if(EnchantmentHelper.getLevel(Enchantments.FLAME, stack) > 0) time += 100;
 
-        if(getEffects().contains(Effects.FLAMING)) time += 100;
+        for(EffectInstance instance : getEffects()){
+            time += instance.getEffect().arrowFireTimeModifier(stack, this, instance.getLevel());
+        }
 
         return time;
     }
@@ -191,7 +210,7 @@ public class Bow extends BowItem {
         return BowItem.BOW_PROJECTILES;
     }
 
-    public Set<Effect> getEffects(){
+    public Set<EffectInstance> getEffects(){
         return material.getEffects();
     }
 }

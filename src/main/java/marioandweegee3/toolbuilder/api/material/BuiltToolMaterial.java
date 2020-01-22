@@ -1,10 +1,8 @@
 package marioandweegee3.toolbuilder.api.material;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
-import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 
@@ -26,11 +24,8 @@ public class BuiltToolMaterial implements ToolMaterial{
         return new BuiltToolMaterial(handle, head, name, isGripped);
     }
 
-    public Set<Effect> getEffects(){
-        Set<Effect> effects = new HashSet<>(0);
-        effects.addAll(Arrays.asList(head.getEffects()));
-        effects.addAll(handle.getEffects());
-        return effects;
+    public Set<EffectInstance> getEffects(){
+        return EffectInstance.mergeSets(handle.getEffects(), head.getEffects());
     }
 
     @Override

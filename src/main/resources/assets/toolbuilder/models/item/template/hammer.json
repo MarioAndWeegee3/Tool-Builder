@@ -1,0 +1,69 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+    "parent":"toolbuilder:item/template/_tool_display",
+    "elements": [
+        {
+            "name": "Handle",
+            "from": [ 7, 1, 7 ], 
+            "to": [ 9, 9, 8 ], 
+            "faces": {
+                "north": { "texture": "#handle", "uv": [ 2, 0, 4, 8 ] },
+                "east": { "texture": "#handle", "uv": [ 2, 5, 3, 13 ] },
+                "south": { "texture": "#handle", "uv": [ 0, 0, 2, 8 ] },
+                "west": { "texture": "#handle", "uv": [ 3, 0, 4, 8 ] },
+                "down": { "texture": "#handle", "uv": [ 5, 0, 7, 1 ] }
+            }
+        },
+        {
+            "name": "Head",
+            "from": [ 2, 10, 5 ], 
+            "to": [ 14, 15, 10 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] },
+                "east": { "texture": "#head", "uv": [ 12, 0, 16, 5 ] },
+                "south": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] },
+                "west": { "texture": "#head", "uv": [ 12, 0, 16, 5 ] },
+                "up": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] },
+                "down": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] }
+            }
+        },
+        {
+            "name": "Cap",
+            "from": [ 7, 16, 7 ], 
+            "to": [ 9, 17, 8 ], 
+            "faces": {
+                "north": { "texture": "#handle", "uv": [ 2, 0, 4, 1 ] },
+                "east": { "texture": "#handle", "uv": [ 1, 0, 2, 1 ] },
+                "south": { "texture": "#handle", "uv": [ 0, 0, 2, 1 ] },
+                "west": { "texture": "#handle", "uv": [ 0, 0, 1, 1 ] },
+                "up": { "texture": "#handle", "uv": [ 5, 0, 7, 1 ], "rotation": 180 }
+            }
+        },
+        {
+            "name": "Head Y",
+            "from": [ 3, 9, 6 ], 
+            "to": [ 13, 16, 9 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] },
+                "east": { "texture": "#head", "uv": [ 12, 0, 16, 5 ] },
+                "south": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] },
+                "west": { "texture": "#head", "uv": [ 12, 0, 16, 5 ] },
+                "up": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] },
+                "down": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] }
+            }
+        },
+        {
+            "name": "Head X",
+            "from": [ 3, 11, 4 ], 
+            "to": [ 13, 14, 11 ], 
+            "faces": {
+                "north": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] },
+                "east": { "texture": "#head", "uv": [ 12, 0, 16, 5 ] },
+                "south": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] },
+                "west": { "texture": "#head", "uv": [ 12, 0, 16, 5 ] },
+                "up": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] },
+                "down": { "texture": "#head", "uv": [ 0, 0, 14, 5 ] }
+            }
+        }
+    ]
+}

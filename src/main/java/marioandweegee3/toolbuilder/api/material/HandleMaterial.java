@@ -1,8 +1,9 @@
 package marioandweegee3.toolbuilder.api.material;
 
 import java.util.ArrayList;
+import java.util.Set;
 
-import marioandweegee3.toolbuilder.api.effect.Effect;
+import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import net.minecraft.item.Item;
 
 public interface HandleMaterial {
@@ -14,7 +15,8 @@ public interface HandleMaterial {
     public int getEnchantabilityModifier();
     public String getName();
     public String getMod();
-    public ArrayList<Effect> getEffects();
+    public Set<EffectInstance> getEffects();
+    public String getCraftIngredient();
 
     public default String getTranslationKey(){
         return "handle."+getMod()+"."+getName();
