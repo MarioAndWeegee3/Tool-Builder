@@ -346,7 +346,17 @@ public class ToolBuilder implements ModInitializer {
             recipe.result(makeID("ender_string"), 2);
         });
 
-        Artifice.registerData(ToolBuilder.makeID("recipes"), pack -> {
+        TBData.shapedRecipes.put(makeID("dense_obsidian"), recipe -> {
+            recipe.pattern(
+                "ooo",
+                "ooo",
+                "ooo"
+            );
+            recipe.ingredientItem('o', makeID("obsidian_plate"));
+            recipe.result(makeID("dense_obsidian"), 1);
+        });
+
+        Artifice.registerData(makeID("recipes"), pack -> {
             TBData.addRecipes(pack);
         });
 
