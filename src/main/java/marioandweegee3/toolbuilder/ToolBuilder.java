@@ -36,6 +36,7 @@ import marioandweegee3.toolbuilder.common.data.TBData;
 import marioandweegee3.toolbuilder.common.data.loot_tables.BasicBlockLootTable;
 import marioandweegee3.toolbuilder.common.data.recipes.ArmorRecipe;
 import marioandweegee3.toolbuilder.common.data.recipes.BowRecipe;
+import marioandweegee3.toolbuilder.common.data.recipes.HandleRecipe;
 import marioandweegee3.toolbuilder.common.data.recipes.ToolRecipe;
 import marioandweegee3.toolbuilder.common.itemgroups.Groups;
 import marioandweegee3.toolbuilder.common.items.Handles;
@@ -237,6 +238,7 @@ public class ToolBuilder implements ModInitializer {
                 makeBowItem(material, false, string);
                 makeBowItem(material, true, string);
             }
+            TBData.handleRecipes.add(new HandleRecipe(material));
         }
 
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
@@ -369,7 +371,38 @@ public class ToolBuilder implements ModInitializer {
             recipe.result(makeID("ender_string"), 2);
         });
 
-        Artifice.registerData(ToolBuilder.makeID("recipes"), pack -> {
+        TBData.shapedRecipes.put(makeID("stone_torch"), recipe -> {
+            recipe.pattern(
+                "c",
+                "s"
+            );
+            recipe.ingredientTag('c', new Identifier("coals"));
+            recipe.ingredientItem('s', makeID("stone_handle"));
+            recipe.result(makeID("stone_torch"), 4);
+        });
+
+        TBData.shapedRecipes.put(makeID("dense_obsidian"), recipe -> {
+            recipe.pattern(
+                "ppp", 
+                "ppp", 
+                "ppp"
+            );
+
+            recipe.ingredientItem('p', makeID("obsidian_plate"));
+            recipe.result(makeID("dense_obsidian"), 1);
+        });
+
+        TBData.shapelessRecipes.put(makeID("stick_from_wood_handle"), recipe ->{
+            recipe.ingredientItem(makeID("wood_handle"));
+            recipe.result(new Identifier("stick"), 1);
+        });
+
+        TBData.shapelessRecipes.put(makeID("wood_handle_from_stick"), recipe ->{
+            recipe.ingredientItem(new Identifier("stick"));
+            recipe.result(makeID("wood_handle"), 1);
+        });
+
+        Artifice.registerData(makeID("recipes"), pack -> {
             TBData.addRecipes(pack);
         });
 

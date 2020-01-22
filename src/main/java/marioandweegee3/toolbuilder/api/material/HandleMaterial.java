@@ -16,6 +16,7 @@ public interface HandleMaterial {
     public String getName();
     public String getMod();
     public Set<EffectInstance> getEffects();
+    public String getCraftIngredient();
 
     public default String getTranslationKey(){
         return "handle."+getMod()+"."+getName();

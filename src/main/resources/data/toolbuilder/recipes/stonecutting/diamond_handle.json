@@ -1,8 +1,0 @@
-{
-    "type":"stonecutting",
-    "ingredient":[
-        {"item":"diamond"}
-    ],
-    "result":"toolbuilder:diamond_handle",
-    "count":1
-}

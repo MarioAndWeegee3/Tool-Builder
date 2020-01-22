@@ -1,7 +1,0 @@
-{
-    "type":"crafting_shapeless",
-    "ingredients":[
-        {"item":"toolbuilder:wood_handle"}
-    ],
-    "result":{"item":"stick"}
-}

@@ -1,8 +1,0 @@
-{
-    "type":"stonecutting",
-    "ingredient":[
-        {"item":"stick"}
-    ],
-    "result":"toolbuilder:wood_handle",
-    "count":1
-}
