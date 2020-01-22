@@ -131,7 +131,7 @@ public class ToolBuilder implements ModInitializer {
         TBModels.simpleItems.put("slime_crystal", "misc/slime_crystal");
 
         HELPER.registerBlock("dense_obsidian", new Block(FabricBlockSettings.copy(Blocks.OBSIDIAN).strength(100, 2400).build()), ItemGroup.BUILDING_BLOCKS);
-        HELPER.registerBlock("dense_obsidian", new Block(FabricBlockSettings.of(Material.GLASS).build()), ItemGroup.BUILDING_BLOCKS);
+        HELPER.registerBlock("slime_crystal_block", new Block(FabricBlockSettings.of(Material.GLASS).build()), ItemGroup.BUILDING_BLOCKS);
 
         TBModels.simpleBlocks.put("slime_crystal_block", "slime_crystal_block");
         TBModels.simpleBlocks.put("dense_obsidian", "dense_obsidian");
