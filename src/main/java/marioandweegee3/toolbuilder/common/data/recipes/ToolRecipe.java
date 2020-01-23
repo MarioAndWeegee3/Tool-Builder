@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ToolRecipe {
-    private ToolBuilder.ToolItemBuilder builder;
+    public ToolBuilder.ToolItemBuilder builder;
     public ToolRecipe(ToolBuilder.ToolItemBuilder builder){
         this.builder = builder;
     }
@@ -87,13 +87,5 @@ public class ToolRecipe {
             }
         }
         recipe.result(ToolBuilder.makeID(builder.name), 1);
-        });
-
-        if(builder.getType().fabricTagToAddTo() == null) return;
-
-        pack.addItemTag(builder.getType().fabricTagToAddTo(), tag -> {
-            tag.replace(false);
-            tag.value(ToolBuilder.makeID(builder.name));
-        });
     }
 }

@@ -54,14 +54,6 @@ public class BowRecipe {
                         }
                     }
                 });
-            } else {
-                recipe.multiIngredient('y', ing -> {
-                    for(Item item : handle.getRepairItems(material.grip)){
-                        if(item != Items.STICK){
-                            ing.item(Registry.ITEM.getId(item));
-                        }
-                    }
-                });
             }
         } else {
             recipe.multiIngredient('y', ing -> {
