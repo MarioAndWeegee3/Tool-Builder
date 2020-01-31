@@ -90,7 +90,7 @@ public class ToolBuilder implements ModInitializer {
     public void onInitialize() {
         ConfigHandler.init();
 
-        final boolean cottonResourcesLoaded = FabricLoader.getInstance().isModLoaded("cotton-resources");
+        final boolean cottonResourcesLoaded = FabricLoader.getInstance().isModLoaded("cotton-resources") || FabricLoader.getInstance().isModLoaded("techreborn");
 
         LootConditions.register(new BuiltToolLootConditionFactory());
 
@@ -114,6 +114,7 @@ public class ToolBuilder implements ModInitializer {
         HELPER.registerItem("obsidian_plate", obsidian_plate);
 
         HELPER.registerItem("slime_crystal", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+        HELPER.registerItem("ender_dust", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 
         HELPER.registerBlock("dense_obsidian",
                 new Block(FabricBlockSettings.copy(Blocks.OBSIDIAN).strength(100, 2400).build()),
