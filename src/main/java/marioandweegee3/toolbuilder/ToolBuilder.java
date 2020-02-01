@@ -115,6 +115,7 @@ public class ToolBuilder implements ModInitializer {
 
         HELPER.registerItem("slime_crystal", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
         HELPER.registerItem("ender_dust", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+        HELPER.registerItem("raw_heavy_plate", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 
         HELPER.registerBlock("dense_obsidian",
                 new Block(FabricBlockSettings.copy(Blocks.OBSIDIAN).strength(100, 2400).build()),
