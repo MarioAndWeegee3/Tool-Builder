@@ -100,6 +100,6 @@ public class ToolBuilderClient implements ClientModInitializer{
     }
 
     public static void addArmorModel(ArmorBuilder builder, EquipmentSlot slot){
-        TBModels.simpleItems.put(builder.makeName(slot), "armor/"+builder.armorMaterial.getMaterialName()+"/"+builder.getTypeString(slot));
+        TBModels.simpleItems.put(builder.makeName(slot), "armor/"+builder.armorMaterial.getMaterialName()+"/"+ToolBuilder.ArmorBuilder.getTypeString(slot));
     }
 }

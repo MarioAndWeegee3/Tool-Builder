@@ -3,6 +3,7 @@ package marioandweegee3.toolbuilder;
 import java.util.List;
 import java.util.Map;
 
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.tree.ArgumentCommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.swordglowsblue.artifice.api.Artifice;
@@ -27,7 +28,9 @@ import marioandweegee3.toolbuilder.client.ToolBuilderClient;
 import marioandweegee3.toolbuilder.common.blocks.BlockTorches;
 import marioandweegee3.toolbuilder.common.blocks.Torch;
 import marioandweegee3.toolbuilder.common.blocks.WallTorch;
+import marioandweegee3.toolbuilder.common.command.EquipmentSlotArgumentType;
 import marioandweegee3.toolbuilder.common.command.TBEffectCommand;
+import marioandweegee3.toolbuilder.common.command.TBItemCommand;
 import marioandweegee3.toolbuilder.common.config.ConfigHandler;
 import marioandweegee3.toolbuilder.common.data.TBData;
 import marioandweegee3.toolbuilder.common.data.loot_tables.BasicBlockLootTable;
@@ -405,12 +408,71 @@ public class ToolBuilder implements ModInitializer {
 
             dispatcher.getRoot().addChild(toolbuilderNode);
             dispatcher.getRoot().addChild(tbNode);
+
             tbNode.addChild(effectsNode);
             toolbuilderNode.addChild(effectsNode);
             effectsNode.addChild(effectGetNode);
             effectsNode.addChild(effectAddNameNode);
             effectsNode.addChild(effectClearNode);
             effectAddNameNode.addChild(effectAddNode);
+
+            LiteralCommandNode<ServerCommandSource> giveNode = CommandManager
+            .literal("give")
+            .requires(source -> source.hasPermissionLevel(3))
+            .build();
+
+            LiteralCommandNode<ServerCommandSource> giveArmorNode = CommandManager
+            .literal("armor")
+            .build();
+
+            ArgumentCommandNode<ServerCommandSource, Identifier> armorMaterialNode = CommandManager
+            .argument("armor", IdentifierArgumentType.identifier())
+            .suggests(TBItemCommand.armorMaterialSuggestions())
+            .build();
+
+            ArgumentCommandNode<ServerCommandSource, EquipmentSlot> armorSlotNode = CommandManager
+            .argument("slot", new EquipmentSlotArgumentType())
+            .suggests(TBItemCommand.armorSlotSuggestions())
+            .executes(TBItemCommand::giveArmor)
+            .build();
+
+            LiteralCommandNode<ServerCommandSource> giveToolNode = CommandManager
+            .literal("tool")
+            .build();
+
+            ArgumentCommandNode<ServerCommandSource, Identifier> toolTypeNode = CommandManager
+            .argument("tool", IdentifierArgumentType.identifier())
+            .suggests(TBItemCommand.toolTypeSuggestions())
+            .build();
+
+            ArgumentCommandNode<ServerCommandSource, Identifier> toolHeadNode = CommandManager
+            .argument("head", IdentifierArgumentType.identifier())
+            .suggests(TBItemCommand.headMaterialSuggestions())
+            .build();
+
+            ArgumentCommandNode<ServerCommandSource, Identifier> toolHandleNode = CommandManager
+            .argument("handle", IdentifierArgumentType.identifier())
+            .suggests(TBItemCommand.handleMaterialSuggestions())
+            .executes(TBItemCommand::giveTool)
+            .build();
+
+            ArgumentCommandNode<ServerCommandSource, Boolean> toolGripNode = CommandManager
+            .argument("gripped", BoolArgumentType.bool())
+            .executes(TBItemCommand::giveTool)
+            .build();
+
+            tbNode.addChild(giveNode);
+            toolbuilderNode.addChild(giveNode);
+
+            giveNode.addChild(giveToolNode);
+            giveToolNode.addChild(toolTypeNode);
+            toolTypeNode.addChild(toolHeadNode);
+            toolHeadNode.addChild(toolHandleNode);
+            toolHandleNode.addChild(toolGripNode);
+
+            giveNode.addChild(giveArmorNode);
+            giveArmorNode.addChild(armorMaterialNode);
+            armorMaterialNode.addChild(armorSlotNode);
         });
 
         Groups.init();
@@ -513,7 +575,7 @@ public class ToolBuilder implements ModInitializer {
             return armorMaterial.getMaterialName()+"_"+getTypeString(slot);
         }
 
-        public String getTypeString(EquipmentSlot slot){
+        public static String getTypeString(EquipmentSlot slot){
             String typeString = "";
             switch(slot){
                 case FEET: typeString = "boots"; break;

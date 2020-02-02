@@ -25,7 +25,7 @@ public class ArmorRecipe {
         BuiltArmorMaterial material = builder.armorMaterial;
 
         recipe.pattern(getPattern(slot));
-        recipe.group(ToolBuilder.makeID(builder.getTypeString(slot)));
+        recipe.group(ToolBuilder.makeID(ToolBuilder.ArmorBuilder.getTypeString(slot)));
 
         if (material.getRepairString().startsWith("#")) {
             Identifier id = new Identifier(material.getRepairString().substring(1));
