@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 import static marioandweegee3.toolbuilder.common.config.ToolBuilderConfig.DEFAULTS;
 
 public class ConfigHandler{
-    public static final Identifier configID = ToolBuilder.makeID("config");
+    public static final Identifier configID = ToolBuilder.makeID("config-v1.0");
 
     public static ConfigHandler INSTANCE;
 

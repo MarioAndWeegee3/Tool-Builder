@@ -348,6 +348,21 @@ public class ToolBuilder implements ModInitializer {
             recipe.result(makeID("wood_handle"), 1);
         });
 
+        for(HandleMaterial handle : TBRegistries.HANDLE_MATERIALS.values()) {
+            TBData.shapelessRecipes.put(makeID(handle.getName()+"_gripped"), recipe -> {
+                recipe.group(makeID("gripped_handle"));
+
+                recipe.multiIngredient(ing -> {
+                    for(Item item : handle.getRepairItems(false)) {
+                        ing.item(Registry.ITEM.getId(item));
+                    }
+                });
+                recipe.ingredientItem(new Identifier("leather"));
+
+                recipe.result(Registry.ITEM.getId(handle.getRepairItems(true).get(0)), 1);
+            });
+        }
+
         Artifice.registerData(makeID("recipes"), pack -> {
             TBData.addRecipes(pack);
         });
