@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.util.Identifier;
 
 public interface HeadMaterial extends ToolMaterial{
     public static HeadMaterial copy(ToolMaterial base, String name) {
@@ -88,4 +89,8 @@ public interface HeadMaterial extends ToolMaterial{
     public boolean isCotton();
     public String getMod();
     public String getUSTranslation();
+
+    public default Identifier getID() {
+        return new Identifier(getMod(), getName());
+    }
 }

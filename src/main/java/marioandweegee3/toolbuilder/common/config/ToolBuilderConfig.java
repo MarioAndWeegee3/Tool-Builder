@@ -24,7 +24,7 @@ public final class ToolBuilderConfig {
     public final double bounceSpeedMult = 1.2;
     public final double sneakBounceSpeedMult = 0.5;
     public final double magneticRange = 2.3;
-    public final boolean addSteelRecipe = true;
+    public final boolean addSteelRecipe = false;
     public final String[] shearLootTables = new String[]{
         "blocks/cobweb", 
         "blocks/dead_bush", 
@@ -44,6 +44,23 @@ public final class ToolBuilderConfig {
         };
     public final boolean removeVanillaToolRecipes = false;
     public final boolean addNetherCobaltLootTable = false;
-    public final boolean ignoreCottonResourcesExclusion = false;
     public final boolean useNewModels = false;
+    public final String[] enabledHeadMaterials = new String[]{
+        "toolbuilder:wood",
+        "toolbuilder:stone",
+        "toolbuilder:iron",
+        "toolbuilder:diamond",
+        "toolbuilder:gold",
+        "toolbuilder:obsidian",
+        "toolbuilder:nether_brick",
+        "toolbuilder:slime",
+        "toolbuilder:prismarine"
+    };
+    public final String[] enabledHandleMaterials = new String[]{
+        "toolbuilder:wood",
+        "toolbuilder:stone",
+        "toolbuilder:gold",
+        "toolbuilder:bone",
+        "toolbuilder:diamond"
+    };
 }

@@ -52,9 +52,13 @@ public class ConfigHandler{
                 .add("removeVanillaTools", DEFAULTS.removeVanillaToolRecipes)
                 .build()
             )
+            .add("materials", new ConfigBuilder()
+                .add("heads", DEFAULTS.enabledHeadMaterials)
+                .add("handles", DEFAULTS.enabledHandleMaterials)
+                .build()
+            )
             .add("shearLootTables", DEFAULTS.shearLootTables)
             .add("addNetherCobaltTable", DEFAULTS.addNetherCobaltLootTable)
-            .add("ignoreMissingCottonResources", DEFAULTS.ignoreCottonResourcesExclusion)
             .add("useNewModels", DEFAULTS.useNewModels)
         .build();
 
@@ -196,13 +200,30 @@ public class ConfigHandler{
         return config.get("addNetherCobaltTable", Boolean.class);
     }
 
-    public Boolean shouldIgnoreCottonResourcesExclusion(){
-        refresh();
-        return config.get("ignoreMissingCottonResources", Boolean.class);
-    }
-
     public Boolean shouldUseNewModels(){
         refresh();
         return config.get("useNewModels", Boolean.class);
+    }
+
+    public List<String> enabledHeadMaterials(){
+        refresh();
+        List<String> materials = new ArrayList<>();
+        for(Object o : config.getSubConfig("materials").get("heads", new ArrayList<>().getClass())){
+            if(o instanceof String) {
+                materials.add((String) o);
+            }
+        }
+        return materials;
+    }
+
+    public List<String> enabledHandleMaterials(){
+        refresh();
+        List<String> materials = new ArrayList<>();
+        for(Object o : config.getSubConfig("materials").get("handles", new ArrayList<>().getClass())){
+            if(o instanceof String) {
+                materials.add((String) o);
+            }
+        }
+        return materials;
     }
 }

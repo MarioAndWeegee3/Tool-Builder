@@ -12,4 +12,8 @@ public interface StringMaterial{
     public String getName();
     public Set<EffectInstance> getEffects();
     public Identifier[] getIngredientIds();
+
+    public default Identifier getID(){
+        return new Identifier(getMod(), getName());
+    }
 }

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import marioandweegee3.toolbuilder.api.effect.EffectInstance;
 import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
 
 public interface HandleMaterial {
     public int getExtraDurability();
@@ -20,5 +21,9 @@ public interface HandleMaterial {
 
     public default String getTranslationKey(){
         return "handle."+getMod()+"."+getName();
+    }
+
+    public default Identifier getID(){
+        return new Identifier(getMod(), getName());
     }
 }

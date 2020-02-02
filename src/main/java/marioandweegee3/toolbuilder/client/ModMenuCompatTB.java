@@ -40,7 +40,6 @@ public class ModMenuCompatTB implements ModMenuApi{
             ConfigCategory general = builder.getOrCreateCategory("General");
             general.addEntry(entryBuilder.startStrList("Shear Loot Tables", config.get("shearLootTables", ArrayList.class)).setDefaultValue(Arrays.asList(DEFAULTS.shearLootTables)).setSaveConsumer(val->config.set("shearLootTables", val)).build());
             general.addEntry(entryBuilder.startBooleanToggle("Add Nether Cobalt Loot Table", config.get("addNetherCobaltTable", Boolean.class)).setDefaultValue(DEFAULTS.addNetherCobaltLootTable).setSaveConsumer(val->config.set("addNetherCobaltTable", val)).build());
-            general.addEntry(entryBuilder.startBooleanToggle("Ignore Missing Cotton Resources", config.get("ignoreMissingCottonResources", Boolean.class)).setDefaultValue(DEFAULTS.ignoreCottonResourcesExclusion).setSaveConsumer(val->config.set("ignoreMissingCottonResources", val)).build());
             general.addEntry(entryBuilder.startBooleanToggle("Use New Tool Models", config.get("useNewModels", Boolean.class)).setDefaultValue(DEFAULTS.useNewModels).setSaveConsumer(val -> config.set("useNewModels", val)).build());
 
             ConfigCategory effects = builder.getOrCreateCategory("Effects");
@@ -64,6 +63,10 @@ public class ModMenuCompatTB implements ModMenuApi{
             recipes.addEntry(entryBuilder.startBooleanToggle("Can craft with Sticks", config.getSubConfig("recipes").get("craftWithSticks", Boolean.class)).setDefaultValue(DEFAULTS.canCraftWithSticks).setSaveConsumer(val->config.setSubConfigVal("recipes", "craftWithSticks", val)).build());
             recipes.addEntry(entryBuilder.startBooleanToggle("Add Steel Blasting Recipe", config.getSubConfig("recipes").get("addSteelRecipe", Boolean.class)).setDefaultValue(DEFAULTS.addSteelRecipe).setSaveConsumer(val->config.setSubConfigVal("recipes", "addSteelRecipe", val)).build());
             recipes.addEntry(entryBuilder.startBooleanToggle("Remove Vanilla Tool Recipes", config.getSubConfig("recipes").get("removeVanillaTools", Boolean.class)).setDefaultValue(DEFAULTS.removeVanillaToolRecipes).setSaveConsumer(val->config.setSubConfigVal("recipes", "removeVanillaTools", val)).build());
+
+            ConfigCategory materials = builder.getOrCreateCategory("Materials");
+            materials.addEntry(entryBuilder.startStrList("Enabled Head Materials", config.getSubConfig("materials").get("heads", ArrayList.class)).setDefaultValue(Arrays.asList(DEFAULTS.enabledHeadMaterials)).setSaveConsumer(val->config.setSubConfigVal("materials", "heads", val)).build());
+            materials.addEntry(entryBuilder.startStrList("Enabled Handle Materials", config.getSubConfig("materials").get("handles", ArrayList.class)).setDefaultValue(Arrays.asList(DEFAULTS.enabledHeadMaterials)).setSaveConsumer(val->config.setSubConfigVal("materials", "handles", val)).build());
 
             return(builder.build());
         };
