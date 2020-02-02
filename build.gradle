@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '0.2.6-SNAPSHOT'
 	id 'maven-publish'
+	id "com.wynprice.cursemaven" version "2.1.1"
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -26,10 +27,6 @@ repositories{
 		maven { 
 			name = 'Cotton_Release'
 			url 'http://server.bbkr.space:8081/artifactory/libs-release' 
-		}
-		maven { 
-			name = "Curseforge"
-			url "https://minecraft.curseforge.com/api/maven"
 		}
 		// maven { url = 'http://maven.sargunv.s3-website-us-west-2.amazonaws.com/' }
 		maven { url "https://jitpack.io" }

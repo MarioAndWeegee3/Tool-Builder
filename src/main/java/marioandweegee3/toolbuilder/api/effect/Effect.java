@@ -30,7 +30,7 @@ public interface Effect {
 
     public List<ItemStack> modifyBlockDrops(BlockState state, BuiltTool tool, ItemStack toolStack, LootContext.Builder builder, List<ItemStack> drops, int level);
 
-    public void onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level);
+    public boolean onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level);
 
     public boolean bypassesArmor(String name, LivingEntity source, int level);
 

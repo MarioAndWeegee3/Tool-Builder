@@ -49,8 +49,8 @@ public class EffectBase implements Effect {
     }
 
     @Override
-    public void onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level) {
-
+    public boolean onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level) {
+        return false;
     }
 
     @Override

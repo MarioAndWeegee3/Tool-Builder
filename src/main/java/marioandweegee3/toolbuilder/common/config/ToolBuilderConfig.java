@@ -43,7 +43,7 @@ public final class ToolBuilderConfig {
         "blocks/acacia_leaves"
         };
     public final boolean removeVanillaToolRecipes = false;
-    public final boolean addNetherCobaltLootTable = true;
+    public final boolean addNetherCobaltLootTable = false;
     public final boolean ignoreCottonResourcesExclusion = false;
     public final boolean useNewModels = false;
 }

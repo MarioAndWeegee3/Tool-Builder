@@ -60,7 +60,9 @@ public abstract class BlockBreakMixin implements ItemConvertible{
                 if(stack.getItem() instanceof BuiltArmorItem){
                     BuiltArmorItem armor = (BuiltArmorItem) stack.getItem();
                     for(EffectInstance effect : armor.getEffects(stack)) {
-                        effect.getEffect().onEntityLandOnBlock(view, armor, (LivingEntity) entity, effect.getLevel());
+                        if(effect.getEffect().onEntityLandOnBlock(view, armor, (LivingEntity) entity, effect.getLevel())) {
+                            ci.cancel();
+                        }
                     }
                 }
             }

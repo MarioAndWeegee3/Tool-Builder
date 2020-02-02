@@ -231,14 +231,14 @@ public enum Effects implements Effect {
         }
 
         @Override
-        public void onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level) {
-            if(!(armor.getSlotType() == EquipmentSlot.FEET)) return;
+        public boolean onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level) {
+            if(!(armor.getSlotType() == EquipmentSlot.FEET)) return false;
 
             double speedMult = -ConfigHandler.INSTANCE.getBounceSpeedMultiplier(),
                     sneakSpeedMult = -ConfigHandler.INSTANCE.getSneakBounceSpeedMultiplier();
             Vec3d vel = new Vec3d(entity.getVelocity().x, entity.getVelocity().y, entity.getVelocity().z).multiply(2,
                     entity.isSneaking() ? sneakSpeedMult : speedMult, 2);
-            // This prevents the player from building up insane speed an launching 1,000,000
+            // This prevents the player from building up insane speed and launching 1,000,000
             // blocks into the air.
             // Yes, that did happen. If the bounce speed limit is removed, you will go very
             // fast.
@@ -250,6 +250,8 @@ public enum Effects implements Effect {
             }
 
             entity.world.playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_SLIME_JUMP, SoundCategory.PLAYERS, 1, 0.5f);
+
+            return true;
         }
     }), 
     RESILIENT("resilient", 2, new EffectBase(){
@@ -419,8 +421,8 @@ public enum Effects implements Effect {
     }
 
     @Override
-    public void onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level) {
-        base.onEntityLandOnBlock(view, armor, entity, level);
+    public boolean onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level) {
+        return base.onEntityLandOnBlock(view, armor, entity, level);
     }
 
     @Override
