@@ -264,6 +264,18 @@ public class ToolBuilder implements ModInitializer {
             recipe.result(makeID("blazing_stone"), 1);
         });
 
+        TBData.shapedRecipes.put(makeID("magnet"), recipe -> {
+            recipe.pattern(
+                "r l",
+                "i i",
+                "iii"
+            );
+            recipe.ingredientItem('r', new Identifier("redstone"));
+            recipe.ingredientItem('l', new Identifier("lapis_lazuli"));
+            recipe.ingredientItem('i', new Identifier("iron_ingot"));
+            recipe.result(makeID("magnet"), 1);
+        });
+
         TBData.shapelessRecipes.put(makeID("raw_heavy_plate"), recipe -> {
             if (cottonResourcesLoaded) {
                 recipe.ingredientTag(new Identifier("c:lead_plate"));
