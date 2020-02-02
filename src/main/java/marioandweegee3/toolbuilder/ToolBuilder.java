@@ -42,6 +42,7 @@ import marioandweegee3.toolbuilder.common.itemgroups.Groups;
 import marioandweegee3.toolbuilder.common.items.Handles;
 import marioandweegee3.toolbuilder.common.items.HolyWaterItem;
 import marioandweegee3.toolbuilder.common.items.StringItems;
+import marioandweegee3.toolbuilder.common.items.food.FoodItems;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 import marioandweegee3.toolbuilder.common.tools.HandleMaterials;
 import marioandweegee3.toolbuilder.common.tools.HeadMaterials;
@@ -146,6 +147,8 @@ public class ToolBuilder implements ModInitializer {
         if (ConfigHandler.INSTANCE.shouldAddNetherCobaltLootTable()) {
             TBData.blockLootTables.add(new BasicBlockLootTable(new Identifier("c:cobalt_nether_ore")));
         }
+
+        HELPER.registerAllItems(FoodItems.foodItems);
 
         FabricLoader.getInstance().getEntrypoints("toolbuilder", TBInitializer.class).forEach(mod -> {
             List<String> enabledHeads = ConfigHandler.INSTANCE.enabledHeadMaterials();

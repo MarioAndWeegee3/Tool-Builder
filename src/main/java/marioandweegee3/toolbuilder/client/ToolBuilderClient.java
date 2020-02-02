@@ -1,5 +1,7 @@
 package marioandweegee3.toolbuilder.client;
 
+import java.util.Map;
+
 import com.swordglowsblue.artifice.api.Artifice;
 
 import marioandweegee3.toolbuilder.ToolBuilder;
@@ -17,12 +19,14 @@ import marioandweegee3.toolbuilder.client.models.TBModels;
 import marioandweegee3.toolbuilder.client.models.ToolModel;
 import marioandweegee3.toolbuilder.common.blocks.BlockTorches;
 import marioandweegee3.toolbuilder.common.config.ConfigHandler;
+import marioandweegee3.toolbuilder.common.items.food.FoodItems;
 import marioandweegee3.toolbuilder.common.tools.HandleMaterials;
 import marioandweegee3.toolbuilder.common.tools.StringMaterials;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 
 public class ToolBuilderClient implements ClientModInitializer{
@@ -53,6 +57,10 @@ public class ToolBuilderClient implements ClientModInitializer{
         TBModels.simpleItems.put("blazing_stone", "modifier/flaming");
         TBModels.simpleItems.put("heavy_plate", "modifier/durable");
         TBModels.simpleItems.put("magnet", "modifier/magnetic");
+
+        for(Map.Entry<String, Item> entry : FoodItems.foodItems.entrySet()) {
+            TBModels.simpleItems.put(entry.getKey(), "food/"+entry.getKey());
+        }
 
         for(HandleMaterial handle : HandleMaterials.values()){
             TBModels.simpleItems.put(handle.getName()+"_handle", "handle/"+handle.getName()+"/full");
