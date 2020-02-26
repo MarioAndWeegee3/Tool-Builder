@@ -73,7 +73,7 @@ public abstract class InventoryTickMixin{
                     }
                     this.setTag(copy.getOrCreateTag());
                 } else if(getItem() instanceof BuiltArmorItem){
-                    ArrayList<ItemStack> armorItems = new ArrayList<ItemStack>((Collection<ItemStack>)holder.getArmorItems());
+                    ArrayList<ItemStack> armorItems = new ArrayList<>((Collection<ItemStack>)holder.getArmorItems());
                     BuiltArmorItem armor = (BuiltArmorItem) getItem();
                     if(armorItems.contains(this) && !world.isClient) {
                         for(EffectInstance instance : armor.getEffects(copy)){

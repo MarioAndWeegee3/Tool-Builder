@@ -72,13 +72,13 @@ public enum Effects implements Effect {
     }), 
     HOLY("holy", 3, new EffectBase(){
         @Override
-        public float getAdditonalAttackDamage(ItemStack stack, EntityGroup group, int level) {
+        public float getAdditionalAttackDamage(ItemStack stack, EntityGroup group, int level) {
             return ConfigHandler.INSTANCE.getHolyDamage().floatValue() * level;
         }
 
         @Override
-        public float modifyDamageRecieved(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
-                int level) {
+        public float modifyDamageReceived(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
+                                          int level) {
             return (float) (baseDamage - ConfigHandler.INSTANCE.getHolyDamage() * 0.25 * level);
         }
     }), 
@@ -145,9 +145,7 @@ public enum Effects implements Effect {
                 drops.clear();
             }
 
-            for (ItemStack stack : smelted) {
-                drops.add(stack);
-            }
+            drops.addAll(smelted);
 
             return drops;
         }
@@ -183,8 +181,8 @@ public enum Effects implements Effect {
     EXTRA_MODS("extra_modifiers", 1, new EffectBase()), 
     MAGICAL("magical", 1, new EffectBase(){
         @Override
-        public float modifyDamageRecieved(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
-                int level) {
+        public float modifyDamageReceived(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
+                                          int level) {
             if(source.getMagic()){
                 return (float) (baseDamage * 0.9);
             } else {
@@ -210,8 +208,8 @@ public enum Effects implements Effect {
         }
 
         @Override
-        public float modifyDamageRecieved(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
-                int level) {
+        public float modifyDamageReceived(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
+                                          int level) {
             if(armor.getSlotType() == EquipmentSlot.HEAD && source == DamageSource.FLY_INTO_WALL) {
                 if (baseDamage > 0 && ConfigHandler.INSTANCE.bouncyDamagesArmor()) {
                     stack.damage(1, new Random(), null);
@@ -294,11 +292,7 @@ public enum Effects implements Effect {
         public void postMine(BuiltToolMaterial material, ItemStack stack, BlockState state, World world, BlockPos pos,
                 LivingEntity miner, XpDropCheck dropCheck, int level) {
             CompoundTag tag = stack.getOrCreateTag();
-            int glimmers = 0;
-            if (tag.contains(Effects.glimmerNBTtag)) {
-                glimmers = tag.getInt(Effects.glimmerNBTtag);
-            }
-
+            int glimmers;
             boolean glimmerChance = world.random.nextInt(4 - level) == 0;
 
             if (glimmerChance) {
@@ -337,7 +331,7 @@ public enum Effects implements Effect {
     }), 
     AQUATIC("aquatic", 1, new EffectBase(){
         @Override
-        public float getAdditonalAttackDamage(ItemStack stack, EntityGroup group, int level) {
+        public float getAdditionalAttackDamage(ItemStack stack, EntityGroup group, int level) {
             if(group == EntityGroup.AQUATIC){
                 return 1.5f;
             } else {
@@ -347,13 +341,12 @@ public enum Effects implements Effect {
 
         @Override
         public void onArmorInventoryTick(ItemStack stack, LivingEntity holder, int level) {
-            LivingEntity entity = (LivingEntity) holder;
             BuiltArmorItem armor = (BuiltArmorItem) stack.getItem();
-            if(entity.isInFluid(FluidTags.WATER)){
+            if(holder.isInFluid(FluidTags.WATER)){
                 if(armor.getSlotType() == EquipmentSlot.HEAD){
-                    entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 20, 0, false, false));
+                    holder.addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 20, 0, false, false));
                 } else {
-                    entity.addStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 20, 1, false, false));
+                    holder.addStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 20, 1, false, false));
                 }
             }
         }
@@ -374,7 +367,7 @@ public enum Effects implements Effect {
         }
     });
 
-    private Effects(String name, int maxLevel, EffectBase base) {
+    Effects(String name, int maxLevel, EffectBase base) {
         this.name = name;
         this.base = base;
         this.maxLevel = maxLevel;
@@ -411,8 +404,8 @@ public enum Effects implements Effect {
     }
 
     @Override
-    public float getAdditonalAttackDamage(ItemStack stack, EntityGroup group, int level) {
-        return base.getAdditonalAttackDamage(stack, group, level);
+    public float getAdditionalAttackDamage(ItemStack stack, EntityGroup group, int level) {
+        return base.getAdditionalAttackDamage(stack, group, level);
     }
 
     @Override
@@ -441,9 +434,9 @@ public enum Effects implements Effect {
     }
 
     @Override
-    public float modifyDamageRecieved(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
-            int level) {
-        return base.modifyDamageRecieved(baseDamage, source, armor, stack, level);
+    public float modifyDamageReceived(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
+                                      int level) {
+        return base.modifyDamageReceived(baseDamage, source, armor, stack, level);
     }
 
     @Override
@@ -502,7 +495,6 @@ public enum Effects implements Effect {
 
         for(Identifier effect : TBRegistries.EFFECTS.keySet()){
             String name = effect.toString();
-            //name = "\""+name+"\"";
             if(name.toLowerCase(Locale.ROOT).startsWith(remaining)){
                 builder.suggest(name);
             }

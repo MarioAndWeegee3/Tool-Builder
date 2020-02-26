@@ -1,12 +1,7 @@
 package marioandweegee3.toolbuilder.common.command;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
 import marioandweegee3.toolbuilder.api.BuiltTool;
 import marioandweegee3.toolbuilder.api.effect.Effect;
 import marioandweegee3.toolbuilder.api.effect.EffectInstance;
@@ -23,6 +18,10 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TBEffectCommand {
     public static int get(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
@@ -64,7 +63,7 @@ public class TBEffectCommand {
                 return 0;
             }
 
-            Set<EffectInstance> effects = EffectInstance.mergeSets(tool.getEffects(stack), new HashSet<>(Arrays.asList(new EffectInstance(effect, 1))));
+            Set<EffectInstance> effects = EffectInstance.mergeSets(tool.getEffects(stack), new HashSet<>(Collections.singletonList(new EffectInstance(effect, 1))));
 
             if(!tool.getEffects(stack).equals(effects)){
                 CompoundTag toolTag = stack.getOrCreateTag();

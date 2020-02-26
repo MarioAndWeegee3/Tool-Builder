@@ -57,7 +57,7 @@ dependencies {
 		exclude (group: "io.github.prospector", module: "modmenu")
 	}
 	modCompile "marioandweegee3:ml3api:fabric-${project.ml3api_version}"
-	modCompile "TechReborn:TechReborn-1.15:${project.tech_reborn_version}"
+	modCompile "TechReborn:TechReborn-1.15:+"
 
 	include "com.lettuce.fudge:artifice:${project.artifice_version}"
 	// include ("io.github.cottonmc:cotton-resources:${project.cr_version}"){

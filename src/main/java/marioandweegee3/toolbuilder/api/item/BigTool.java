@@ -25,14 +25,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.RayTraceContext.FluidHandling;
 
 public interface BigTool extends BuiltTool {
-    public static final Random random = new Random();
-
     @Override
     default int getNumModifiers(ItemStack stack) {
         return BuiltTool.super.getNumModifiers(stack) + 1;
     }
 
-    public default void attemptBreakNeighbors(World world, BlockPos pos, PlayerEntity player, boolean checkHarvestLevel){
+    default void attemptBreakNeighbors(World world, BlockPos pos, PlayerEntity player, boolean checkHarvestLevel){
         world.setBlockState(pos, Blocks.GLASS.getDefaultState());
         HitResult result = calcHitResult(world, player, FluidHandling.ANY);
         world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -61,7 +59,7 @@ public interface BigTool extends BuiltTool {
         }
     }
 
-    public default void attemptBreak(World world, BlockPos pos, PlayerEntity player, int fortuneLevel, int silkLevel, boolean checkHarvestLevel){
+    default void attemptBreak(World world, BlockPos pos, PlayerEntity player, int fortuneLevel, int silkLevel, boolean checkHarvestLevel){
         BlockState state = world.getBlockState(pos);
         
         boolean validHarvest = !checkHarvestLevel || player.getMainHandStack().isEffectiveOn(state);
@@ -83,11 +81,11 @@ public interface BigTool extends BuiltTool {
         }
     }
 
-    public XpDropCheck getDropCheck();
+    XpDropCheck getDropCheck();
 
-    public boolean isEffectiveOn(BlockState state);
+    boolean isEffectiveOn(BlockState state);
 
-    public static HitResult calcHitResult(World world, PlayerEntity player, FluidHandling fluidHandling) {
+    static HitResult calcHitResult(World world, PlayerEntity player, FluidHandling fluidHandling) {
         float playerPitch = player.pitch;
         float playerYaw = player.yaw;
         Vec3d playerCamera = player.getCameraPosVec(1.0F);

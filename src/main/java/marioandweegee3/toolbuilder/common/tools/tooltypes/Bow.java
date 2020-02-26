@@ -98,8 +98,7 @@ public class Bow extends BowItem {
     @Override
     public boolean canRepair(ItemStack stack0, ItemStack stack) {
         if(stack == null || stack.isEmpty()) return false;
-        if(material.getRepairItems().contains(stack.getItem())) return true;
-        return false;
+        return material.getRepairItems().contains(stack.getItem());
     }
     
     @Override
@@ -108,28 +107,28 @@ public class Bow extends BowItem {
             return;
         }
         PlayerEntity player = (PlayerEntity)user;
-        boolean doesntConsumeArrow = player.abilities.creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
+        boolean arrowNotConsumed = player.abilities.creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
         ItemStack arrow = player.getArrowType(stack);
-        if (arrow.isEmpty() && !doesntConsumeArrow) {
+        if (arrow.isEmpty() && !arrowNotConsumed) {
             return;
         }
         if (arrow.isEmpty()) {
             arrow = new ItemStack(Items.ARROW);
         }
         int integer9 = this.getMaxUseTime(stack) - remainingUseTicks;
-        float velocityMult = tbgetPullProgress(integer9);
-        if (velocityMult < 0.1) {
+        float velocityMultiplier = tbgetPullProgress(integer9);
+        if (velocityMultiplier < 0.1) {
             return;
         }
-        boolean infiniteArrow = doesntConsumeArrow && arrow.getItem() == Items.ARROW;
+        boolean infiniteArrow = arrowNotConsumed && arrow.getItem() == Items.ARROW;
         if (!world.isClient) {
             ArrowItem arrowItem = (ArrowItem)((arrow.getItem() instanceof ArrowItem) ? arrow.getItem() : Items.ARROW);
             ProjectileEntity projectile = arrowItem.createArrow(world, arrow, player);
             for(EffectInstance instance : getEffects()){
-                velocityMult = instance.getEffect().modifyArrowVelocity(velocityMult, instance.getLevel());
+                velocityMultiplier = instance.getEffect().modifyArrowVelocity(velocityMultiplier, instance.getLevel());
             }
-            projectile.setProperties(player, player.pitch, player.yaw, 0.0f, velocityMult * 3.0f, 1.0f);
-            if (velocityMult >= 1.0f) {
+            projectile.setProperties(player, player.pitch, player.yaw, 0.0f, velocityMultiplier * 3.0f, 1.0f);
+            if (velocityMultiplier >= 1.0f) {
                 projectile.setCritical(true);
             }
             int powerLevel = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
@@ -144,13 +143,13 @@ public class Bow extends BowItem {
             if (flameTime > 0) {
                 projectile.setOnFireFor(flameTime);
             }
-            stack.<PlayerEntity>damage(1, player, p -> p.sendToolBreakStatus(player.getActiveHand()));
+            stack.damage(1, player, p -> p.sendToolBreakStatus(player.getActiveHand()));
             if (infiniteArrow || (player.abilities.creativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW))) {
                 projectile.pickupType = ProjectileEntity.PickupPermission.CREATIVE_ONLY;
             }
             world.spawnEntity(projectile);
         }
-        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0f, 1.0f / (BowItem.RANDOM.nextFloat() * 0.4f + 1.2f) + velocityMult * 0.5f);
+        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0f, 1.0f / (BowItem.RANDOM.nextFloat() * 0.4f + 1.2f) + velocityMultiplier * 0.5f);
         if (!infiniteArrow && !player.abilities.creativeMode) {
             arrow.decrement(1);
             if (arrow.isEmpty()) {
@@ -194,15 +193,12 @@ public class Bow extends BowItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack5 = user.getStackInHand(hand);
-        boolean boolean6 = !user.getArrowType(itemStack5).isEmpty();
-        if (user.abilities.creativeMode || boolean6) {
+        boolean arrowNotEmpty = !user.getArrowType(itemStack5).isEmpty();
+        if (user.abilities.creativeMode || arrowNotEmpty) {
             user.setCurrentHand(hand);
-            return new TypedActionResult<ItemStack>(ActionResult.SUCCESS, itemStack5);
+            return new TypedActionResult<>(ActionResult.SUCCESS, itemStack5);
         }
-        if (boolean6) {
-            return new TypedActionResult<ItemStack>(ActionResult.PASS, itemStack5);
-        }
-        return new TypedActionResult<ItemStack>(ActionResult.FAIL, itemStack5);
+        return new TypedActionResult<>(ActionResult.FAIL, itemStack5);
     }
     
     @Override
@@ -210,7 +206,7 @@ public class Bow extends BowItem {
         return BowItem.BOW_PROJECTILES;
     }
 
-    public Set<EffectInstance> getEffects(){
+    public Set<EffectInstance> getEffects() {
         return material.getEffects();
     }
 }

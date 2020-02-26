@@ -32,12 +32,6 @@ public class Sword extends SwordItem implements BuiltTool{
         return new Sword(material, new Item.Settings());
     }
 
-    public static void register(Item item, String name, BuiltToolMaterial material, String group){
-        item = create(material);
-        Registry.register(Registry.ITEM, ToolBuilder.makeID(name), item);
-        Groups.addTo(item, group);
-    }
-
     @Override
     public String getType() {
         return "sword";
@@ -72,7 +66,6 @@ public class Sword extends SwordItem implements BuiltTool{
     }
 
     public boolean shouldDropXp(BlockState state, ItemStack stack){
-        if(getMiningSpeed(stack, state) == 15) return true;
-        else return false;
+        return getMiningSpeed(stack, state) == 15;
     }
 }

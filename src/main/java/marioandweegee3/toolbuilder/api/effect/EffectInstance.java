@@ -46,9 +46,7 @@ public class EffectInstance implements Comparable<EffectInstance> {
         if(obj == this) return true;
         if(obj instanceof EffectInstance){
             EffectInstance other = (EffectInstance) obj;
-            if(other.effect == this.effect && other.level == this.level){
-                return true;
-            }
+            return other.effect == this.effect && other.level == this.level;
         }
         return false;
     }

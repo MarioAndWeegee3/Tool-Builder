@@ -28,11 +28,11 @@ public class BowRecipe {
         StringMaterial string = material.string;
         HandleMaterial handle = material.handle;
 
-        recipe.pattern(new String[]{
-            " ys",
-            "y s",
-            " ys"
-        });
+        recipe.pattern(
+                " ys",
+                "y s",
+                " ys"
+        );
         
         recipe.group(ToolBuilder.makeID("bow_"+builder.getMaterial().handle.getName()));
 

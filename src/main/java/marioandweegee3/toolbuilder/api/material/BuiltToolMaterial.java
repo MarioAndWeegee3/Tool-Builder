@@ -68,8 +68,7 @@ public class BuiltToolMaterial implements ToolMaterial{
 
     @Override
     public float getAttackDamage() {
-        float damage = this.head.getAttackDamage();
-        return damage;
+        return this.head.getAttackDamage();
     }
 
     public String getName(){

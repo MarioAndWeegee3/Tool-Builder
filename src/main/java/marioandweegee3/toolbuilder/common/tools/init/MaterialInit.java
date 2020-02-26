@@ -7,6 +7,7 @@ import marioandweegee3.toolbuilder.common.tools.*;
 import marioandweegee3.toolbuilder.common.armor.BuiltArmorMaterials;
 import marioandweegee3.toolbuilder.common.effect.Effects;
 
+@SuppressWarnings("unused")
 public class MaterialInit implements TBInitializer {
 
     @Override

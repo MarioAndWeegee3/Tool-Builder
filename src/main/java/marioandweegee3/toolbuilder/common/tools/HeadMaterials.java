@@ -1,5 +1,7 @@
 package marioandweegee3.toolbuilder.common.tools;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -84,18 +86,16 @@ public enum HeadMaterials implements HeadMaterial{
     private boolean isCotton;
     private String usTranslation;
 
-    private HeadMaterials(float attackDamage, float efficiency, int durability, int harvestLevel, int enchantability, Identifier item, boolean isTag, String block, String name, String usTranslation, Effect... effects){
+    HeadMaterials(float attackDamage, float efficiency, int durability, int harvestLevel, int enchantability, Identifier item, boolean isTag, String block, String name, String usTranslation, Effect... effects){
         this.attackDamage = attackDamage;
         this.durability = durability;
         this.enchantability = enchantability;
         this.harvestLevel = harvestLevel;
         this.efficiency = efficiency;
-        for(Effect effect : effects){
-            this.effects.add(effect);
-        }
+        Collections.addAll(this.effects, effects);
         this.name = name;
-        this.repairIngredient = new Lazy<Ingredient>(()->{
-            if(isTag){
+        this.repairIngredient = new Lazy<>(() -> {
+            if (isTag) {
                 return Ingredient.ofItems(getItemsInTag(item));
             } else {
                 return Ingredient.ofItems(Registry.ITEM.get(item));
@@ -112,17 +112,15 @@ public enum HeadMaterials implements HeadMaterial{
         }
     }
 
-    private HeadMaterials(ToolMaterial base, String repair, String block, String name, String usTranslation, Effect... effects){
+    HeadMaterials(ToolMaterial base, String repair, String block, String name, String usTranslation, Effect... effects){
         HeadMaterial material = HeadMaterial.copy(base, name);
         this.attackDamage = material.getAttackDamage();
         this.durability = material.getDurability();
         this.efficiency = material.getMiningSpeed();
         this.enchantability = material.getEnchantability();
         this.harvestLevel = material.getMiningLevel();
-        this.repairIngredient = new Lazy<>(() -> {return material.getRepairIngredient();});
-        for(Effect effect : effects){
-            this.effects.add(effect);
-        }
+        this.repairIngredient = new Lazy<>(material::getRepairIngredient);
+        this.effects.addAll(Arrays.asList(effects));
         this.name = name;
         this.repairString = repair;
         this.blockString = block;
@@ -139,10 +137,6 @@ public enum HeadMaterials implements HeadMaterial{
         if(tag == null) return new Item[0];
         
         return tag.values().toArray(new Item[0]);
-    }
-
-    public boolean isPoisonous() {
-        return effects.contains(Effects.POISONOUS);
     }
 
     @Override
@@ -193,11 +187,6 @@ public enum HeadMaterials implements HeadMaterial{
     @Override
     public String getBlockString() {
         return blockString;
-    }
-
-    @Override
-    public boolean isCotton() {
-        return isCotton;
     }
 
     @Override

@@ -30,7 +30,7 @@ public abstract class PlayerExperienceMixin extends LivingEntity {
     private int totalExperience;
 
     @Shadow
-    private int experienceLevel;
+    protected int experienceLevel;
 
     @Shadow
     protected abstract void addScore(int i);

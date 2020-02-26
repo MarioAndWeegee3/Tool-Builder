@@ -7,13 +7,12 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.util.Identifier;
 
 public interface BuiltArmorMaterial extends ArmorMaterial{
-    public String getMaterialName();
-    public String getMod();
-    public ArrayList<Effect> getEffects();
-    public String getRepairString();
-    public boolean isCotton();
+    String getMaterialName();
+    String getMod();
+    ArrayList<Effect> getEffects();
+    String getRepairString();
 
-    public default Identifier getID(){
+    default Identifier getID(){
         return new Identifier(getMod(), getMaterialName());
     }
 }

@@ -29,16 +29,14 @@ public enum HandleMaterials implements HandleMaterial {
     private String name, craftIngredient;
     private Set<Effect> effects = new HashSet<>(0);
 
-    private HandleMaterials(int extra, float multiplier, float miningSpeedMod, float drawSpeedMod, int enchantModifier, String craftIngredient, String name,
-            Effect... effects) {
+    HandleMaterials(int extra, float multiplier, float miningSpeedMod, float drawSpeedMod, int enchantModifier, String craftIngredient, String name,
+                    Effect... effects) {
         this.durabilityMultiplier = multiplier;
         this.extraDurability = extra;
         this.enchant = enchantModifier;
         this.miningSpeedMod = miningSpeedMod;
         this.drawSpeedMod = drawSpeedMod;
-        for (Effect effect : effects) {
-            this.effects.add(effect);
-        }
+        this.effects.addAll(Arrays.asList(effects));
         this.name = name;
         this.craftIngredient = craftIngredient;
     }

@@ -22,19 +22,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface BuiltTool extends Modifiable {
-    public default String getTranslationName(BuiltToolMaterial material) {
+    default String getTranslationName(BuiltToolMaterial material) {
         return getType() + "." + getModName() + "." + material.head.getName();
     }
 
-    public String getType();
+    String getType();
 
-    public BuiltToolMaterial getMaterial();
+    BuiltToolMaterial getMaterial();
 
-    public default String getModName() {
+    default String getModName() {
         return "toolbuilder";
     }
 
-    public default int getNumModifiers(ItemStack stack){
+    default int getNumModifiers(ItemStack stack){
         for(EffectInstance instance : getEffects(stack)){
             if(instance.getEffect() == Effects.EXTRA_MODS){
                 return 3;
@@ -48,7 +48,7 @@ public interface BuiltTool extends Modifiable {
         return getMaterial().getEffects();
     }
 
-    public static float getAttackSpeed(BuiltToolMaterial material, float speed){
+    static float getAttackSpeed(BuiltToolMaterial material, float speed){
         float newSpeed = speed;
 
         if(material.isGripped){
@@ -62,7 +62,7 @@ public interface BuiltTool extends Modifiable {
         return newSpeed;
     }
 
-    public static ItemStack increaseCountForFortune(ItemStack tool, ItemStack drop){
+    static ItemStack increaseCountForFortune(ItemStack tool, ItemStack drop){
         int fortuneLevel = EnchantmentHelper.getLevel(Enchantments.FORTUNE, tool);
         ItemStack newDrop = drop.copy();
 
@@ -76,7 +76,7 @@ public interface BuiltTool extends Modifiable {
         return newDrop;
     }
 
-    public default void onHit(ItemStack stack, LivingEntity target, LivingEntity attacker){
+    default void onHit(ItemStack stack, LivingEntity target, LivingEntity attacker){
         if(!target.world.isClient){
             for(EffectInstance instance : getEffects(stack)){
                 instance.getEffect().onHit(stack, target, attacker, instance.getLevel());
@@ -84,7 +84,7 @@ public interface BuiltTool extends Modifiable {
         }
     }
 
-    public default void addTooltips(List<Text> tooltip, ItemStack stack, BuiltToolMaterial material, Style mainStyle, Style effectStyle, Style modifierStyle){
+    default void addTooltips(List<Text> tooltip, ItemStack stack, BuiltToolMaterial material, Style mainStyle, Style effectStyle, Style modifierStyle){
         tooltip.add(new TranslatableText(material.handle.getTranslationKey()).setStyle(mainStyle));
 
         tooltip.add(new TranslatableText("text.toolbuilder.durability").append((stack.getMaxDamage() - stack.getDamage()) + "/" + stack.getMaxDamage()).setStyle(mainStyle));
@@ -101,7 +101,7 @@ public interface BuiltTool extends Modifiable {
         addModifierTooltip(tooltip, stack, effectStyle, modifierStyle);
     }
 
-    public default void onMine(BuiltToolMaterial material, ItemStack stack, BlockState state, World world, BlockPos pos, LivingEntity miner, XpDropCheck dropCheck){
+    default void onMine(BuiltToolMaterial material, ItemStack stack, BlockState state, World world, BlockPos pos, LivingEntity miner, XpDropCheck dropCheck){
         for(EffectInstance effect : getEffects(stack)){
             effect.getEffect().postMine(material, stack, state, world, pos, miner, dropCheck, effect.getLevel());
         }

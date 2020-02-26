@@ -6,5 +6,5 @@ import net.minecraft.item.Item;
 @FunctionalInterface
 public interface ToolCreator<X extends Item>{
 
-    public X build(BuiltToolMaterial material);
+    X build(BuiltToolMaterial material);
 }

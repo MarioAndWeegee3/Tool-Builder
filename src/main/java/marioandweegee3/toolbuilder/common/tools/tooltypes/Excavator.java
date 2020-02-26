@@ -81,10 +81,7 @@ public class Excavator extends ShovelItem implements BigTool {
     }
 
     public boolean shouldDropXp(BlockState state, ItemStack stack) {
-        if (getMiningSpeed(stack, state) == this.miningSpeed)
-            return true;
-        else
-            return false;
+        return getMiningSpeed(stack, state) == this.miningSpeed;
     }
 
     @Override

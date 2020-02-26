@@ -45,7 +45,7 @@ public class BuiltToolLootCondition implements LootCondition {
 
         if(stack.getItem() instanceof BuiltTool){
             BuiltTool tool = (BuiltTool) stack.getItem();
-            if(tool.getType() == this.toolType){
+            if(tool.getType().equals(this.toolType)){
                 return checkSuccess(stack);
             } else {
                 return false;
@@ -68,9 +68,7 @@ public class BuiltToolLootCondition implements LootCondition {
             chanceDenominator = 1;
         }
 
-        if(rng.nextInt(chanceDenominator) == 0){
-            return true;
-        } else return false;
+        return rng.nextInt(chanceDenominator) == 0;
     }
 
 }

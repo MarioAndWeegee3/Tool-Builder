@@ -5,5 +5,5 @@ import net.minecraft.item.ItemStack;
 
 @FunctionalInterface
 public interface XpDropCheck {
-    public abstract boolean check(BlockState state, ItemStack stack);
+    boolean check(BlockState state, ItemStack stack);
 }

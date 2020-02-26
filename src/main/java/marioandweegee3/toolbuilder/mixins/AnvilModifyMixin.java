@@ -1,10 +1,8 @@
 package marioandweegee3.toolbuilder.mixins;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
+import marioandweegee3.toolbuilder.api.ToolType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,16 +33,16 @@ import net.minecraft.util.registry.Registry;
 @Mixin(AnvilContainer.class)
 public abstract class AnvilModifyMixin extends Container {
     @Shadow
-    private Inventory result;
+    protected Inventory result;
 
     @Shadow
-    private Inventory inventory;
+    protected Inventory inventory;
 
     @Shadow
     private int repairItemUsage;
 
     @Shadow
-    private Property levelCost;
+    protected Property levelCost;
 
     protected AnvilModifyMixin(ContainerType<?> type, int syncId) {
         super(type, syncId);
@@ -67,7 +65,7 @@ public abstract class AnvilModifyMixin extends Container {
                         return;
                     }
         
-                    Set<EffectInstance> effects = EffectInstance.mergeSets(tool.getEffects(stack), new HashSet<>(Arrays.asList(new EffectInstance(effect, 1))));
+                    Set<EffectInstance> effects = EffectInstance.mergeSets(tool.getEffects(stack), new HashSet<>(Collections.singletonList(new EffectInstance(effect, 1))));
         
                     if(!tool.getEffects(stack).equals(effects)){
                         CompoundTag toolTag = stack.getOrCreateTag();
@@ -96,21 +94,24 @@ public abstract class AnvilModifyMixin extends Container {
                         result.setInvStack(0, stack);
                         levelCost.set(1);
                     }
-                } else if(tool instanceof BuiltTool && modStack.getItem() == Items.LEATHER && !((BuiltTool)tool).getMaterial().isGripped){
-                    int gripCost = ToolTypes.get(((BuiltTool)tool).getType()).getHandleGripCost();
-                    if (gripCost > 0) {
-                        ToolBuilder.debugDummy();
-                        CompoundTag tag = stack.getOrCreateTag();
+                } else if(tool instanceof BuiltTool && modStack.getItem() == Items.LEATHER && !((BuiltTool)tool).getMaterial().isGripped) {
+                    ToolType toolType = ToolTypes.get(((BuiltTool) tool).getType());
+                    if (toolType != null) {
+                        int gripCost = toolType.getHandleGripCost();
+                        if (gripCost > 0) {
+                            ToolBuilder.debugDummy();
+                            CompoundTag tag = stack.getOrCreateTag();
 
-                        Item grippedItem = Registry.ITEM
-                                .get(new Identifier(Registry.ITEM.getId((Item) tool).toString() + "_gripped"));
+                            Item grippedItem = Registry.ITEM
+                                    .get(new Identifier(Registry.ITEM.getId((Item) tool).toString() + "_gripped"));
 
-                        ItemStack resStack = new ItemStack(grippedItem);
-                        resStack.setTag(tag);
+                            ItemStack resStack = new ItemStack(grippedItem);
+                            resStack.setTag(tag);
 
-                        result.setInvStack(0, resStack);
-                        repairItemUsage = gripCost;
-                        levelCost.set(1);
+                            result.setInvStack(0, resStack);
+                            repairItemUsage = gripCost;
+                            levelCost.set(1);
+                        }
                     }
                 }
             }

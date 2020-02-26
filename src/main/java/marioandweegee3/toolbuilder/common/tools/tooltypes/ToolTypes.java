@@ -44,7 +44,7 @@ public enum ToolTypes implements ToolType{
         "zx",
         "zx",
         "y "
-    }, "greatsword", Greatsword::create, new Identifier("fabric:swords")),
+    }, "greatsword", GreatSword::create, new Identifier("fabric:swords")),
     SHEARS(new String[]{
         "x ",
         "yy"
@@ -65,7 +65,7 @@ public enum ToolTypes implements ToolType{
     private String[] pattern;
     private Identifier tag;
 
-    private ToolTypes(String[] pattern, String name, ToolCreator<? extends Item> creator, Identifier tag){
+    ToolTypes(String[] pattern, String name, ToolCreator<? extends Item> creator, Identifier tag){
         this.name = name;
         this.creator = creator;
         this.pattern = pattern;
@@ -97,7 +97,7 @@ public enum ToolTypes implements ToolType{
                 }
             }
         }
-        return cost >= 1 ? cost : 1;
+        return Math.max(cost, 1);
     }
 
     public static ToolType get(String id){

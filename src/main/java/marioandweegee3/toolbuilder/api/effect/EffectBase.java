@@ -39,7 +39,7 @@ public class EffectBase implements Effect {
     }
 
     @Override
-    public float getAdditonalAttackDamage(ItemStack stack, EntityGroup group, int level) {
+    public float getAdditionalAttackDamage(ItemStack stack, EntityGroup group, int level) {
         return 0;
     }
 
@@ -69,8 +69,8 @@ public class EffectBase implements Effect {
     }
 
     @Override
-    public float modifyDamageRecieved(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
-            int level) {
+    public float modifyDamageReceived(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
+                                      int level) {
         return baseDamage;
     }
 

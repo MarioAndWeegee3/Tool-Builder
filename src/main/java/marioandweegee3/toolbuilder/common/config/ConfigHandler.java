@@ -173,21 +173,12 @@ public class ConfigHandler{
     public List<Identifier> shearLootTables(){
         refresh();
         Set<Identifier> ids = new HashSet<>();
-        for(Object o : config.get("shearLootTables", new ArrayList<>().getClass())){
+        for(Object o : config.get("shearLootTables", ArrayList.class)){
             if(o instanceof String){
                 ids.add(new Identifier((String)o));
             }
         }
         return new ArrayList<>(ids);
-    }
-
-    public List<String> shearLootTableStrings(){
-        List<String> strings = new ArrayList<>();
-        List<Identifier> ids = shearLootTables();
-        for(Identifier id : ids){
-            strings.add(id.toString());
-        }
-        return strings;
     }
 
     public Boolean shouldRemoveVanillaToolRecipes(){
@@ -208,7 +199,7 @@ public class ConfigHandler{
     public List<String> enabledHeadMaterials(){
         refresh();
         List<String> materials = new ArrayList<>();
-        for(Object o : config.getSubConfig("materials").get("heads", new ArrayList<>().getClass())){
+        for(Object o : config.getSubConfig("materials").get("heads", ArrayList.class)){
             if(o instanceof String) {
                 materials.add((String) o);
             }
@@ -219,7 +210,7 @@ public class ConfigHandler{
     public List<String> enabledHandleMaterials(){
         refresh();
         List<String> materials = new ArrayList<>();
-        for(Object o : config.getSubConfig("materials").get("handles", new ArrayList<>().getClass())){
+        for(Object o : config.getSubConfig("materials").get("handles", ArrayList.class)){
             if(o instanceof String) {
                 materials.add((String) o);
             }

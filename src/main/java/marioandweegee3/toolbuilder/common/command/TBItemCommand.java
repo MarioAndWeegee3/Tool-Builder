@@ -108,10 +108,9 @@ public class TBItemCommand {
 
         Identifier handle = context.getArgument("handle", Identifier.class);
 
-        Boolean grip = new Lazy<Boolean>(() -> {
+        Boolean grip = new Lazy<>(() -> {
             try {
-                Boolean b = context.getArgument("gripped", Boolean.class);
-                return b;
+                return context.getArgument("gripped", Boolean.class);
             } catch (IllegalArgumentException e) {
                 return false;
             }

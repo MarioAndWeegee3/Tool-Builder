@@ -45,7 +45,7 @@ public abstract class EnchantmentMixin {
             BuiltTool tool = (BuiltTool)stack.getItem();
 
             for(EffectInstance effect : tool.getEffects(stack)){
-                baseDamage += effect.getEffect().getAdditonalAttackDamage(stack, group, effect.getLevel());
+                baseDamage += effect.getEffect().getAdditionalAttackDamage(stack, group, effect.getLevel());
             }
         }
 

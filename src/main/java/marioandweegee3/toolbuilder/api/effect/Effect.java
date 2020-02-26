@@ -21,40 +21,40 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public interface Effect {
-    public TranslatableText getTranslationName();
-    public String getName();
-    public Identifier getID();
-    public int getMaxLevel();
+    TranslatableText getTranslationName();
+    String getName();
+    Identifier getID();
+    int getMaxLevel();
 
-    public float getAdditonalAttackDamage(ItemStack stack, EntityGroup group, int level);
+    float getAdditionalAttackDamage(ItemStack stack, EntityGroup group, int level);
 
-    public List<ItemStack> modifyBlockDrops(BlockState state, BuiltTool tool, ItemStack toolStack, LootContext.Builder builder, List<ItemStack> drops, int level);
+    List<ItemStack> modifyBlockDrops(BlockState state, BuiltTool tool, ItemStack toolStack, LootContext.Builder builder, List<ItemStack> drops, int level);
 
-    public boolean onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level);
+    boolean onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level);
 
-    public boolean bypassesArmor(String name, LivingEntity source, int level);
+    boolean bypassesArmor(String name, LivingEntity source, int level);
 
-    public int enchantmentLevelIncrement(Enchantment enchantment, ItemStack stack, int effectLevel);
+    int enchantmentLevelIncrement(Enchantment enchantment, ItemStack stack, int effectLevel);
 
-    public float modifyFallDamage(float fallDamage, BuiltArmorItem armor, ItemStack stack, int level);
+    float modifyFallDamage(float fallDamage, BuiltArmorItem armor, ItemStack stack, int level);
 
-    public float modifyDamageRecieved(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack, int level);
+    float modifyDamageReceived(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack, int level);
 
-    public int modifyFireDuration(int fireDuration, LivingEntity entity, BuiltArmorItem armor, ItemStack stack, int level);
+    int modifyFireDuration(int fireDuration, LivingEntity entity, BuiltArmorItem armor, ItemStack stack, int level);
 
-    public void onInventoryTick(ItemStack stack, LivingEntity holder, int level);
+    void onInventoryTick(ItemStack stack, LivingEntity holder, int level);
 
-    public void onArmorInventoryTick(ItemStack stack, LivingEntity holder, int level);
+    void onArmorInventoryTick(ItemStack stack, LivingEntity holder, int level);
 
-    public void onHit(ItemStack stack, LivingEntity target, LivingEntity attacker, int level);
+    void onHit(ItemStack stack, LivingEntity target, LivingEntity attacker, int level);
 
-    public void postMine(BuiltToolMaterial material, ItemStack stack, BlockState state, World world, BlockPos pos, LivingEntity miner, XpDropCheck dropCheck, int level);
+    void postMine(BuiltToolMaterial material, ItemStack stack, BlockState state, World world, BlockPos pos, LivingEntity miner, XpDropCheck dropCheck, int level);
 
-    public int arrowFireTimeModifier(ItemStack stack, Bow bow, int level);
+    int arrowFireTimeModifier(ItemStack stack, Bow bow, int level);
 
-    public int modifyDurability(int durability);
+    int modifyDurability(int durability);
 
-    public float modifyArrowVelocity(float velocity, int level);
+    float modifyArrowVelocity(float velocity, int level);
 
-    public float getAttackSpeedModifier(int level);
+    float getAttackSpeedModifier(int level);
 }

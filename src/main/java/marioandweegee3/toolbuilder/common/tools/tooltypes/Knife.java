@@ -68,10 +68,7 @@ public class Knife extends SwordItem implements BuiltTool, CustomRemainder {
     }
 
     public boolean shouldDropXp(BlockState state, ItemStack stack) {
-        if (getMiningSpeed(stack, state) == 15)
-            return true;
-        else
-            return false;
+        return getMiningSpeed(stack, state) == 15;
     }
 
     @Override

@@ -12,15 +12,13 @@ public class BasicBlockLootTable {
     }
 
     public void add(ServerResourcePackBuilder pack){
-        pack.addLootTable(new Identifier(block.getNamespace(), "blocks/"+block.getPath()), table -> {
-            table.pool(pool -> {
-                pool.condition(new Identifier("survives_explosion"), j->{});
-                pool.rolls(1);
-                pool.entry(entry -> {
-                    entry.type(new Identifier("item"));
-                    entry.name(block);
-                });
+        pack.addLootTable(new Identifier(block.getNamespace(), "blocks/"+block.getPath()), table -> table.pool(pool -> {
+            pool.condition(new Identifier("survives_explosion"), j->{});
+            pool.rolls(1);
+            pool.entry(entry -> {
+                entry.type(new Identifier("item"));
+                entry.name(block);
             });
-        });
+        }));
     }
 }

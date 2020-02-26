@@ -7,13 +7,12 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 
 public interface StringMaterial{
-    public Ingredient getIngredient();
-    public String getMod();
-    public String getName();
-    public Set<EffectInstance> getEffects();
-    public Identifier[] getIngredientIds();
+    String getMod();
+    String getName();
+    Set<EffectInstance> getEffects();
+    Identifier[] getIngredientIds();
 
-    public default Identifier getID(){
+    default Identifier getID(){
         return new Identifier(getMod(), getName());
     }
 }

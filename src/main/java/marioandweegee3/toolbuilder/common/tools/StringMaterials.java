@@ -1,5 +1,6 @@
 package marioandweegee3.toolbuilder.common.tools;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,13 +25,11 @@ public enum StringMaterials implements StringMaterial {
     private String name;
     private Identifier[] ids;
 
-    private StringMaterials(String name, Effect[] effects, Identifier... ids) {
+    StringMaterials(String name, Effect[] effects, Identifier... ids) {
         this.name = name;
         this.effects = new HashSet<>(0);
-        for (Effect effect : effects) {
-            this.effects.add(effect);
-        }
-        this.ingredient = new Lazy<Ingredient>(() -> {
+        Collections.addAll(this.effects, effects);
+        this.ingredient = new Lazy<>(() -> {
             Item[] items = new Item[ids.length];
             for (int i = 0; i < ids.length; i++) {
                 items[i] = Registry.ITEM.get(ids[i]);
@@ -38,11 +37,6 @@ public enum StringMaterials implements StringMaterial {
             return Ingredient.ofItems(items);
         });
         this.ids = ids;
-    }
-
-    @Override
-    public Ingredient getIngredient() {
-        return ingredient.get();
     }
 
     @Override

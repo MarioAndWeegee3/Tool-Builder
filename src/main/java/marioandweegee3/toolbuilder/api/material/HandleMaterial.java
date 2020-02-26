@@ -8,22 +8,22 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 
 public interface HandleMaterial {
-    public int getExtraDurability();
-    public ArrayList<Item> getRepairItems(boolean grip);
-    public float getMiningSpeedMultiplier();
-    public float getDrawSpeedMultiplier();
-    public float getDurabilityMultiplier();
-    public int getEnchantabilityModifier();
-    public String getName();
-    public String getMod();
-    public Set<EffectInstance> getEffects();
-    public String getCraftIngredient();
+    int getExtraDurability();
+    ArrayList<Item> getRepairItems(boolean grip);
+    float getMiningSpeedMultiplier();
+    float getDrawSpeedMultiplier();
+    float getDurabilityMultiplier();
+    int getEnchantabilityModifier();
+    String getName();
+    String getMod();
+    Set<EffectInstance> getEffects();
+    String getCraftIngredient();
 
-    public default String getTranslationKey(){
+    default String getTranslationKey(){
         return "handle."+getMod()+"."+getName();
     }
 
-    public default Identifier getID(){
+    default Identifier getID(){
         return new Identifier(getMod(), getName());
     }
 }

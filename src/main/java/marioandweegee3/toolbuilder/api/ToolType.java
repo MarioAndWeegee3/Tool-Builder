@@ -3,13 +3,13 @@ package marioandweegee3.toolbuilder.api;
 import net.minecraft.util.Identifier;
 
 public interface ToolType {
-    public String getName();
+    String getName();
 
-    public ToolCreator<?> getBuilder();
+    ToolCreator<?> getBuilder();
 
-    public String[] getRecipePattern();
+    String[] getRecipePattern();
 
-    public int getHandleGripCost();
+    int getHandleGripCost();
     
-    public Identifier fabricTagToAddTo();
+    Identifier fabricTagToAddTo();
 }

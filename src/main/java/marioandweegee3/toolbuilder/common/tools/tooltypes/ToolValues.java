@@ -15,7 +15,7 @@ public enum ToolValues {
     private float speed;
     private float damage;
 
-    private ToolValues(float speed, float damage){
+    ToolValues(float speed, float damage){
         this.speed = speed;
         this.damage = damage;
     }

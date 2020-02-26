@@ -11,7 +11,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 
 public interface HeadMaterial extends ToolMaterial{
-    public static HeadMaterial copy(ToolMaterial base, String name) {
+    static HeadMaterial copy(ToolMaterial base, String name) {
         return new HeadMaterial() {
 
             @Override
@@ -65,11 +65,6 @@ public interface HeadMaterial extends ToolMaterial{
             }
 
             @Override
-            public boolean isCotton() {
-                return false;
-            }
-
-            @Override
             public String getMod() {
                 return "";
             }
@@ -82,15 +77,15 @@ public interface HeadMaterial extends ToolMaterial{
         };
     }
 
-    public Set<EffectInstance> getEffects();
-    public String getName();
-    public String getRepairString();
-    public String getBlockString();
-    public boolean isCotton();
-    public String getMod();
-    public String getUSTranslation();
+    Set<EffectInstance> getEffects();
+    String getName();
+    String getRepairString();
+    String getBlockString();
 
-    public default Identifier getID() {
+    String getMod();
+    String getUSTranslation();
+
+    default Identifier getID() {
         return new Identifier(getMod(), getName());
     }
 }

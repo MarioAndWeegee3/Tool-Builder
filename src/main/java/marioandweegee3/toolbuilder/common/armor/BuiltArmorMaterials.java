@@ -1,6 +1,7 @@
 package marioandweegee3.toolbuilder.common.armor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,14 +39,12 @@ public enum BuiltArmorMaterials implements BuiltArmorMaterial {
     private float toughness;
     private Set<Effect> effects = new HashSet<>(0);
 
-    private BuiltArmorMaterials(HeadMaterial material, int durabilityMultiplier, int[] protection, float toughness, Effect... effects){
+    BuiltArmorMaterials(HeadMaterial material, int durabilityMultiplier, int[] protection, float toughness, Effect... effects){
         baseMaterial = material;
         this.durabilityMultiplier = durabilityMultiplier;
         protectionAmounts = protection;
         this.toughness = toughness;
-        for(Effect effect : effects){
-            this.effects.add(effect);
-        }
+        Collections.addAll(this.effects, effects);
     }
 
     @Override
@@ -104,11 +103,6 @@ public enum BuiltArmorMaterials implements BuiltArmorMaterial {
     @Override
     public String getRepairString() {
         return baseMaterial.getRepairString();
-    }
-
-    @Override
-    public boolean isCotton() {
-        return baseMaterial.isCotton();
     }
 
 }

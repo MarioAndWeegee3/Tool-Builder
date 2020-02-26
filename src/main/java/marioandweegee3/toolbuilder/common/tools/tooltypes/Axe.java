@@ -65,7 +65,6 @@ public class Axe extends AxeItem implements BuiltTool {
     }
 
     public boolean shouldDropXp(BlockState state, ItemStack stack){
-        if(getMiningSpeed(stack, state) == this.miningSpeed) return true;
-        else return false;
+        return getMiningSpeed(stack, state) == this.miningSpeed;
     }
 }

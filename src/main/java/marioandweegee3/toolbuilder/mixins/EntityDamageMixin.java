@@ -23,7 +23,7 @@ public abstract class EntityDamageMixin extends Entity {
 
     @Inject(method = "computeFallDamage", at = @At("RETURN"), cancellable = true)
     private void modifyFallDamage(float fallDistance, float damageMultiplier, CallbackInfoReturnable<Integer> ci) {
-        Float damage = ci.getReturnValue().floatValue();
+        float damage = ci.getReturnValue().floatValue();
 
         for(ItemStack stack : getArmorItems()){
             if(stack.getItem() instanceof BuiltArmorItem){
@@ -35,7 +35,7 @@ public abstract class EntityDamageMixin extends Entity {
             }
         }
 
-        ci.setReturnValue(damage.intValue());
+        ci.setReturnValue((int) damage);
     }
 
     @Inject(method = "applyEnchantmentsToDamage", at = @At("RETURN"), cancellable = true)
@@ -48,7 +48,7 @@ public abstract class EntityDamageMixin extends Entity {
                     BuiltArmorItem armor = (BuiltArmorItem) stack.getItem();
                     
                     for(EffectInstance instance : armor.getEffects(stack)) {
-                        damage = instance.getEffect().modifyDamageRecieved(damage, source, armor, stack, instance.getLevel());
+                        damage = instance.getEffect().modifyDamageReceived(damage, source, armor, stack, instance.getLevel());
                     }
                 }
             }

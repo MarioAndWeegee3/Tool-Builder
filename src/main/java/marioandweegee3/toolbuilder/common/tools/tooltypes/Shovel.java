@@ -34,12 +34,6 @@ public class Shovel extends ShovelItem implements BuiltTool{
         return new Shovel(material, new Item.Settings());
     }
 
-    public static void register(Item item, String name, BuiltToolMaterial material, String group){
-        item = create(material);
-        Registry.register(Registry.ITEM, ToolBuilder.makeID(name), item);
-        Groups.addTo(item, group);
-    }
-
     @Override
     public boolean isEffectiveOn(BlockState state) {
         return super.isEffectiveOn(state)
@@ -81,7 +75,6 @@ public class Shovel extends ShovelItem implements BuiltTool{
     }
 
     public boolean shouldDropXp(BlockState state, ItemStack stack){
-        if(getMiningSpeed(stack, state) == this.miningSpeed) return true;
-        else return false;
+        return getMiningSpeed(stack, state) == this.miningSpeed;
     }
 }

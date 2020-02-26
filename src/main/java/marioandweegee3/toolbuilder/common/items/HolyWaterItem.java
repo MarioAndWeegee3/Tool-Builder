@@ -28,10 +28,14 @@ public class HolyWaterItem extends ModifierItem {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
         if(!world.isClient){
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, ConfigHandler.INSTANCE.getHolyLuckTime(), ConfigHandler.INSTANCE.getHolyLuckLevel()-1));
+            player.addStatusEffect(
+                    new StatusEffectInstance(StatusEffects.LUCK,
+                    ConfigHandler.INSTANCE.getHolyLuckTime(),
+                    ConfigHandler.INSTANCE.getHolyLuckLevel()-1)
+            );
             stack.decrement(1);
         }
-        return new TypedActionResult<ItemStack>(ActionResult.SUCCESS, stack);
+        return new TypedActionResult<>(ActionResult.SUCCESS, stack);
     }
 
 }

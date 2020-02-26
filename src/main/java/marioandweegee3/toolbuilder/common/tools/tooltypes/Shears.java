@@ -79,8 +79,7 @@ public class Shears extends ShearsItem implements BuiltTool{
     }
 
     public boolean shouldDropXp(BlockState state, ItemStack stack){
-        if(getMiningSpeed(stack, state) == 15) return true;
-        else return false;
+        return getMiningSpeed(stack, state) == 15;
     }
 
     @Override
@@ -115,6 +114,7 @@ public class Shears extends ShearsItem implements BuiltTool{
             mooshroom.remove();
 
             CowEntity cow = EntityType.COW.create(player.world);
+            assert cow != null;
             cow.yaw = mooshroom.yaw;
             cow.pitch = mooshroom.pitch;
             cow.setPos(mooshroom.getX(), mooshroom.getY(), mooshroom.getZ());
@@ -138,14 +138,17 @@ public class Shears extends ShearsItem implements BuiltTool{
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        World world = context.getPlayer().world;
-        BlockState state = world.getBlockState(context.getBlockPos());
-        if(!world.isClient){
-            if(state.getBlock() == Blocks.PUMPKIN){
-                Direction dir = getHorizontalDirection(context.getSide());
-                BlockPos pos = context.getBlockPos().offset(dir);
-                world.setBlockState(context.getBlockPos(), Blocks.CARVED_PUMPKIN.getDefaultState().with(HorizontalFacingBlock.FACING, dir));
-                world.spawnEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, new ItemStack(Items.PUMPKIN_SEEDS, 4)));
+        PlayerEntity player = context.getPlayer();
+        if(player != null){
+            World world = player.world;
+            BlockState state = world.getBlockState(context.getBlockPos());
+            if(!world.isClient){
+                if(state.getBlock() == Blocks.PUMPKIN){
+                    Direction dir = getHorizontalDirection(context.getSide());
+                    BlockPos pos = context.getBlockPos().offset(dir);
+                    world.setBlockState(context.getBlockPos(), Blocks.CARVED_PUMPKIN.getDefaultState().with(HorizontalFacingBlock.FACING, dir));
+                    world.spawnEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, new ItemStack(Items.PUMPKIN_SEEDS, 4)));
+                }
             }
         }
         return ActionResult.PASS;

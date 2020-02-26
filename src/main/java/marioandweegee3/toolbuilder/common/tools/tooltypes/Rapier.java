@@ -74,8 +74,7 @@ public class Rapier extends SwordItem implements BuiltTool {
     }
 
     public boolean shouldDropXp(BlockState state, ItemStack stack){
-        if(getMiningSpeed(stack, state) == 15) return true;
-        else return false;
+        return getMiningSpeed(stack, state) == 15;
     }
 
     @Override
@@ -86,10 +85,10 @@ public class Rapier extends SwordItem implements BuiltTool {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
-        if(player.isFallFlying()) return new TypedActionResult<ItemStack>(ActionResult.PASS, stack);
+        if(player.isFallFlying()) return new TypedActionResult<>(ActionResult.PASS, stack);
 
         player.setCurrentHand(hand);
-        return new TypedActionResult<ItemStack>(ActionResult.SUCCESS, stack);
+        return new TypedActionResult<>(ActionResult.SUCCESS, stack);
     }
 
     @Override

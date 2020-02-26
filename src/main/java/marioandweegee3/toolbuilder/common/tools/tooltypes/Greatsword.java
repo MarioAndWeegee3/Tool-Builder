@@ -18,19 +18,19 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class Greatsword extends SwordItem implements BigTool {
+public class GreatSword extends SwordItem implements BigTool {
     private static float speed = ToolValues.GREATSWORD.getSpeed();
     private static float damage = ToolValues.GREATSWORD.getDamage();
 
     private BuiltToolMaterial material;
 
-    private Greatsword(GSwordMaterial material, Item.Settings settings) {
+    private GreatSword(GSwordMaterial material, Item.Settings settings) {
         super(material, (int) damage, BuiltTool.getAttackSpeed(material, speed), settings);
         this.material = material;
     }
 
     public static Item create(BuiltToolMaterial material) {
-        return new Greatsword(GSwordMaterial.of(material), new Item.Settings());
+        return new GreatSword(GSwordMaterial.of(material), new Item.Settings());
     }
 
     @Override
@@ -70,10 +70,7 @@ public class Greatsword extends SwordItem implements BigTool {
     }
 
     public boolean shouldDropXp(BlockState state, ItemStack stack) {
-        if (getMiningSpeed(stack, state) == 15)
-            return true;
-        else
-            return false;
+        return getMiningSpeed(stack, state) == 15;
     }
 
     @Override
@@ -93,7 +90,7 @@ public class Greatsword extends SwordItem implements BigTool {
 
         @Override
         public int getDurability() {
-            return (int) (super.getDurability() * 5);
+            return super.getDurability() * 5;
         }
 
         @Override

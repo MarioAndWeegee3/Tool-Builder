@@ -29,12 +29,6 @@ public class Hoe extends HoeItem implements BuiltTool{
         return new Hoe(material, new Item.Settings());
     }
 
-    public static void register(Item item, String name, BuiltToolMaterial material, String group){
-        item = create(material);
-        Registry.register(Registry.ITEM, ToolBuilder.makeID(name), item);
-        Groups.addTo(item, group);
-    }
-
     @Override
     public String getType() {
         return "hoe";
