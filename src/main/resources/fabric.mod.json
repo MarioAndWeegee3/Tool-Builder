@@ -13,7 +13,7 @@
     "sources": ""
   },
 
-  "license": "Unlicense",
+  "license": "MIT",
   "icon": "assets/toolbuilder/textures/logo.png",
 
   "environment": "*",
@@ -36,8 +36,8 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.4.0",
-    "fabric": ">=0.3.1+build.208"
+    "fabricloader": ">=0.7.0",
+    "fabric": "*"
   },
   "suggests": {
     "flamingo": "*"
