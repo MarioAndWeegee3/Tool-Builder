@@ -53,7 +53,7 @@ public enum HandleMaterials implements HandleMaterial {
             if (grip) {
                 items = toArray(getTBItem("wood_gripped_handle"));
             } else {
-                if (ConfigHandler.INSTANCE.canCraftWithSticks()) {
+                if (ConfigHandler.getInstance().canCraftWithSticks()) {
                     items = toArray(getTBItem("wood_handle"), getItem(new Identifier("stick")));
                 } else {
                     items = toArray(getTBItem("wood_handle"));

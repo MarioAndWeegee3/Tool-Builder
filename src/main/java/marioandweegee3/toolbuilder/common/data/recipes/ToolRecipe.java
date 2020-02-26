@@ -50,7 +50,7 @@ public class ToolRecipe {
         }
 
         if (handle.getRepairItems(material.isGripped).contains(Items.STICK)) {
-            if (ConfigHandler.INSTANCE.canCraftWithSticks()) {
+            if (ConfigHandler.getInstance().canCraftWithSticks()) {
                 recipe.multiIngredient('y', ing -> {
                     ing.item(new Identifier("stick"));
                     for (Item item : handle.getRepairItems(material.isGripped)) {

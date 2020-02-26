@@ -35,7 +35,7 @@ public abstract class RecipeRemoveMixin implements ReloadableResourceManager {
     }
 
     private boolean tb_shouldRemove(Identifier id){
-        if(!ConfigHandler.INSTANCE.shouldRemoveVanillaToolRecipes()) return false;
+        if(!ConfigHandler.getInstance().shouldRemoveVanillaToolRecipes()) return false;
 
         String[] vanillaHeads = {
             "wooden",

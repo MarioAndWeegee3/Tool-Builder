@@ -107,10 +107,10 @@ public class ToolBuilder implements ModInitializer {
         HELPER.registerBlock("mod_station", new Block(FabricBlockSettings.copy(Blocks.SMITHING_TABLE).build()),
                 ItemGroup.DECORATIONS);
 
-        TBData.blockLootTables.add(new BasicBlockLootTable(makeID("stone_torch")));
+        TBData.getBlockLootTables().add(new BasicBlockLootTable(makeID("stone_torch")));
 
-        TBData.blockLootTables.add(new BasicBlockLootTable(makeID("grip_station")));
-        TBData.blockLootTables.add(new BasicBlockLootTable(makeID("mod_station")));
+        TBData.getBlockLootTables().add(new BasicBlockLootTable(makeID("grip_station")));
+        TBData.getBlockLootTables().add(new BasicBlockLootTable(makeID("mod_station")));
 
         HELPER.registerItem("blaze_string", StringItems.blazeString);
         HELPER.registerItem("ender_string", StringItems.enderString);
@@ -127,8 +127,8 @@ public class ToolBuilder implements ModInitializer {
         HELPER.registerBlock("slime_crystal_block", new Block(FabricBlockSettings.of(Material.GLASS).build()),
                 ItemGroup.BUILDING_BLOCKS);
 
-        TBData.blockLootTables.add(new BasicBlockLootTable(makeID("slime_crystal_block")));
-        TBData.blockLootTables.add(new BasicBlockLootTable(makeID("dense_obsidian")));
+        TBData.getBlockLootTables().add(new BasicBlockLootTable(makeID("slime_crystal_block")));
+        TBData.getBlockLootTables().add(new BasicBlockLootTable(makeID("dense_obsidian")));
 
         HELPER.registerAllItems(MiscUtils.toMap(new Object[][] { { "poison_tip", new ModifierItem(Effects.POISONOUS) },
                 { "holy_water", new HolyWaterItem() }, { "moss", new ModifierItem(Effects.GROWING) },
@@ -143,13 +143,13 @@ public class ToolBuilder implements ModInitializer {
                 { "bone_gripped_handle", Handles.bone_gripped_handle }, { "diamond_handle", Handles.diamond_handle },
                 { "diamond_gripped_handle", Handles.diamond_gripped_handle } }));
 
-        if (ConfigHandler.INSTANCE.shouldAddNetherCobaltLootTable()) {
-            TBData.blockLootTables.add(new BasicBlockLootTable(new Identifier("c:cobalt_nether_ore")));
+        if (ConfigHandler.getInstance().shouldAddNetherCobaltLootTable()) {
+            TBData.getBlockLootTables().add(new BasicBlockLootTable(new Identifier("c:cobalt_nether_ore")));
         }
 
         FabricLoader.getInstance().getEntrypoints("toolbuilder", TBInitializer.class).forEach(mod -> {
-            List<String> enabledHeads = ConfigHandler.INSTANCE.enabledHeadMaterials();
-            List<String> enabledHandles = ConfigHandler.INSTANCE.enabledHandleMaterials();
+            List<String> enabledHeads = ConfigHandler.getInstance().enabledHeadMaterials();
+            List<String> enabledHandles = ConfigHandler.getInstance().enabledHandleMaterials();
             for (HeadMaterial material : mod.headMaterials()) {
                 if (enabledHeads.contains(material.getID().toString())) {
                     TBRegistries.HEAD_MATERIALS.put(material.getID(), material);
@@ -191,7 +191,7 @@ public class ToolBuilder implements ModInitializer {
                 makeBowItem(material, false, string);
                 makeBowItem(material, true, string);
             }
-            TBData.handleRecipes.add(new HandleRecipe(material));
+            TBData.getHandleRecipes().add(new HandleRecipe(material));
         }
 
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
@@ -205,8 +205,8 @@ public class ToolBuilder implements ModInitializer {
             }
         });
 
-        if (ConfigHandler.INSTANCE.shouldAddSteelRecipe()) {
-            TBData.blastingRecipes.put(makeID("steel_ingot"), recipe -> {
+        if (ConfigHandler.getInstance().shouldAddSteelRecipe()) {
+            TBData.getBlastingRecipes().put(makeID("steel_ingot"), recipe -> {
                 recipe.ingredientTag(new Identifier("c:iron_plate"));
                 recipe.experience(2);
                 recipe.type(new Identifier("minecraft:blasting"));
@@ -214,26 +214,26 @@ public class ToolBuilder implements ModInitializer {
             });
         }
 
-        TBData.blastingRecipes.put(makeID("slime_crystal_blasting"), recipe -> {
+        TBData.getBlastingRecipes().put(makeID("slime_crystal_blasting"), recipe -> {
             recipe.ingredientItem(new Identifier("slime_block"));
             recipe.experience(1);
             recipe.type(new Identifier("minecraft:blasting"));
             recipe.result(makeID("slime_crystal"));
         });
 
-        TBData.shapelessRecipes.put(makeID("slime_crystal_block"), recipe -> {
+        TBData.getShapelessRecipes().put(makeID("slime_crystal_block"), recipe -> {
             for (int i = 0; i < 9; i++) {
                 recipe.ingredientItem(makeID("slime_crystal"));
             }
             recipe.result(makeID("slime_crystal_block"), 1);
         });
 
-        TBData.shapelessRecipes.put(makeID("slime_crystal_from_block"), recipe -> {
+        TBData.getShapelessRecipes().put(makeID("slime_crystal_from_block"), recipe -> {
             recipe.ingredientItem(makeID("slime_crystal_block"));
             recipe.result(makeID("slime_crystal"), 9);
         });
 
-        TBData.shapelessRecipes.put(makeID("holy_water"), recipe -> {
+        TBData.getShapelessRecipes().put(makeID("holy_water"), recipe -> {
             recipe.ingredientItem(new Identifier("water_bucket"));
             recipe.ingredientItem(new Identifier("glass_bottle"));
             for (int i = 0; i < 3; i++) {
@@ -246,20 +246,20 @@ public class ToolBuilder implements ModInitializer {
             recipe.result(makeID("holy_water"), 1);
         });
 
-        TBData.shapelessRecipes.put(makeID("poison_tip"), recipe -> {
+        TBData.getShapelessRecipes().put(makeID("poison_tip"), recipe -> {
             recipe.ingredientTag(new Identifier("logs"));
             recipe.ingredientItem(new Identifier("spider_eye"));
             recipe.result(makeID("poison_tip"), 1);
         });
 
-        TBData.shapelessRecipes.put(makeID("moss"), recipe -> {
+        TBData.getShapelessRecipes().put(makeID("moss"), recipe -> {
             for (int i = 0; i < 9; i++) {
                 recipe.ingredientItem(new Identifier("vine"));
             }
             recipe.result(makeID("moss"), 1);
         });
 
-        TBData.shapelessRecipes.put(makeID("blazing_stone"), recipe -> {
+        TBData.getShapelessRecipes().put(makeID("blazing_stone"), recipe -> {
             recipe.ingredientItem(new Identifier("smooth_stone"));
             for (int i = 0; i < 6; i++) {
                 recipe.ingredientItem(new Identifier("blaze_powder"));
@@ -267,7 +267,7 @@ public class ToolBuilder implements ModInitializer {
             recipe.result(makeID("blazing_stone"), 1);
         });
 
-        TBData.shapedRecipes.put(makeID("magnet"), recipe -> {
+        TBData.getShapedRecipes().put(makeID("magnet"), recipe -> {
             recipe.pattern(
                 "r l",
                 "i i",
@@ -279,7 +279,7 @@ public class ToolBuilder implements ModInitializer {
             recipe.result(makeID("magnet"), 1);
         });
 
-        TBData.shapelessRecipes.put(makeID("raw_heavy_plate"), recipe -> {
+        TBData.getShapelessRecipes().put(makeID("raw_heavy_plate"), recipe -> {
             if (cottonResourcesLoaded) {
                 recipe.ingredientTag(new Identifier("c:lead_plate"));
                 recipe.ingredientTag(new Identifier("c:tungsten_plate"));
@@ -292,7 +292,7 @@ public class ToolBuilder implements ModInitializer {
             recipe.result(makeID("raw_heavy_plate"), 1);
         });
 
-        TBData.blastingRecipes.put(makeID("heavy_plate"), recipe -> {
+        TBData.getBlastingRecipes().put(makeID("heavy_plate"), recipe -> {
             recipe.cookingTime(200);
             recipe.ingredientItem(makeID("raw_heavy_plate"));
             recipe.experience(1);
@@ -300,59 +300,59 @@ public class ToolBuilder implements ModInitializer {
             recipe.result(makeID("heavy_plate"));
         });
 
-        TBData.shapedRecipes.put(makeID("obsidian_plate"), recipe -> {
+        TBData.getShapedRecipes().put(makeID("obsidian_plate"), recipe -> {
             recipe.pattern("xx", "xx");
             recipe.ingredientItem('x', new Identifier("obsidian"));
             recipe.result(makeID("obsidian_plate"), 1);
         });
 
-        TBData.shapedRecipes.put(makeID("blaze_string"), recipe -> {
+        TBData.getShapedRecipes().put(makeID("blaze_string"), recipe -> {
             recipe.pattern("bb", "ss");
             recipe.ingredientItem('b', new Identifier("blaze_powder"));
             recipe.ingredientItem('s', new Identifier("string"));
             recipe.result(makeID("blaze_string"), 2);
         });
 
-        TBData.blastingRecipes.put(makeID("ender_dust"), recipe -> {
+        TBData.getBlastingRecipes().put(makeID("ender_dust"), recipe -> {
             recipe.ingredientItem(new Identifier("ender_pearl"));
             recipe.experience(3);
             recipe.type(new Identifier("minecraft:blasting"));
             recipe.result(makeID("ender_dust"));
         });
 
-        TBData.shapedRecipes.put(makeID("ender_string"), recipe -> {
+        TBData.getShapedRecipes().put(makeID("ender_string"), recipe -> {
             recipe.pattern("ee", "ss");
             recipe.ingredientItem('e', makeID("ender_dust"));
             recipe.ingredientItem('s', new Identifier("string"));
             recipe.result(makeID("ender_string"), 2);
         });
 
-        TBData.shapedRecipes.put(makeID("stone_torch"), recipe -> {
+        TBData.getShapedRecipes().put(makeID("stone_torch"), recipe -> {
             recipe.pattern("c", "s");
             recipe.ingredientTag('c', new Identifier("coals"));
             recipe.ingredientItem('s', makeID("stone_handle"));
             recipe.result(makeID("stone_torch"), 4);
         });
 
-        TBData.shapedRecipes.put(makeID("dense_obsidian"), recipe -> {
+        TBData.getShapedRecipes().put(makeID("dense_obsidian"), recipe -> {
             recipe.pattern("ppp", "ppp", "ppp");
 
             recipe.ingredientItem('p', makeID("obsidian_plate"));
             recipe.result(makeID("dense_obsidian"), 1);
         });
 
-        TBData.shapelessRecipes.put(makeID("stick_from_wood_handle"), recipe -> {
+        TBData.getShapelessRecipes().put(makeID("stick_from_wood_handle"), recipe -> {
             recipe.ingredientItem(makeID("wood_handle"));
             recipe.result(new Identifier("stick"), 1);
         });
 
-        TBData.shapelessRecipes.put(makeID("wood_handle_from_stick"), recipe -> {
+        TBData.getShapelessRecipes().put(makeID("wood_handle_from_stick"), recipe -> {
             recipe.ingredientItem(new Identifier("stick"));
             recipe.result(makeID("wood_handle"), 1);
         });
 
         for(HandleMaterial handle : TBRegistries.HANDLE_MATERIALS.values()) {
-            TBData.shapelessRecipes.put(makeID(handle.getName()+"_gripped"), recipe -> {
+            TBData.getShapelessRecipes().put(makeID(handle.getName()+"_gripped"), recipe -> {
                 recipe.group(makeID("gripped_handle"));
 
                 recipe.multiIngredient(ing -> {
@@ -496,7 +496,7 @@ public class ToolBuilder implements ModInitializer {
     public static void makeToolItem(HandleMaterial handle, HeadMaterial head, ToolType toolType, Boolean grip) {
         ToolItemBuilder builder = new ToolItemBuilder(handle, head, toolType, grip);
         Item tool = builder.build();
-        TBData.toolRecipes.add(new ToolRecipe(builder));
+        TBData.getToolRecipes().add(new ToolRecipe(builder));
         HELPER.registerItem(builder.name, tool);
         Groups.addTo(tool, "tools");
         if(head == HeadMaterials.WOOD && handle == HandleMaterials.WOOD && !grip){
@@ -510,7 +510,7 @@ public class ToolBuilder implements ModInitializer {
     public static void makeBowItem(HandleMaterial material, Boolean grip, StringMaterial string) {
         BowBuilder builder = new BowBuilder(material, grip, string);
         Item bow = builder.build();
-        TBData.bowRecipes.add(new BowRecipe(builder));
+        TBData.getBowRecipes().add(new BowRecipe(builder));
         HELPER.registerItem(builder.name, bow);
         Groups.addTo(bow, "tools");
         if(material == HandleMaterials.WOOD){
@@ -591,7 +591,7 @@ public class ToolBuilder implements ModInitializer {
         }
 
         private void register(EquipmentSlot slot){
-            TBData.armorRecipes.add(new ArmorRecipe(this, slot));
+            TBData.getArmorRecipes().add(new ArmorRecipe(this, slot));
             Item item = build(slot);
             HELPER.registerItem(makeName(slot), item);
             Groups.addTo(item, "armor");

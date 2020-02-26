@@ -19,44 +19,76 @@ import marioandweegee3.toolbuilder.common.data.recipes.ToolRecipe;
 import net.minecraft.util.Identifier;
 
 public class TBData {
-    public static Set<ToolRecipe> toolRecipes = new HashSet<>();
-    public static Set<BowRecipe> bowRecipes = new HashSet<>();
-    public static Set<ArmorRecipe> armorRecipes = new HashSet<>();
-    public static Set<HandleRecipe> handleRecipes = new HashSet<>();
-    public static Set<BasicBlockLootTable> blockLootTables = new HashSet<>();
+    private static Set<ToolRecipe> toolRecipes = new HashSet<>();
+    private static Set<BowRecipe> bowRecipes = new HashSet<>();
+    private static Set<ArmorRecipe> armorRecipes = new HashSet<>();
+    private static Set<HandleRecipe> handleRecipes = new HashSet<>();
+    private static Set<BasicBlockLootTable> blockLootTables = new HashSet<>();
 
-    public static Map<Identifier, Processor<ShapedRecipeBuilder>> shapedRecipes = new HashMap<>();
-    public static Map<Identifier, Processor<ShapelessRecipeBuilder>> shapelessRecipes = new HashMap<>();
-    public static Map<Identifier, Processor<CookingRecipeBuilder>> blastingRecipes = new HashMap<>();
+    private static Map<Identifier, Processor<ShapedRecipeBuilder>> shapedRecipes = new HashMap<>();
+    private static Map<Identifier, Processor<ShapelessRecipeBuilder>> shapelessRecipes = new HashMap<>();
+    private static Map<Identifier, Processor<CookingRecipeBuilder>> blastingRecipes = new HashMap<>();
 
     public static void addRecipes(ServerResourcePackBuilder pack){
-        for(ToolRecipe recipe : toolRecipes){
+        for(ToolRecipe recipe : getToolRecipes()){
             recipe.add(pack);
         }
-        for(BowRecipe recipe : bowRecipes){
+        for(BowRecipe recipe : getBowRecipes()){
             recipe.add(pack);
         }
-        for(ArmorRecipe recipe : armorRecipes){
+        for(ArmorRecipe recipe : getArmorRecipes()){
             recipe.add(pack);
         }
-        for(HandleRecipe recipe : handleRecipes){
+        for(HandleRecipe recipe : getHandleRecipes()){
             recipe.add(pack);
         }
 
-        for(Identifier id : shapedRecipes.keySet()){
-            pack.addShapedRecipe(id, shapedRecipes.get(id));
+        for(Identifier id : getShapedRecipes().keySet()){
+            pack.addShapedRecipe(id, getShapedRecipes().get(id));
         }
 
-        for(Identifier id : shapelessRecipes.keySet()){
-            pack.addShapelessRecipe(id, shapelessRecipes.get(id));
+        for(Identifier id : getShapelessRecipes().keySet()){
+            pack.addShapelessRecipe(id, getShapelessRecipes().get(id));
         }
 
-        for(Identifier id : blastingRecipes.keySet()){
-            pack.addBlastingRecipe(id, blastingRecipes.get(id));
+        for(Identifier id : getBlastingRecipes().keySet()){
+            pack.addBlastingRecipe(id, getBlastingRecipes().get(id));
         }
         
-        for(BasicBlockLootTable table : blockLootTables){
+        for(BasicBlockLootTable table : getBlockLootTables()){
             table.add(pack);
         }
+    }
+
+    public static Set<ToolRecipe> getToolRecipes() {
+        return toolRecipes;
+    }
+
+    public static Set<BowRecipe> getBowRecipes() {
+        return bowRecipes;
+    }
+
+    public static Set<ArmorRecipe> getArmorRecipes() {
+        return armorRecipes;
+    }
+
+    public static Set<HandleRecipe> getHandleRecipes() {
+        return handleRecipes;
+    }
+
+    public static Set<BasicBlockLootTable> getBlockLootTables() {
+        return blockLootTables;
+    }
+
+    public static Map<Identifier, Processor<ShapedRecipeBuilder>> getShapedRecipes() {
+        return shapedRecipes;
+    }
+
+    public static Map<Identifier, Processor<ShapelessRecipeBuilder>> getShapelessRecipes() {
+        return shapelessRecipes;
+    }
+
+    public static Map<Identifier, Processor<CookingRecipeBuilder>> getBlastingRecipes() {
+        return blastingRecipes;
     }
 }

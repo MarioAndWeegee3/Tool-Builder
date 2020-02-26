@@ -27,13 +27,13 @@ public class ModMenuCompatTB implements ModMenuApi{
     @Override
     public Function<Screen, ? extends Screen> getConfigScreenFactory() {
         return screen -> {
-            Config config = ConfigHandler.INSTANCE.getConfig();
+            Config config = ConfigHandler.getInstance().getConfig();
             ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(screen)
                 .setTitle("Tool Builder")
                 .setSavingRunnable(()->{
-                    ConfigManager.INSTANCE.set(ConfigHandler.configID, config);
-                    ConfigManager.INSTANCE.write(ConfigHandler.configID);
+                    ConfigManager.INSTANCE.set(ConfigHandler.getConfigID(), config);
+                    ConfigManager.INSTANCE.write(ConfigHandler.getConfigID());
             });
             ConfigEntryBuilder entryBuilder = ConfigEntryBuilder.create();
 

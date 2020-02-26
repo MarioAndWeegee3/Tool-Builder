@@ -60,26 +60,26 @@ public enum Effects implements Effect {
                 LivingEntity miner, XpDropCheck dropCheck, int level) {
             if (dropCheck.check(state, stack) && world.random.nextInt(4 - level) == 0) {
                 world.spawnEntity(new ExperienceOrbEntity(world, pos.getX(), pos.getY(), pos.getZ(),
-                        ConfigHandler.INSTANCE.getExtraXp()));
+                        ConfigHandler.getInstance().getExtraXp()));
             }
         }
     }), 
     POISONOUS("poison", 3, new EffectBase() {
         @Override
         public void onHit(ItemStack stack, LivingEntity target, LivingEntity attacker, int level) {
-            target.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, ConfigHandler.INSTANCE.getPoisonTime(), level - 1));
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, ConfigHandler.getInstance().getPoisonTime(), level - 1));
         }
     }), 
     HOLY("holy", 3, new EffectBase(){
         @Override
         public float getAdditionalAttackDamage(ItemStack stack, EntityGroup group, int level) {
-            return ConfigHandler.INSTANCE.getHolyDamage().floatValue() * level;
+            return ConfigHandler.getInstance().getHolyDamage().floatValue() * level;
         }
 
         @Override
         public float modifyDamageReceived(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
                                           int level) {
-            return (float) (baseDamage - ConfigHandler.INSTANCE.getHolyDamage() * 0.25 * level);
+            return (float) (baseDamage - ConfigHandler.getInstance().getHolyDamage() * 0.25 * level);
         }
     }), 
     GROWING("growing", 6, new EffectBase(){
@@ -105,12 +105,12 @@ public enum Effects implements Effect {
 
         @Override
         public void onHit(ItemStack stack, LivingEntity target, LivingEntity attacker, int level) {
-            target.setOnFireFor(ConfigHandler.INSTANCE.getFlamingTime() * level);
+            target.setOnFireFor(ConfigHandler.getInstance().getFlamingTime() * level);
         }
 
         @Override
         public void onArmorInventoryTick(ItemStack stack, LivingEntity holder, int level) {
-            holder.setOnFireFor(ConfigHandler.INSTANCE.getFlamingTime() * level);
+            holder.setOnFireFor(ConfigHandler.getInstance().getFlamingTime() * level);
         }
 
         @Override
@@ -153,7 +153,7 @@ public enum Effects implements Effect {
     LIGHT("light", 1, new EffectBase(){
         @Override
         public float modifyFallDamage(float fallDamage, BuiltArmorItem armor, ItemStack stack, int level) {
-            fallDamage *= ConfigHandler.INSTANCE.getLightFallDamageMultiplier().floatValue();
+            fallDamage *= ConfigHandler.getInstance().getLightFallDamageMultiplier().floatValue();
             if (fallDamage > 0) {
                 stack.damage(1, new Random(), null);
             }
@@ -169,13 +169,13 @@ public enum Effects implements Effect {
         @Override
         public int modifyFireDuration(int fireDuration, LivingEntity entity, BuiltArmorItem armor, ItemStack stack,
                 int level) {
-            return (int) (fireDuration * ConfigHandler.INSTANCE.getFlammableTimeMultiplier());
+            return (int) (fireDuration * ConfigHandler.getInstance().getFlammableTimeMultiplier());
         }
     }), 
     DURABLE("durable", 1, new EffectBase(){
         @Override
         public int modifyDurability(int durability) {
-            return (int) (durability * ConfigHandler.INSTANCE.getDurableMultiplier());
+            return (int) (durability * ConfigHandler.getInstance().getDurableMultiplier());
         }
     }), 
     EXTRA_MODS("extra_modifiers", 1, new EffectBase()), 
@@ -199,7 +199,7 @@ public enum Effects implements Effect {
         @Override
         public float modifyFallDamage(float fallDamage, BuiltArmorItem armor, ItemStack stack, int level) {
             if(armor.getSlotType() == EquipmentSlot.FEET){
-                if (fallDamage > 0 && ConfigHandler.INSTANCE.bouncyDamagesArmor()) {
+                if (fallDamage > 0 && ConfigHandler.getInstance().bouncyDamagesArmor()) {
                     stack.damage(1, new Random(), null);
                 }
                 fallDamage = 0f;
@@ -211,7 +211,7 @@ public enum Effects implements Effect {
         public float modifyDamageReceived(float baseDamage, DamageSource source, BuiltArmorItem armor, ItemStack stack,
                                           int level) {
             if(armor.getSlotType() == EquipmentSlot.HEAD && source == DamageSource.FLY_INTO_WALL) {
-                if (baseDamage > 0 && ConfigHandler.INSTANCE.bouncyDamagesArmor()) {
+                if (baseDamage > 0 && ConfigHandler.getInstance().bouncyDamagesArmor()) {
                     stack.damage(1, new Random(), null);
                 }
                 baseDamage = 0;
@@ -232,16 +232,16 @@ public enum Effects implements Effect {
         public boolean onEntityLandOnBlock(BlockView view, BuiltArmorItem armor, LivingEntity entity, int level) {
             if(!(armor.getSlotType() == EquipmentSlot.FEET)) return false;
 
-            double speedMult = -ConfigHandler.INSTANCE.getBounceSpeedMultiplier(),
-                    sneakSpeedMult = -ConfigHandler.INSTANCE.getSneakBounceSpeedMultiplier();
+            double speedMult = -ConfigHandler.getInstance().getBounceSpeedMultiplier(),
+                    sneakSpeedMult = -ConfigHandler.getInstance().getSneakBounceSpeedMultiplier();
             Vec3d vel = new Vec3d(entity.getVelocity().x, entity.getVelocity().y, entity.getVelocity().z).multiply(2,
                     entity.isSneaking() ? sneakSpeedMult : speedMult, 2);
             // This prevents the player from building up insane speed and launching 1,000,000
             // blocks into the air.
             // Yes, that did happen. If the bounce speed limit is removed, you will go very
             // fast.
-            double maxVelocity = ConfigHandler.INSTANCE.getMaxBounceVelocity();
-            if (vel.y >= maxVelocity && ConfigHandler.INSTANCE.limitBounceHeight()) {
+            double maxVelocity = ConfigHandler.getInstance().getMaxBounceVelocity();
+            if (vel.y >= maxVelocity && ConfigHandler.getInstance().limitBounceHeight()) {
                 entity.setVelocity(vel.x, maxVelocity, vel.z);
             } else {
                 entity.setVelocity(vel);

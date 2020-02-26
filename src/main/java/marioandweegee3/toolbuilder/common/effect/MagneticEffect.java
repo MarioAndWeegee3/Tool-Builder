@@ -17,7 +17,7 @@ public class MagneticEffect{
         double y = miner.getY();
         double z = miner.getZ();
 
-        double range = ConfigHandler.INSTANCE.getMagneticRange() * level;
+        double range = ConfigHandler.getInstance().getMagneticRange() * level;
 
         List<ItemEntity> items = world.getEntities(ItemEntity.class, new Box(x-range, y-range, z-range, x+range, y+range, z+range), null);
 

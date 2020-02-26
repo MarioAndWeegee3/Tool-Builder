@@ -14,9 +14,9 @@ import net.minecraft.util.Identifier;
 import static marioandweegee3.toolbuilder.common.config.ToolBuilderConfig.DEFAULTS;
 
 public class ConfigHandler{
-    public static final Identifier configID = ToolBuilder.makeID("config-v1.0");
+    private static final Identifier configID = ToolBuilder.makeID("config-v1.0");
 
-    public static ConfigHandler INSTANCE;
+    private static ConfigHandler INSTANCE;
 
     private Config config;
 
@@ -62,14 +62,22 @@ public class ConfigHandler{
             .add("useNewModels", DEFAULTS.useNewModels)
         .build();
 
-        ConfigManager.INSTANCE.set(configID, config);
+        ConfigManager.INSTANCE.set(getConfigID(), config);
 
         refresh();
     }
 
+    public static Identifier getConfigID() {
+        return configID;
+    }
+
+    public static ConfigHandler getInstance() {
+        return INSTANCE;
+    }
+
     private void refresh(){
-        ConfigManager.INSTANCE.refresh(configID);
-        config = ConfigManager.INSTANCE.getConfig(configID);
+        ConfigManager.INSTANCE.refresh(getConfigID());
+        config = ConfigManager.INSTANCE.getConfig(getConfigID());
     }
 
     public static void init(){

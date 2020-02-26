@@ -30,8 +30,8 @@ public class HolyWaterItem extends ModifierItem {
         if(!world.isClient){
             player.addStatusEffect(
                     new StatusEffectInstance(StatusEffects.LUCK,
-                    ConfigHandler.INSTANCE.getHolyLuckTime(),
-                    ConfigHandler.INSTANCE.getHolyLuckLevel()-1)
+                    ConfigHandler.getInstance().getHolyLuckTime(),
+                    ConfigHandler.getInstance().getHolyLuckLevel()-1)
             );
             stack.decrement(1);
         }

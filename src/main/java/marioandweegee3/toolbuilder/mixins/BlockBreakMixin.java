@@ -36,7 +36,7 @@ public abstract class BlockBreakMixin implements ItemConvertible{
             BuiltTool builtTool = (BuiltTool)tool.getItem();
 
             if(tool.getItem() instanceof Shears){
-                List<Identifier> lootTables = ConfigHandler.INSTANCE.shearLootTables();
+                List<Identifier> lootTables = ConfigHandler.getInstance().shearLootTables();
                 for(Identifier table : lootTables){
                     Block block = state.getBlock();
                     if(block.getDropTableId().equals(table)){
