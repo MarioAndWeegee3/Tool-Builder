@@ -98,7 +98,7 @@ public abstract class AnvilModifyMixin extends Container {
                     ToolType toolType = ToolTypes.get(((BuiltTool) tool).getType());
                     if (toolType != null) {
                         int gripCost = toolType.getHandleGripCost();
-                        if (gripCost > 0) {
+                        if (gripCost > 0 && modStack.getCount() >= gripCost) {
                             ToolBuilder.debugDummy();
                             CompoundTag tag = stack.getOrCreateTag();
 
